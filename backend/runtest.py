@@ -1,7 +1,7 @@
 import requests, usertest
 from time import sleep
 
-def signup_post_or_error(link, data, uname, upwd):
+def signup_post_test(link, data, uname, upwd):
     sleep(0.05)
     try:
         res = requests.post(link, data=data, auth=(uname,upwd))
@@ -13,7 +13,7 @@ def signup_post_or_error(link, data, uname, upwd):
         exit(1)
     print('signup success')
 
-def login_post_or_error(link, uname, upwd):
+def login_post_test(link, uname, upwd):
     sleep(0.05)
     try:
         res = requests.post(link, auth=(uname,upwd))
@@ -32,12 +32,12 @@ for i in range(1,10):
     data = "user{0}nickname".format(i)
     uname = "user{0}".format(i)
     upwd = "user{0}passwd".format(i)
-    signup_post_or_error(link, data, uname, upwd)
+    signup_post_test(link, data, uname, upwd)
 
 print('2.login')
 
 for i in range(1,10):
     uname = "user{0}".format(i)
     upwd = "user{0}passwd".format(i)
-    login_post_or_error(link, uname, upwd)
+    login_post_test(link, uname, upwd)
 
