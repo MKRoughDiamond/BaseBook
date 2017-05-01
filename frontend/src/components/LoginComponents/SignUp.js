@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {newID, newPW, retypePW,toMain} from '../../actions';
 
-class SignIn extends React.Component {
+class SignUp extends React.Component {
   constructor(props) {
     super(props);
 
@@ -37,7 +37,7 @@ class SignIn extends React.Component {
 
   render() {
     return (<div id="main">
-      <div className="line-thick">Sign In</div>
+      <div className="line-thick">Sign Up</div>
       <div className="line">
         <div id="username">ID</div>
         <input type="text" id="input-username" onChange={this.handleUpdateID}></input>
@@ -74,4 +74,4 @@ let mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

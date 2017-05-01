@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Main from './LoginComponents/Main';
-import SignIn from './LoginComponents/SignIn';
+import SignUp from './LoginComponents/SignUp';
 
 class Login extends React.Component {
   render() {
@@ -10,7 +10,7 @@ class Login extends React.Component {
         <Main />
       </div> ):(
       <div id="main-wrapper">
-        <SignIn />
+        <SignUp />
       </div> );
   }
 }
