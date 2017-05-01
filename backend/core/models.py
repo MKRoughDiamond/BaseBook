@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class BaseUser(models.Model):
+    user = models.ForeignKey(User)
+    nickname = models.CharField(max_length=20)#, related_name='baseuser_nickname')
 
 class Friend(models.Model):
     user = models.ForeignKey(User,related_name='user')
