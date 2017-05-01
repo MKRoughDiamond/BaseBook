@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {setid, setpw, tosignup} from '../../actions';
+import {setID, setPW, toSignUp} from '../../actions';
 
 class Main extends React.Component {
   constructor(props) {
@@ -25,12 +25,12 @@ class Main extends React.Component {
 
   render() {
     return (<div id="main">
-      <div id="line-thick">Welcome to BaseBook!</div>
-        <div id="line">
+      <div className="line-thick">Welcome to BaseBook!</div>
+        <div className="line">
           <div id="username">ID</div>
           <input type="text" id="input-username" onChange={this.handleUpdateID}></input>
         </div>
-        <div id="line-thick">
+        <div className="line-thick">
           <div id="password">password</div>
           <input type="password" id="input-password" onChange={this.handleUpdatePW}></input>
         </div>
@@ -44,9 +44,9 @@ class Main extends React.Component {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    onUpdateID: (value) => dispatch(setid(value)),
-    onUpdatePW: (value) => dispatch(setpw(value)),
-    toSignUp: () => dispatch(tosignup()),
+    onUpdateID: (value) => dispatch(setID(value)),
+    onUpdatePW: (value) => dispatch(setPW(value)),
+    toSignUp: () => dispatch(toSignUp()),
   };
 };
 

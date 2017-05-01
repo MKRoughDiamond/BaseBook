@@ -80,11 +80,11 @@ body::-webkit-scrollbar {
 	padding : 5px;
 }
 
-#line {
+.line {
 	margin-bottom : 10px;
 }
 
-#line-thick {
+.line-thick {
 	margin-bottom : 20px;
 }
 

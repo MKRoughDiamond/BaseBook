@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {newid, newpw, retypepw,tomain} from '../../actions';
+import {newID, newPW, retypePW,toMain} from '../../actions';
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -37,16 +37,16 @@ class SignIn extends React.Component {
 
   render() {
     return (<div id="main">
-      <div id="line-thick">Sign In</div>
-      <div id="line">
+      <div className="line-thick">Sign In</div>
+      <div className="line">
         <div id="username">ID</div>
         <input type="text" id="input-username" onChange={this.handleUpdateID}></input>
       </div>
-      <div id="line">
+      <div className="line">
         <div id="password">password</div>
         <input type="password" id="input-password" onChange={this.handleUpdatePW}></input>
       </div>
-      <div id="line-thick">
+      <div className="line-thick">
         <div id="password">retype PW</div>
         <input type="password" id="input-password" onChange={this.handleUpdateRetypePW}></input>
 				<div id="password-check">{this.passwordCheck()}</div>
@@ -67,10 +67,10 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    onUpdateID: (value) => dispatch(newid(value)),
-    onUpdatePW: (value) => dispatch(newpw(value)),
-    onUpdateRetypePW: (value) => dispatch(retypepw(value)),
-    toMain: () => dispatch(tomain())
+    onUpdateID: (value) => dispatch(newID(value)),
+    onUpdatePW: (value) => dispatch(newPW(value)),
+    onUpdateRetypePW: (value) => dispatch(retypePW(value)),
+    toMain: () => dispatch(toMain())
   };
 };
 

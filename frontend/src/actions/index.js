@@ -6,48 +6,48 @@ export const RETYPEPW = 'RETYPEPW';
 export const TOMAIN = 'TOMAIN';
 export const TOSIGNUP = 'TOSIGNUP';
 
-export function setid(value) {
+export function setID(value) {
   return {
     type : SETID,
     ID : value
   };
 }
 
-export function setpw(value) {
+export function setPW(value) {
   return {
     type : SETPW,
     PW : value
   };
 }
 
-export function newid(value) {
+export function newID(value) {
   return {
     type : NEWID,
     newID : value
   };
 }
 
-export function newpw(value) {
+export function newPW(value) {
   return {
     type : NEWPW,
     newPW : value
   };
 }
 
-export function retypepw(value) {
+export function retypePW(value) {
   return {
     type : RETYPEPW,
     retypePW : value
   };
 }
 
-export function tomain() {
+export function toMain() {
   return {
     type : TOMAIN
   };
 }
 
-export function tosignup() {
+export function toSignUp() {
   return {
     type : TOSIGNUP
   };
