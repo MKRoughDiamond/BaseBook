@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {setID, setPW, toSignUp} from '../../actions';
+import {setID, setPW, toSignUp, login} from '../../actions';
 
 class Main extends React.Component {
   constructor(props) {
@@ -9,6 +9,7 @@ class Main extends React.Component {
     this.handleUpdateID = this.handleUpdateID.bind(this);
     this.handleUpdatePW = this.handleUpdatePW.bind(this);
     this.handleToSignUp = this.handleToSignUp.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
   handleUpdateID(e) {
@@ -21,6 +22,10 @@ class Main extends React.Component {
 
   handleToSignUp() {
     this.props.toSignUp();
+  }
+
+  handleLogin() {
+    this.props.login();
   }
 
   render() {
@@ -36,7 +41,7 @@ class Main extends React.Component {
         </div>
         <div>
           <button id="SignUp" className="loginButtons" onClick={this.handleToSignUp}>Sign Up</button>
-          <button id="SignIn" className="loginButtons">Sign In</button>
+          <button id="SignIn" className="loginButtons" onClick={this.handleLogin}>Sign In</button>
         </div>
       </div>);
   }
@@ -47,6 +52,7 @@ let mapDispatchToProps = (dispatch) => {
     onUpdateID: (value) => dispatch(setID(value)),
     onUpdatePW: (value) => dispatch(setPW(value)),
     toSignUp: () => dispatch(toSignUp()),
+    login: () => dispatch(login()),
   };
 };
 
