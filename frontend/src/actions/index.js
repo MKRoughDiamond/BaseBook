@@ -1,10 +1,10 @@
-export const SETID= 'SETID';
-export const SETPW= 'SETPW';
-export const NEWID= 'NEWID';
-export const NEWPW= 'NEWPW';
-export const RETYPEPW= 'RETYPEPW';
-export const TOMAIN= 'TOMAIN';
-export const TOSIGNUP= 'TOSIGNUP';
+export const SETID = 'SETID';
+export const SETPW = 'SETPW';
+export const NEWID = 'NEWID';
+export const NEWPW = 'NEWPW';
+export const RETYPEPW = 'RETYPEPW';
+export const TOMAIN = 'TOMAIN';
+export const TOSIGNUP = 'TOSIGNUP';
 
 export function setid(value) {
   return {

@@ -46,16 +46,22 @@ body::-webkit-scrollbar {
 
 #input-username {
 	min-width : 10px;
-	width : 60%;
+	width : 50%;
 	display: inline-block;
 	font-size : 20pt;
 }
 
 #input-password {
 	min-width : 10px;
-	width : 60%;
-	display: inline-block;
+	width : 50%;
+  display : inline-block;
 	font-size : 20pt;
+}
+
+#password-check {
+  position : fixed;
+	display : inline-block;
+  margin-left : 10px;
 }
 
 #SignIn {

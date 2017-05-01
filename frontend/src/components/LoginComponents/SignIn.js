@@ -10,6 +10,7 @@ class SignIn extends React.Component {
     this.handleUpdatePW = this.handleUpdatePW.bind(this);
     this.handleUpdateRetypePW = this.handleUpdateRetypePW.bind(this);
     this.handleToMain = this.handleToMain.bind(this);
+    this.passwordCheck = this.passwordCheck.bind(this);
   }
 
   handleUpdateID(e) {
@@ -28,6 +29,12 @@ class SignIn extends React.Component {
     this.props.toMain();
   }
 
+  passwordCheck() {
+    if (this.props.newPW === '' || this.props.retypePW === '')
+      return '-';
+    return ((this.props.newPW === this.props.retypePW)? 'O':'X');
+  }
+
   render() {
     return (<div id="main">
       <div id="line-thick">Sign In</div>
@@ -42,6 +49,7 @@ class SignIn extends React.Component {
       <div id="line-thick">
         <div id="password">retype PW</div>
         <input type="password" id="input-password" onChange={this.handleUpdateRetypePW}></input>
+				<div id="password-check">{this.passwordCheck()}</div>
       </div>
       <div>
         <button id="SignUp" className="loginButtons" onClick={this.handleToMain}>Sign Up</button>
@@ -49,6 +57,13 @@ class SignIn extends React.Component {
     </div>);
   }
 }
+
+let mapStateToProps = (state) => {
+  return {
+    newPW : state.server.newPW,
+    retypePW : state.server.retypePW
+  };
+};
 
 let mapDispatchToProps = (dispatch) => {
   return {
@@ -59,4 +74,4 @@ let mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

@@ -23,9 +23,16 @@ const server = (state = serverInitialState, action) => {
   case RETYPEPW:
     return Object.assign({}, state, { retypePW : action.retypePW });
   case TOMAIN:
-    return Object.assign({}, state, { isLogin : true });
+    return Object.assign({}, state,
+      { isLogin : true,
+        ID : '',
+        PW : '' });
   case TOSIGNUP:
-    return Object.assign({}, state, { isLogin : false });
+    return Object.assign({}, state, 
+      { isLogin : false,
+        newID : '',
+        newPW : '',
+        retypePW : '' });
   default:
     return state;
   }	
