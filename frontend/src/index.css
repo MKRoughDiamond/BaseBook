@@ -1,0 +1,94 @@
+body {
+	min-height: 100vh;
+	height: 100%;
+	color : white;
+	font-weight: bold;
+}
+body::-webkit-scrollbar {
+	display: none;
+}
+
+#main-wrapper {
+	position: fixed;
+	text-align: center;
+	white-space: nowrap;
+	height: 100%;
+	width: 100%;
+}
+
+#main-wrapper:before {
+	content: '';
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+	margin-right: -0.25em;
+}
+
+#main {
+	display: inline-block;
+	vertical-align: middle;
+	background-color : #88B04B;
+	width: 30%;
+	padding : 15px;
+	font-size : 20pt;
+}
+
+#username {
+	width : 30%;
+	display: inline-block;
+}
+
+#password {
+	width : 30%;
+	display: inline-block;
+	font-weight: bold;
+}
+
+#input-username {
+	min-width : 10px;
+	width : 50%;
+	display: inline-block;
+	font-size : 20pt;
+}
+
+#input-password {
+	min-width : 10px;
+	width : 50%;
+  display : inline-block;
+	font-size : 20pt;
+}
+
+#password-check {
+  position : fixed;
+	display : inline-block;
+  margin-left : 10px;
+}
+
+#SignIn {
+	margin-left : 10%;
+}
+
+#SignUp {
+}
+
+.loginButtons {
+	width : 40%;
+	font-size : 15pt;
+	color : white;
+	border-radius : 20px;
+	background-color : #476A30;
+	padding : 5px;
+}
+
+.line {
+	margin-bottom : 10px;
+}
+
+.line-thick {
+	margin-bottom : 20px;
+}
+
+button {
+	border: 0;
+	outline : none;
+}
