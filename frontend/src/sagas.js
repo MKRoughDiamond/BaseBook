@@ -1,20 +1,26 @@
 import { take, fork, call, select} from 'redux-saga/effects';
 
-import { TOMAIN/*, LOGIN*/ } from './actions';
+import { TOMAIN, LOGIN } from './actions';
 
 export function* watchSignUp() {
   yield take(TOMAIN);
   const state = yield select();
   const signUpInfo = {
-    'username': state.server.newID,
+    'id': state.server.newID,
     'password': state.server.newPW
   };
   console.log(signUpInfo);
-  const response = yield call(fetch, 'http://13.124.80.116:8000/signup/', {
+  const response = yield call(fetch, '/signup/', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(signUpInfo)
   });
-  console.log(response);
+  // if you want to access response body, do like this
+  // const res = yield response.json();
+  // console.log(res);
+
   if(response.ok)
     console.log('회원가입 ok!');
 }
@@ -23,12 +29,15 @@ export function* watchLogin() {
   yield take(LOGIN);
   const state = yield select();
   const loginInfo = {
-    'username': state.server.ID,
+    'id': state.server.ID,
     'password': state.server.PW
   };
   console.log(loginInfo);
-  const response = yield call(fetch, 'http://13.124.80.116:8000/login/', {
+  const response = yield call(fetch, '/login/', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(loginInfo)
   });
   if(response.ok)
