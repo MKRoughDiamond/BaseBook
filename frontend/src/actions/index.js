@@ -5,6 +5,7 @@ export const NEWPW = 'NEWPW';
 export const RETYPEPW = 'RETYPEPW';
 export const TOMAIN = 'TOMAIN';
 export const TOSIGNUP = 'TOSIGNUP';
+export const LOGIN ='LOGIN';
 
 export function setID(value) {
   return {
@@ -50,5 +51,11 @@ export function toMain() {
 export function toSignUp() {
   return {
     type : TOSIGNUP
+  };
+}
+
+export function login() {
+  return {
+    type: LOGIN
   };
 }

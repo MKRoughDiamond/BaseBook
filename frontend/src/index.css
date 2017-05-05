@@ -44,6 +44,12 @@ body::-webkit-scrollbar {
 	font-weight: bold;
 }
 
+#retypepassword {
+	width : 30%;
+	display: inline-block;
+	font-weight: bold;
+}
+
 #input-username {
 	min-width : 10px;
 	width : 50%;
@@ -53,10 +59,18 @@ body::-webkit-scrollbar {
 
 #input-password {
 	min-width : 10px;
-	width : 50%;
+    width : 50%;
   display : inline-block;
-	font-size : 20pt;
+  font-size : 20pt;
 }
+
+#input-retypepassword {
+  min-width : 10px;
+  width : 50%;
+  display : inline-block;
+  font-size : 20pt;
+}
+ 
 
 #password-check {
   position : fixed;
