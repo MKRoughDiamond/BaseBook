@@ -75,8 +75,6 @@ class user_signup(APIView):
 class FeedList(APIView):
 
     def get(self, request):
-        if not '_auth_user_id' in request.session:
-            return Response('No user', status=400)
 
         feeds = Feed.objects.filter(author__id=request.session['_auth_user_id'])
         serializer = FeedListSerializer(feeds)
@@ -84,7 +82,7 @@ class FeedList(APIView):
 
     def post(self, request):
         if not '_auth_user_id' in request.session:
-            return Response('No user', status=400)
+            return Response('Not Found', status=404)
 
         contents = request.data.get('contents', None)
         if contents is None:
@@ -107,7 +105,7 @@ class ReplyList(APIView):
 
     def post(self, request, pk):
         if not '_auth_user_id' in request.session:
-            return Response('No user', status=400)
+            return Response('Not Found', status=404)
 
         contents = request.data.get('contents', None)
         if contents is None:
