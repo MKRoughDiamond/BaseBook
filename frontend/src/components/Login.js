@@ -13,11 +13,11 @@ class Login extends React.Component {
       );
     
     return (this.props.isLogin)?(
-      <div id="main-wrapper">
+      <div id="login-wrapper">
         <Main />
         <ErrorBox />
       </div> ):(
-      <div id="main-wrapper">
+      <div id="login-wrapper">
         <SignUp />
         <ErrorBox />
       </div> );

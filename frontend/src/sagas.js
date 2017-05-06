@@ -1,6 +1,21 @@
 import { take, fork, call, select, put} from 'redux-saga/effects';
 
-import { TOMAIN, LOGIN, GET_FEED_LIST, loginSuccess, loginPageError, setFeedList } from './actions';
+import { TOMAIN, LOGIN, GET_FEED_LIST, GET_FEED, POST_FEED,
+  loginSuccess, loginPageError, getFeedList, setFeedList, setFeed } from './actions';
+
+// returns null if error, otherwise JSON object
+let parseResponse = (response) => {
+  if(response.ok === false)
+    return null;
+  let res = {};
+  try {
+    res = response.json();
+  }
+  catch(e) {
+    return null;
+  }
+  return res;
+};
 
 export function* postSignUp() {
   const state = yield select();
@@ -57,19 +72,40 @@ export function* postLogin() {
 
 export function* fetchFeedList() {
   const response = yield call(fetch, '/feed/', {method: 'GET'});
-  if(response.ok === false) {
-    window.location.href = '/notfound/';
-    return;
-  }
-  let res = {};
-  try {
-    res = yield response.json();
-  }
-  catch(e) {
+  const res = yield parseResponse(response);
+  if(res === null) {
     window.location.href = '/notfound/';
     return;
   }
   yield put(setFeedList(res.id));
+}
+
+export function* fetchFeed(id) {
+  const response = yield call(fetch, '/feed/' + id.toString() + '/', {method: 'GET'});
+  const res = yield parseResponse(response);
+  if(res === null) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  yield put(setFeed(res.id, res));
+}
+
+export function* postFeed(contents, scope) { 
+  const response = yield call(fetch, '/feed/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      contents: contents,
+      scope: scope
+    })
+  });
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  yield put(getFeedList()); // refresh news feed
 }
 
 export function* watchSignUp() {
@@ -100,8 +136,27 @@ export function* watchGetFeedList() {
   }
 }
 
+export function* watchGetFeed() {
+  const t = true;
+  while(t) {
+    const action = yield take(GET_FEED);
+    // Use fork to send multiple request at the same time
+    yield fork(fetchFeed, action.id);
+  }
+}
+
+export function* watchPostFeed() {
+  const t = true;
+  while(t) {
+    const action = yield take(POST_FEED);
+    yield call(postFeed, action.contents, action.scope);
+  }
+}
+
 export function* rootSaga() {
   yield fork(watchSignUp);
   yield fork(watchLogin);
   yield fork(watchGetFeedList);
+  yield fork(watchGetFeed);
+  yield fork(watchPostFeed);
 }

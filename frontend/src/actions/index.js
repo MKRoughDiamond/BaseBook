@@ -10,6 +10,9 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_PAGE_ERROR = 'LOGIN_PAGE_ERROR';
 export const GET_FEED_LIST = 'GET_FEED_LIST';
 export const SET_FEED_LIST = 'SET_FEED_LIST';
+export const GET_FEED = 'GET_FEED';
+export const SET_FEED = 'SET_FEED';
+export const POST_FEED = 'POST_FEED';
 
 export function setID(value) {
   return {
@@ -87,5 +90,28 @@ export function setFeedList(list) {
   return {
     type: SET_FEED_LIST,
     list: list
+  };
+}
+
+export function getFeed(id) {
+  return {
+    type: GET_FEED,
+    id: id
+  };
+}
+
+export function setFeed(id, feed) {
+  return {
+    type: SET_FEED,
+    id: id,
+    feed: feed
+  };
+}
+
+export function postFeed(contents, scope) {
+  return {
+    type: POST_FEED,
+    contents: contents,
+    scope: scope
   };
 }
