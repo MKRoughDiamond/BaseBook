@@ -9,3 +9,25 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username')#,'nickname')
+
+class FeedListSerializer(serializers.BaseSerializer):
+    def to_representation(self, obj):
+        feedlist = []
+        for e in obj:
+            feedlist += [ e.id ]
+
+        return {
+            'id': feedlist
+        }
+
+class FeedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feed
+        fields = ('id', 'contents', 'like', 'dislike')#, 'scpoe')
+
+class ReplySerializer(serializers.BaseSerializer):
+    def to_representation(self, obj):
+        return {
+            'id': obj.id,
+            'contents': obj.contents
+        }
