@@ -21,6 +21,7 @@ class FeedListSerializer(serializers.BaseSerializer):
         }
 
 class FeedSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
     class Meta:
         model = Feed
         fields = ('id', 'contents', 'like', 'dislike', 'scope')
@@ -29,5 +30,6 @@ class ReplySerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
         return {
             'id': obj.id,
-            'contents': obj.contents
+            'contents': obj.contents,
+            'author': obj.author.username
         }
