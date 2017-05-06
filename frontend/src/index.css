@@ -3,6 +3,7 @@ body {
 	height: 100%;
 	color : white;
 	font-weight: bold;
+	background-color: grey; /* make debugging easy*/
 }
 body::-webkit-scrollbar {
 	display: none;
@@ -105,4 +106,14 @@ body::-webkit-scrollbar {
 button {
 	border: 0;
 	outline : none;
+}
+
+/* this is temporary css*/
+#login-error-box {
+	position: absolute;
+	left: 100px;
+	top: 100px;
+	width: 300px;
+	height: 200px;
+	z-index: 2;
 }

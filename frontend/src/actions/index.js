@@ -6,6 +6,10 @@ export const RETYPEPW = 'RETYPEPW';
 export const TOMAIN = 'TOMAIN';
 export const TOSIGNUP = 'TOSIGNUP';
 export const LOGIN ='LOGIN';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_PAGE_ERROR = 'LOGIN_PAGE_ERROR';
+export const GET_FEED_LIST = 'GET_FEED_LIST';
+export const SET_FEED_LIST = 'SET_FEED_LIST';
 
 export function setID(value) {
   return {
@@ -57,5 +61,31 @@ export function toSignUp() {
 export function login() {
   return {
     type: LOGIN
+  };
+}
+
+export function loginSuccess() {
+  return {
+    type: LOGIN_SUCCESS
+  };
+}
+
+export function loginPageError(msg) {
+  return {
+    type: LOGIN_PAGE_ERROR,
+    msg: msg
+  };
+}
+
+export function getFeedList() {
+  return {
+    type: GET_FEED_LIST
+  };
+}
+
+export function setFeedList(list) {
+  return {
+    type: SET_FEED_LIST,
+    list: list
   };
 }
