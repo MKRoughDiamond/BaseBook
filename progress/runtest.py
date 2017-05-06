@@ -1,41 +1,13 @@
-import requests, json
-from testlibrary import N
-from time import sleep
-from socket import timeout
+from testlibrary import N, F, R
+import testlibrary
 
+'''
+backend 완성 후 pass 부분 구현 바람
+'''
 
-def signup_post_test(url, unickname, uname, upwd):
-    sleep(0.05)
-    try:
-        post_data = {'id':uname,'password':upwd}
-        headers = {'Content-Type': 'text/html'}
-        print('1')
-        res = requests.post(url,
-                            data=json.dumps(post_data),
-                            headers=headers)
-        print('2')
-        if res.status_code != 200:
-            print("ERROR: signup post")
-            exit(1)
-    except Exception:
-        print("ERROR: cannot post signup")
-        exit(1)
-    print('signup success')
+localhost = 'http://localhost:8000/'
 
-def login_post_test(url, uname, upwd):
-    sleep(0.05)
-    try:
-        post_data = {'id': uname, 'password': upwd}
-        res = requests.post(url,data=json.dumps(post_data))
-        if res.status_code != 200:
-            print("ERROR: login post")
-            exit(1)
-    except Exception:
-        print("ERROR: cannot post login")
-        exit(1)
-    print('login success')
-
-link = 'http://localhost:8000/signup'
+link = localhost + 'signup/'
 print('1. Signup')
 
 for i in range(1, N):
@@ -43,13 +15,39 @@ for i in range(1, N):
     unickname = "user{0}nickname".format(i)
     uname = "user{0}".format(i)
     upwd = "user{0}passwd".format(i)
-    signup_post_test(link, unickname, uname, upwd)
-link = 'http://localhost:8000/login'
-print('2.login')
+    testlibrary.signup_post_test(link, unickname, uname, upwd)
+
+link = localhost + 'login/'
+print('2. login')
 
 for i in range(1, N):
     print('2-{0}'.format(i))
     uname = "test{0}".format(i)
     upwd = "test{0}passwd".format(i)
-    login_post_test(link, uname, upwd)
+    testlibrary.login_post_test(link, uname, upwd)
 
+link = localhost + 'feed/'
+print('3. feed')
+
+for i in range(1, N):
+    print('3-{0}'.format(i))
+    testlibrary.feed_test(link,)
+    pass
+
+print('4. feed/<id>')
+
+for i in range(1, F):
+    link = localhost + 'feed/' + str(i) + '/'
+    pass
+
+print('5. feed/<id>/reply')
+
+for i in range(1, R):
+    link = localhost + 'feed/' + str(i) + '/reply/'
+    pass
+
+print('6. profile')
+
+for i in range(1, N):
+    #link = localhost + 'profile'
+    pass

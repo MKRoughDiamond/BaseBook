@@ -1,4 +1,18 @@
+import requests, json
+from time import sleep
+
+# (number of user) + 1
 N = 6
+
+# number of feed
+F = 10
+
+# number of reply
+R = 15
+
+'''
+backend 완성 후 pass 부분 구현 바람
+'''
 
 def create_users():
     ls = []
@@ -6,3 +20,57 @@ def create_users():
         ls.append(("test{0}".format(i), "test{0}passwd".format(i)))
     return ls
 
+def signup_post_test(url, unickname, uname, upwd):
+    sleep(0.05)
+    try:
+        post_data = {'id':uname,'password':upwd}
+        headers = {'Content-Type': 'text/html'}
+        print('1')
+
+
+        # error?
+
+        res = requests.post(url,
+                            data=json.dumps(post_data),
+                            headers=headers)
+        print('2')
+        if res.status_code != 200:
+            print("ERROR: signup post")
+            exit(1)
+    except Exception:
+        print("ERROR: cannot post signup")
+        exit(1)
+    print('signup success')
+
+def login_post_test(url, uname, upwd):
+    sleep(0.05)
+    try:
+        post_data = {'id': uname, 'password': upwd}
+
+
+        #error?
+
+        res = requests.post(url,data=json.dumps(post_data))
+        if res.status_code != 200:
+            print("ERROR: login post")
+            exit(1)
+    except Exception:
+        print("ERROR: cannot post login")
+        exit(1)
+    print('login success')
+
+def feed_test(url, ):
+    sleep(0.05)
+    pass
+
+def feed_id_test(url, ):
+    sleep(0.05)
+    pass
+
+def feed_reply_test(url, ):
+    sleep(0.05)
+    pass
+
+def profile_test(url, ):
+    sleep(0.05)
+    pass
