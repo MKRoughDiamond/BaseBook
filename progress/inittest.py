@@ -1,8 +1,11 @@
 from django.contrib.auth.models import User
 from testlibrary import create_users, N
+import testlibrary
 import json, requests
 
 # First of all, it initializes user information.
+
+testlibrary.test_start('Initialization')
 
 print('User deletion start')
 for i in range(1, N):

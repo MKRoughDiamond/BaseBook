@@ -14,6 +14,11 @@ R = 15
 backend 완성 후 pass 부분 구현 바람
 '''
 
+def test_start(test_name):
+    print('################################################################')
+    print(test_name + ' Test')
+    print('################################################################')
+
 def create_users():
     ls = []
     for i in range(1, N):
@@ -24,16 +29,11 @@ def signup_post_test(url, unickname, uname, upwd):
     sleep(0.05)
     try:
         post_data = {'id':uname,'password':upwd}
-        headers = {'Content-Type': 'text/html'}
-        print('1')
-
-
-        # error?
+        headers = {'Content-Type': 'application/json'}
 
         res = requests.post(url,
                             data=json.dumps(post_data),
                             headers=headers)
-        print('2')
         if res.status_code != 200:
             print("ERROR: signup post")
             exit(1)
@@ -46,11 +46,10 @@ def login_post_test(url, uname, upwd):
     sleep(0.05)
     try:
         post_data = {'id': uname, 'password': upwd}
-
-
-        #error?
-
-        res = requests.post(url,data=json.dumps(post_data))
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(url,
+                            data=json.dumps(post_data),
+                            headers=headers)
         if res.status_code != 200:
             print("ERROR: login post")
             exit(1)

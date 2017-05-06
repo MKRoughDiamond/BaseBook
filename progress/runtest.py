@@ -7,6 +7,9 @@ backend 완성 후 pass 부분 구현 바람
 
 localhost = 'http://localhost:8000/'
 
+testlibrary.test_start('BackEnd')
+
+
 link = localhost + 'signup/'
 print('1. Signup')
 

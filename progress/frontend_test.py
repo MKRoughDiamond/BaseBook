@@ -2,17 +2,14 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
+#from backend import testlibrary
+
 # (number of user) + 1
-N = 6
+#N = 6
 
-import os
-import sys
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))) )
-#import testlibrary.py
-
-print('################################')
+print('################################################################')
 print('FrontEnd Test')
-print('################################')
+print('################################################################')
 
 print('Browser open')
 try:
