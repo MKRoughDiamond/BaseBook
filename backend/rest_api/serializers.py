@@ -23,7 +23,7 @@ class FeedListSerializer(serializers.BaseSerializer):
 class FeedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feed
-        fields = ('id', 'contents', 'like', 'dislike')#, 'scpoe')
+        fields = ('id', 'contents', 'like', 'dislike', 'scope')
 
 class ReplySerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
