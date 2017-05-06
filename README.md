@@ -15,3 +15,9 @@ cd frontend
 npm install --save-dev
 ```
 
+# URLs
+```
+back: 13.124.80.116:8000
+front: 13.124.80.116:3000
+release: 13.124.80.116:5000
+```
