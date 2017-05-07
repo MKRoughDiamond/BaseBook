@@ -40,6 +40,7 @@ export function* postSignUp() {
       res = yield response.json();
     }
     catch(e) { res.message = 'Server not responding.'; }
+    console.log(res.message);
     yield put(loginPageError(res.message));
   }
 }

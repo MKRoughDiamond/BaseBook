@@ -7,7 +7,7 @@ const serverInitialState = {
   newPW: '',
   retypePW: '',
   isLogin: true,
-  loggedIn: true,
+  loggedIn: false,
   errorMsg: null
 };
 
