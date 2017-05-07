@@ -1,0 +1,10 @@
+*.py[cod]
+pip-log.txt
+.project
+.pydevproject
+*.swp
+*.sqlite3
+.venv
+.idea
+
+uploads

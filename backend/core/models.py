@@ -2,12 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class BaseUser(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=20)#, related_name='baseuser_nickname')
 
 class Friend(models.Model):
-    user = models.ForeignKey(User,related_name='user')
-    friend = models.ForeignKey(User, related_name='friends')
+    user = models.ForeignKey(User,related_name='user', on_delete=models.CASCADE)
+    friend = models.ForeignKey(User, related_name='friends', on_delete=models.CASCADE)
 
 
 class Feed(models.Model):
@@ -17,7 +17,7 @@ class Feed(models.Model):
         ('private', 'private'),
         ('hidden', 'hidden'),   # Same as 'private', but user can't change scope
     )
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     contents = models.TextField()
     scope = models.CharField(max_length=7, choices=SCOPE_CHOICES)
     # Store who liked/disliked
@@ -26,7 +26,7 @@ class Feed(models.Model):
     
 
 class Reply(models.Model):
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
     contents = models.TextField()
 
