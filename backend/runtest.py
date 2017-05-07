@@ -14,10 +14,10 @@ link = localhost + 'signup/'
 print('1. Signup')
 
 for i in range(1, N):
-    print('1-{0}. user{0} SignUp'.format(i), end=' ')
-    unickname = "user{0}nickname".format(i)
-    uname = "user{0}".format(i)
-    upwd = "user{0}passwd".format(i)
+    print('1-{0}. test{0} SignUp'.format(i), end=' ')
+    unickname = "test{0}nickname".format(i)
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
     testlibrary.signup_post_test(link, unickname, uname, upwd)
 
 link = localhost + 'login/'

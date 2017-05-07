@@ -35,10 +35,10 @@ def signup_post_test(url, unickname, uname, upwd):
                             data=json.dumps(post_data),
                             headers=headers)
         if res.status_code != 200:
-            print("ERROR: signup post")
+            print("\nERROR: signup post")
             exit(1)
     except Exception:
-        print("ERROR: cannot post signup")
+        print("\nERROR: cannot post signup")
         exit(1)
     print('success')
 
@@ -51,10 +51,10 @@ def login_post_test(url, uname, upwd):
                             data=json.dumps(post_data),
                             headers=headers)
         if res.status_code != 200:
-            print("ERROR: login post")
+            print("\nERROR: login post")
             exit(1)
     except Exception:
-        print("ERROR: cannot post login")
+        print("\nERROR: cannot post login")
         exit(1)
     print('success')
 

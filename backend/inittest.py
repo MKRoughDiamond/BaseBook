@@ -25,11 +25,12 @@ for i in range(1, N):
         '''
 
 print('User deletion end')
+'''
 print('User creation start')
 for (uname, upwd) in create_users():
     user = User.objects.create_user(uname, password=upwd)
     user.save()
 
 print('user creation end')
-
+'''
 
