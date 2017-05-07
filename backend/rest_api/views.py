@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db import IntegrityError
 from django.contrib.sessions.backends.db import SessionStore
+from django.views.decorators.csrf import csrf_exempt
 
 from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer
 from core.models import Feed, Reply
@@ -83,7 +84,7 @@ class FeedList(APIView):
         contents = request.data.get('contents', None)
         if contents is None:
             return Response('No Contents', status=400)
-        feed = Feed(author_id=request.session['_auth_user_id'], contests=contents)
+        feed = Feed(author_id=request.session['_auth_user_id'], contents=contents)
         feed.save()
         return Response('', status=200)
 
