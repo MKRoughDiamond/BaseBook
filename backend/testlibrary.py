@@ -40,7 +40,7 @@ def signup_post_test(url, unickname, uname, upwd):
     except Exception:
         print("ERROR: cannot post signup")
         exit(1)
-    print('signup success')
+    print('success')
 
 def login_post_test(url, uname, upwd):
     sleep(0.05)
@@ -56,7 +56,7 @@ def login_post_test(url, uname, upwd):
     except Exception:
         print("ERROR: cannot post login")
         exit(1)
-    print('login success')
+    print('success')
 
 def feed_test(url, ):
     sleep(0.05)
@@ -73,3 +73,4 @@ def feed_reply_test(url, ):
 def profile_test(url, ):
     sleep(0.05)
     pass
+
