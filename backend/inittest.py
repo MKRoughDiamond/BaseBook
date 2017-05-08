@@ -2,35 +2,36 @@ from django.contrib.auth.models import User
 from testlibrary import create_users, N
 import testlibrary
 import json, requests
-
-# First of all, it initializes user information.
+import sys
 
 testlibrary.test_start('Initialization')
 
 print('User deletion start')
-for i in range(1, N):
-    #'''
-    userlist = User.objects.all()
-    for user in userlist:
-        user.delete()
-    #    '''
-
-    '''
-    uname = "test{0}".format(i)
-    try:
-        user = User.objects.get(username = uname)
-        user.delete()
-    except User.DoesNotExist:
-        continue
-        '''
+try:
+    for i in range(1, N):
+        userlist = User.objects.all()
+        for user in userlist:
+            if user.username != 'admin':
+                user.delete()
+except Exception as e:
+    print('User deletion failed')
+    print(e)
+    sys.exit(1)
 
 print('User deletion end')
-'''
-print('User creation start')
-for (uname, upwd) in create_users():
-    user = User.objects.create_user(uname, password=upwd)
+
+########################################
+
+print('Admin creation start')
+
+try:
+    user = User.objects.create_superuser(username='admin',
+                                         password='adminpasswd',
+                                         email='default@email.com')
     user.save()
+except Exception as e:
+    print('Admin creation failed')
+    print(e)
+    sys.exit(1)
 
-print('user creation end')
-'''
-
+print('Admin creation end')
