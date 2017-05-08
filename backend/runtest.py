@@ -46,20 +46,31 @@ for i in range(1, N+1):
     print('3-{0}. user test{0} will post {1} feed'.format(i,M))
     NF += [M]
     F += M
-    auth_user = TL.auth_user_id_pwd(i)
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
     for j in range(1, M+1):
         print('posting feed{0}: '.format(j), end=' ')
         contents = 'contents of POST {0}-{1} feed: 종강하고싶다{1}{1}'.format(i,j)
         scope = scopes[(i%2)*2] #global or private, will be changed by i%4 later
-        TL.feed_test(link, contents, scope, auth_user)
+        TL.feed_post_test(link, contents, scope, uname, upwd)
 
 #####################################################
-print('4. GET feed/<id>')
+print('4. GET feed')
+link = localhost + 'feed/'
 
 for i in range(1, N+1):
-    print('4-{0}. user test{0} will get feed'.format(i))
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
+    TL.feed_get_test(link, uname, upwd)
+
+#####################################################
+print('5. GET feed/<id>')
+
+for i in range(1, N+1):
+    print('5-{0}. user test{0} will get feed'.format(i))
     sum = 0
-    auth_user = TL.auth_user_id_pwd(i)
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
     # see own's all post and (other's) one global post, one private post
     limit = NF[i]
     if i != N:
@@ -71,11 +82,11 @@ for i in range(1, N+1):
         seen = True
         if i != N and (sum+j) == limit-1:
             seen = False # other user's private feed
-        TL.feed_id_test(link, auth_user, seen)
+        TL.feed_id_get_test(link, uname, upwd, seen)
     pass
 
 #####################################################
-print('5. POST feed/<id>/reply')
+print('6. POST feed/<id>/reply')
 
 # number of reply of each feed
 NR = [0]
@@ -83,25 +94,32 @@ NR = [0]
 R = 0
 
 for i in range(1, N+1):
-    print('5-{0}. user test{0} will post {1} reply')
-    auth_user = TL.auth_user_id_pwd(i)
+    print('6-{0}. user test{0} will post {1} reply')
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
     for j in range(1, NF[i]+1):
         R += 1
         print('posting reply(my feed){0}: '.format(j), end=' ')
         link = localhost + 'feed/' + str(j) + '/reply/'
         contents = 'contents of POST {0}-{1} reply: 아무것도 안하고 싶다'.format(i,j)
-        TL.feed_reply_test(link, contents, auth_user)
+        TL.feed_reply_test(link, contents, uname, upwd)
     for j in range(1, N+1):
         if i==j: continue
         R += 1
         print('posting reply(other user\'s feed){0}: '.format(j), end=' ')
         link = localhost + 'feed/' + str(j) + '/reply/'
         contents = 'contents of POST {0}-{1} reply: 아무것도 안하고 싶다{1}{1}'.format(i, j)
-        TL.feed_reply_test(link, contents, auth_user)
+        TL.feed_reply_post_test(link, contents, uname, upwd)
     pass
 
 #####################################################
-print('6. profile')
+print('7. GET feed/<id>/reply')
+
+for i in range(1, N+1):
+    pass
+
+#####################################################
+print('8. profile')
 
 for i in range(1, N+1):
     #link = localhost + 'profile'
