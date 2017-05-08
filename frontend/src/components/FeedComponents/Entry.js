@@ -4,7 +4,8 @@ import {getFeed} from '../../actions';
 
 class Entry extends React.Component {
   componentDidMount() {
-    if(this.props.feedList[this.props.feedID].contents === null)
+    const feed = this.props.feedList[this.props.feedID];
+    if(feed.contents === null)
       this.props.getFeed(this.props.feedID);
   }
 
