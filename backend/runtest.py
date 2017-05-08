@@ -11,7 +11,7 @@ localhost = 'http://localhost:8000/'
 TL.test_start('BackEnd')
 
 #####################################################
-print('1. Signup')
+print('1. POST signup')
 link = localhost + 'signup/'
 
 for i in range(1, N+1):
@@ -22,7 +22,7 @@ for i in range(1, N+1):
     TL.signup_post_test(link, unickname, uname, upwd)
 
 #####################################################
-print('2. login')
+print('2. POST login')
 link = localhost + 'login/'
 
 for i in range(1, N+1):
@@ -32,7 +32,7 @@ for i in range(1, N+1):
     TL.login_post_test(link, uname, upwd)
 
 #####################################################
-print('3. feed')
+print('3. POST feed')
 link = localhost + 'feed/'
 
 scopes = ['global','friend','private','hidden']
@@ -46,22 +46,20 @@ for i in range(1, N+1):
     print('3-{0}. user test{0} will post {1} feed'.format(i,M))
     NF += [M]
     F += M
-    auth_user = ('test{0}.'.format(i), 'test{0}passwd'.format(i))
+    auth_user = TL.auth_user_id_pwd(i)
     for j in range(1, M+1):
-        print('posting {0}: '.format(j), end=' ')
+        print('posting feed{0}: '.format(j), end=' ')
         contents = 'contents of POST {0}-{1} feed: 종강하고싶다{1}{1}'.format(i,j)
         scope = scopes[(i%2)*2] #global or private, will be changed by i%4 later
         TL.feed_test(link, contents, scope, auth_user)
 
 #####################################################
-print('4. feed/<id>')
+print('4. GET feed/<id>')
 
 for i in range(1, N+1):
     print('4-{0}. user test{0} will get feed'.format(i))
     sum = 0
-    uname = "test{0}".format(i)
-    upwd = "test{0}passwd".format(i)
-    auth_user = (uname, upwd)
+    auth_user = TL.auth_user_id_pwd(i)
     # see own's all post and (other's) one global post, one private post
     limit = NF[i]
     if i != N:
@@ -77,7 +75,7 @@ for i in range(1, N+1):
     pass
 
 #####################################################
-print('5. feed/<id>/reply')
+print('5. POST feed/<id>/reply')
 
 # number of reply of each feed
 NR = [0]
@@ -86,11 +84,20 @@ R = 0
 
 for i in range(1, N+1):
     print('5-{0}. user test{0} will post {1} reply')
+    auth_user = TL.auth_user_id_pwd(i)
     for j in range(1, NF[i]+1):
-        M = 0 # number of reply for ith feed
-    if i%2 == 0:
-        M = randint(0, 3)
-    link = localhost + 'feed/' + str(i) + '/reply/'
+        R += 1
+        print('posting reply(my feed){0}: '.format(j), end=' ')
+        link = localhost + 'feed/' + str(j) + '/reply/'
+        contents = 'contents of POST {0}-{1} reply: 아무것도 안하고 싶다'.format(i,j)
+        TL.feed_reply_test(link, contents, auth_user)
+    for j in range(1, N+1):
+        if i==j: continue
+        R += 1
+        print('posting reply(other user\'s feed){0}: '.format(j), end=' ')
+        link = localhost + 'feed/' + str(j) + '/reply/'
+        contents = 'contents of POST {0}-{1} reply: 아무것도 안하고 싶다{1}{1}'.format(i, j)
+        TL.feed_reply_test(link, contents, auth_user)
     pass
 
 #####################################################

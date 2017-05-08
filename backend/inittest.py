@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from testlibrary import create_users, N
+from testlibrary import N
 import testlibrary
 import json, requests
 import sys

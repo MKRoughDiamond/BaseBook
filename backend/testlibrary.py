@@ -14,11 +14,8 @@ def test_start(test_name):
     print(test_name + ' Test')
     print('################################################################')
 
-def create_users():
-    ls = []
-    for i in range(1, N+1):
-        ls.append(('test{0}'.format(i), 'test{0}passwd'.format(i)))
-    return ls
+def auth_user_id_pwd(i):
+    return ('test{0}'.format(i), 'test{0}passwd'.format(i))
 
 def wrong_status_code(message, url, code):
     print('\nERROR: {0}'.format(message))
