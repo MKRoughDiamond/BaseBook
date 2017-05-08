@@ -29,11 +29,12 @@ def signup_test(uname, upwd, duplication):
             sys.exit(1)
         else:
             print(uname + ' SignUp success')
-    except Exception:
+    except Exception as e:
         if duplication==True:
             print('Duplicated SignUp('+uname+') test success')
         else:
             print('SignUp test failed')
+            print(e)
             sys.exit(1)
 
 def signin_test(uname, upwd):
@@ -45,8 +46,9 @@ def signin_test(uname, upwd):
         browser.find_element_by_id('SignIn').click()
         sleep(1.0)
         print(uname + ' SignIn success')
-    except Exception:
+    except Exception as e:
         print('SignIn test failed')
+        print(e)
         sys.exit(1)
 
 
@@ -76,8 +78,9 @@ try:
 
     signin_test(uname, upwd)
 
-except Exception:
+except Exception as e:
     print('next step failed')
+    print(e)
 
 
 sleep(2)
