@@ -12,21 +12,21 @@ class Friend(models.Model):
 
 class Feed(models.Model):
     SCOPE_CHOICES = (
-        ('global', 'global'),
-        ('friend', 'friend'),
-        ('private', 'private'),
-        ('hidden', 'hidden'),   # Same as 'private', but user can't change scope
+        ('Public', 'Public'),
+        ('Friends Only', 'Friends Only'),
+        ('Private', 'Private'),
+        ('Hidden', 'Hidden'),   # Same as 'private', but user can't change scope
     )
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User,on_delete=models.CASCADE)
     contents = models.TextField()
-    scope = models.CharField(max_length=7, choices=SCOPE_CHOICES)
+    scope = models.CharField(max_length=13, choices=SCOPE_CHOICES)
     # Store who liked/disliked
     like = models.ManyToManyField(User, related_name='liked', default=None)
     dislike = models.ManyToManyField(User, related_name='disliked', default=None)
     
 
 class Reply(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User,on_delete=models.CASCADE)
     feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
     contents = models.TextField()
 
