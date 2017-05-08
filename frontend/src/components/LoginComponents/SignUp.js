@@ -40,15 +40,15 @@ class SignUp extends React.Component {
       <div className="line-thick">Sign Up</div>
       <div className="line">
         <div id="username">ID</div>
-        <input type="text" id="input-username" onChange={this.handleUpdateID}></input>
+        <input type="text" id="input-username" onChange={this.handleUpdateID}/>
       </div>
       <div className="line">
         <div id="password">password</div>
-        <input type="password" id="input-password" onChange={this.handleUpdatePW}></input>
+        <input type="password" id="input-password" onChange={this.handleUpdatePW}/>
       </div>
       <div className="line-thick">
         <div id="retypepassword">retype PW</div>
-        <input type="password" id="input-retypepassword" onChange={this.handleUpdateRetypePW}></input>
+        <input type="password" id="input-retypepassword" onChange={this.handleUpdateRetypePW}/>
 				<div id="password-check">{this.passwordCheck()}</div>
       </div>
       <div>

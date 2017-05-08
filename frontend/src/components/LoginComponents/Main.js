@@ -29,15 +29,15 @@ class Main extends React.Component {
   }
 
   render() {
-    return (<div id="main">
+    return (<div id="login">
       <div className="line-thick">Welcome to BaseBook!</div>
         <div className="line">
           <div id="username">ID</div>
-          <input type="text" id="input-username" onChange={this.handleUpdateID}></input>
+          <input type="text" id="input-username" onChange={this.handleUpdateID}/>
         </div>
         <div className="line-thick">
           <div id="password">password</div>
-          <input type="password" id="input-password" onChange={this.handleUpdatePW}></input>
+          <input type="password" id="input-password" onChange={this.handleUpdatePW}/>
         </div>
         <div>
           <button id="SignUp" className="loginButtons" onClick={this.handleToSignUp}>Sign Up</button>

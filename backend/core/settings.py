@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '13.124.80.116',
-    'localhost' # need to delete when release
+    'localhost' # need to delete this on release
     ]
 
 
