@@ -67,9 +67,10 @@ export function login() {
   };
 }
 
-export function loginSuccess() {
+export function loginSuccess(hash) {
   return {
-    type: LOGIN_SUCCESS
+    type: LOGIN_SUCCESS,
+    hash: hash
   };
 }
 

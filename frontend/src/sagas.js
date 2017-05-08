@@ -1,5 +1,4 @@
-import { take, fork, call, select, put} from 'redux-saga/effects';
-
+import { take, fork, call, select, put } from 'redux-saga/effects';
 import { TOMAIN, LOGIN, GET_FEED_LIST, GET_FEED, POST_FEED,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed } from './actions';
 
@@ -47,19 +46,15 @@ export function* postSignUp() {
 
 export function* postLogin() {
   const state = yield select();
-  const loginInfo = {
-    'id': state.server.ID,
-    'password': state.server.PW
-  };
+  const hash = new Buffer(`${state.server.ID}:${state.server.PW}`).toString('base64');
   const response = yield call(fetch, '/login/', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(loginInfo)
+      'Authorization': `Basic ${hash}`
+    }
   });
   if(response.ok) {
-    yield put(loginSuccess());
+    yield put(loginSuccess(hash));
   }
   else {
     let res = {};
@@ -72,29 +67,47 @@ export function* postLogin() {
 }
 
 export function* fetchFeedList() {
-  const response = yield call(fetch, '/feed/', {method: 'GET'});
-  const res = yield parseResponse(response);
-  if(res === null) {
-    window.location.href = '/notfound/';
-    return;
-  }
-  yield put(setFeedList(res.id));
+  const state = yield select();
+  yield call(fetch, '/feed/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  })
+  .then((response) => {return parseResponse(response);})
+  .then((data) => {
+    if(data === null) {
+      window.location.href = '/notfound/';
+      return;
+    }
+    console.log(data.id);
+    put(setFeedList(data.id));
+  });
 }
 
 export function* fetchFeed(id) {
-  const response = yield call(fetch, '/feed/' + id.toString() + '/', {method: 'GET'});
-  const res = yield parseResponse(response);
+  const state = yield select();
+  const response = yield call(fetch, '/feed/' + id.toString() + '/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  const res = parseResponse(response);
   if(res === null) {
     window.location.href = '/notfound/';
     return;
   }
+  console.log('Got feed ' + res.id.toString());
   yield put(setFeed(res.id, res));
 }
 
 export function* postFeed(contents, scope) { 
+  const state = yield select();
   const response = yield call(fetch, '/feed/', {
     method: 'POST',
     headers: {
+      'Authorization': `Basic ${state.server.hash}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({

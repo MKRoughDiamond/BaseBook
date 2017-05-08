@@ -10,9 +10,8 @@ class Post extends React.Component {
   }
   
   handlePostFeed() {
-    const root = document.getElementById('newFeed-wrapper');
-    const contents = root.getElementById('newFeed-text').value;
-    const scope = root.getElementById('newFeed-scope').value;
+    const contents = document.getElementById('newFeed-text').value;
+    const scope = document.getElementById('newFeed-scope').value;
     this.props.postFeed(contents, scope);
   }
 

@@ -3,6 +3,7 @@ import { SETID, SETPW, NEWID, NEWPW, RETYPEPW, TOMAIN, TOSIGNUP, LOGIN_SUCCESS, 
 const serverInitialState = {
   ID: '',
   PW: '',
+  hash: null,
   newID: '',
   newPW: '',
   retypePW: '',
@@ -35,7 +36,7 @@ const server = (state = serverInitialState, action) => {
         newPW : '',
         retypePW : '' });
   case LOGIN_SUCCESS:
-    return Object.assign({}, state, { loggedIn : true });
+    return Object.assign({}, state, { loggedIn : true, hash: action.hash });
   case LOGIN_PAGE_ERROR:
     return Object.assign({}, state, { errorMsg : action.msg });
   default:

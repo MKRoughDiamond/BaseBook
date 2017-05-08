@@ -37,20 +37,8 @@ class user_login(APIView):
     permission_classes = (permissions.AllowAny,)
     
     def post(self, request):
-        username = request.data.get('id', None)
-        password = request.data.get('password', None)
-        if username is None:
-            return Response({'message':'Please put valid ID.'}, status=400)
-        if password is None:
-            return Response({'message':'Please put password.'}, status=400)
-        
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                request.session.set_expiry(86400) #sets the exp. value of the session
-                login(request, user) #the user is now logged in
-                return Response('',status=200)
-            return Response({'message': 'User is not active.'}, status=403)
+        if request.user is not None:
+            return Response('',status=200)
         else:
             return Response({'message': 'Invalid ID and password.'},status=400)
     
@@ -81,7 +69,7 @@ class user_signup(APIView):
 class FeedList(APIView):
 
     def get(self, request):
-        feeds = Feed.objects.filter(author__id=request.session['_auth_user_id'])
+        feeds = Feed.objects.filter(author__id=request.user.id)
         serializer = FeedListSerializer(feeds)
         return Response(serializer.data)
 
@@ -89,7 +77,7 @@ class FeedList(APIView):
         contents = request.data.get('contents', None)
         if contents is None:
             return Response('No Contents', status=400)
-        feed = Feed(author_id=request.session['_auth_user_id'], contests=contents)
+        feed = Feed(author_id=request.user.id, contents=contents)
         feed.save()
         return Response('', status=200)
 
@@ -106,12 +94,9 @@ class ReplyList(APIView):
         return Response(serializer.data)
 
     def post(self, request, pk):
-        if not '_auth_user_id' in request.session:
-            return Response('Not Found', status=404)
-
         contents = request.data.get('contents', None)
         if contents is None:
             return Response('No Contents', status=400)
-        reply = Reply(feed_id=pk, contents=contents, author_id=request.session['_auth_user_id'])
+        reply = Reply(feed_id=pk, contents=contents, author_id=request.user.id)
         reply.save()
         return Response('', status=200)
