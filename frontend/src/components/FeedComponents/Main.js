@@ -11,6 +11,7 @@ class Main extends React.Component {
   
   render() {
     const feedList = this.props.feedList;
+    console.log(Object.keys(feedList));
     return (
       <div id="main-wrapper">
         <div id="main-title">
@@ -28,10 +29,7 @@ class Main extends React.Component {
           <Post/>
           <div id="feed-entries">
             {Object.keys(feedList).map( (id, i) => {
-              return(
-                <div>
-                  <Entry feedID={feedList[id].feed.id} index={i}/>
-                </div>);
+              return <Entry feedID={id} index={i}/>;
             })}
           </div>
         </div>

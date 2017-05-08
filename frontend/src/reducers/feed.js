@@ -17,14 +17,13 @@ const feed = (state = initState, action) => {
   case SET_FEED_LIST: {
     // copy existing feed to prevent redundant GET requests 
     let newFeedList = {};
-    let id;
-    for(id in action.list) {
+    action.list.map((id) => {
       const sid = id.toString();
       if(sid in state.feedList)
         newFeedList[sid] = state.feedList[sid]; 
       else
         newFeedList[sid] = Object.assign({}, feedInitState);
-    }
+    });
     return Object.assign({}, state, { feedList : newFeedList });
   }
   case SET_FEED: {
