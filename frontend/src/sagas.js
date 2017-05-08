@@ -2,20 +2,6 @@ import { take, fork, call, select, put } from 'redux-saga/effects';
 import { TOMAIN, LOGIN, GET_FEED_LIST, GET_FEED, POST_FEED,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed } from './actions';
 
-// returns null if error, otherwise JSON object
-let parseResponse = (response) => {
-  if(response.ok === false)
-    return null;
-  let res = {};
-  try {
-    res = response.json();
-  }
-  catch(e) {
-    return null;
-  }
-  return res;
-};
-
 export function* postSignUp() {
   const state = yield select();
   const signUpInfo = {
@@ -68,21 +54,26 @@ export function* postLogin() {
 
 export function* fetchFeedList() {
   const state = yield select();
-  yield call(fetch, '/feed/', {
+  const response = yield call(fetch, '/feed/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
     }
-  })
-  .then((response) => {return parseResponse(response);})
-  .then((data) => {
-    if(data === null) {
-      window.location.href = '/notfound/';
-      return;
-    }
-    console.log(data.id);
-    put(setFeedList(data.id));
   });
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  yield put(setFeedList(res.id));
+  console.log(res.id);
 }
 
 export function* fetchFeed(id) {
@@ -93,8 +84,15 @@ export function* fetchFeed(id) {
       'Authorization': `Basic ${state.server.hash}`
     }
   });
-  const res = parseResponse(response);
-  if(res === null) {
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
     window.location.href = '/notfound/';
     return;
   }
