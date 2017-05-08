@@ -28,7 +28,10 @@ class Main extends React.Component {
           <Post/>
           <div id="feed-entries">
             {Object.keys(feedList).map( (id, i) => {
-              return <Entry feedID={feedList[id].feed.id} index={i}/>;
+              return(
+                <div>
+                  <Entry feedID={feedList[id].feed.id} index={i}/>
+                </div>);
             })}
           </div>
         </div>

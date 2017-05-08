@@ -52,6 +52,13 @@ body::-webkit-scrollbar {
 	font-size : 20pt;
 }
 
+#input-retypepassword {
+	min-width : 10px;
+	width : 60%;
+	display: inline-block;
+	font-size : 20pt;
+}
+
 #input-password {
 	min-width : 10px;
 	width : 60%;

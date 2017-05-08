@@ -36,7 +36,7 @@ class SignUp extends React.Component {
   }
 
   render() {
-    return (<div id="main">
+    return (<div id="login">
       <div className="line-thick">Sign Up</div>
       <div className="line">
         <div id="username">ID</div>
