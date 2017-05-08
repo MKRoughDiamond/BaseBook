@@ -1,22 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {createStore, applyMiddleware} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {rootSaga} from './sagas';
 import {Provider} from 'react-redux';
-import App from './components/App';
-import serverApp from './reducers';
+import Login from './components/Login';
+import Feed from './components/Feed';
+import NotFound from './components/NotFound';
+import reducers from './reducers';
 import './index.css';
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(serverApp, applyMiddleware(sagaMiddleware));
+const store = createStore(reducers, applyMiddleware(sagaMiddleware));
 const rootElement = document.getElementById('root');
 
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={Feed}/>
+        <Route path="/login" component={Login}/>
+        <Route component={NotFound}/>
+      </Switch>
+    </BrowserRouter>
   </Provider>,
   rootElement
 );

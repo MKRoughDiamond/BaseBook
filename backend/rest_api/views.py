@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db import IntegrityError
@@ -13,6 +13,7 @@ from core.models import Feed, Reply
 #from core.models import BaseUser, Friend, Feed, Reply, Picture
 
 
+# This function is needed to support POST with JSON in firefox.
 def options_cors():
     response = HttpResponse()
     response['Access-Control-Allow-Origin'] = '*'
@@ -36,20 +37,10 @@ class user_login(APIView):
     permission_classes = (permissions.AllowAny,)
     
     def post(self, request):
-        username = request.data.get('id', None)
-        password = request.data.get('password', None)
-        if username is None or password is None:
-            return Response('Bad request', status=400)
-        
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                request.session.set_expiry(86400) #sets the exp. value of the session
-                login(request, user) #the user is now logged in
-                return Response('login success',status=200)
-            return Response('login fail',status=403)
+        if request.user is not None:
+            return Response('',status=200)
         else:
-            return Response('login fail',status=400)
+            return Response({'message': 'Invalid ID and password.'},status=400)
     
     def options(self, request):
         return options_cors()
@@ -60,12 +51,15 @@ class user_signup(APIView):
     def post(self, request):
         username = request.data.get('id', None)
         password = request.data.get('password', None)
-        if username is None or password is None:
-            return Response('Bad request', status=400)
+        if username is None:
+            return Response({'message':'Please put valid ID.'}, status=400)
+        if password is None:
+            return Response({'message':'Please put password.'}, status=400)
+        
         try:
             user = User.objects.create_user(username, 'default@email.com', password)
         except IntegrityError:
-            return Response('BaseUser duplication', status=400)
+            return Response({'message':'User already exists!'}, status=400)
         user.save()
         return Response('',status=200)
     
@@ -75,7 +69,7 @@ class user_signup(APIView):
 class FeedList(APIView):
 
     def get(self, request):
-        feeds = Feed.objects.filter(author__id=request.session['_auth_user_id'])
+        feeds = Feed.objects.filter(author__id=request.user.id)
         serializer = FeedListSerializer(feeds)
         return Response(serializer.data)
 
@@ -83,7 +77,7 @@ class FeedList(APIView):
         contents = request.data.get('contents', None)
         if contents is None:
             return Response('No Contents', status=400)
-        feed = Feed(author_id=request.session['_auth_user_id'], contests=contents)
+        feed = Feed(author_id=request.user.id, contents=contents)
         feed.save()
         return Response('', status=200)
 
@@ -100,12 +94,9 @@ class ReplyList(APIView):
         return Response(serializer.data)
 
     def post(self, request, pk):
-        if not '_auth_user_id' in request.session:
-            return Response('Not Found', status=404)
-
         contents = request.data.get('contents', None)
         if contents is None:
             return Response('No Contents', status=400)
-        reply = Reply(feed_id=pk, contents=contents, author_id=request.session['_auth_user_id'])
+        reply = Reply(feed_id=pk, contents=contents, author_id=request.user.id)
         reply.save()
         return Response('', status=200)
