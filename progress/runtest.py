@@ -57,6 +57,7 @@ print('4. GET feed')
 link = localhost + 'feed/'
 
 for i in range(1, N+1):
+    print('4-{0}. user test{0} will get feed'.format(i), end=' ')
     uname = "test{0}".format(i)
     upwd = "test{0}passwd".format(i)
     TL.feed_get_test(link, uname, upwd)
@@ -66,7 +67,7 @@ print('5. GET feed/<id>')
 sum = 0
 
 for i in range(1, N+1):
-    print('5-{0}. user test{0} will get feed'.format(i))
+    print('5-{0}. user test{0} will get feed by id'.format(i))
     uname = "test{0}".format(i)
     upwd = "test{0}passwd".format(i)
     # see own's all post and (other's) one global post, one private post
@@ -122,10 +123,11 @@ for i in range(1, N+1):
     sum += NF[i-1]
     for j in range(1, NF[i]+1):
         R += 1
-        print('getting reply(my feed){0}: '.format(R), end=' ')
+        print('getting all reply of feed{0}: '.format(R), end=' ')
         link = localhost + 'feed/' + str(sum+j) + '/reply/'
         TL.feed_reply_get_test(link, uname, upwd)
         for k in range(1, 1+1):
+            print('getting 1 reply of id {0}: '.format(R), end=' ')
             link = localhost + 'feed/' + str(sum + j) + '/reply/' + str(R)
             TL.feed_reply_get_test(link, uname, upwd)
 
