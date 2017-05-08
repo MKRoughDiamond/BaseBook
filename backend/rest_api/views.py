@@ -6,7 +6,6 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db import IntegrityError
-from django.contrib.sessions.backends.db import SessionStore
 
 from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, LikeSerializer, DislikeSerializer
 from rest_api.permissions import IsCurrUser, IsCurrUserReply
@@ -84,7 +83,7 @@ class FeedList(APIView):
         return Response('', status=200)
 
 class FeedDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsCurrUser,)
+    permission_classes = (permissions.IsAuthenticated, IsCurrUser,)
     queryset = Feed.objects.all()
     serializer_class = FeedSerializer
 
@@ -162,6 +161,7 @@ class ReplyList(APIView):
         return Response('', status=200)
 
 class ReplyDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsCurrUserReply,)
+    permission_classes = (permissions.IsAuthenticated, IsCurrUserReply,)
     queryset = Reply.objects.all()
     serializer_class = ReplySerializer
+    lookup_url_kwarg = 'pk2'
