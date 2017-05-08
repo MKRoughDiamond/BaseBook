@@ -84,7 +84,6 @@ class FeedList(APIView):
         contents = request.data.get('contents', None)
         if contents is None:
             return Response('No Contents', status=400)
-        feed = Feed(author_id=request.session['_auth_user_id'], contents=contents)
         feed.save()
         return Response('', status=200)
 
