@@ -7,7 +7,7 @@
 * Change Login system frontend: 서순호
 * Change Login system backend: 서순호, 최원석
 * Backend testcode implementation: 장유원
-* Frontend testcode implementation
+* Frontend testcode implementation(일부): 장유원
 
 #### 2. Backend API Spec
 * /signup/ 에 ID와 PW의 정보를 직접 POST하여 유저 데이터베이스에 추가될 수 있도록 한다. 이미 존재하는 유저라면 alert를 출력한다.
@@ -28,3 +28,7 @@
 #### 4. AWS Link
 * frontend : http://13.124.80.116:3000/
 * backend : http://13.124.80.116:8000/
+
+#### 5. Backend test code 실행방법
+* 백엔드 테스트 방법 : `inittest.py`, `runtest.py`, `backend_test.sh`, `testlibrary.py`를 backend 폴더로 옯긴 후, backend 폴더에서 `./backend_test.sh`를 실행한다.
+
