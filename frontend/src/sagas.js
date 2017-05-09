@@ -73,7 +73,6 @@ export function* fetchFeedList() {
     return;
   }
   yield put(setFeedList(res.id));
-  console.log(res.id);
 }
 
 export function* fetchFeed(id) {
