@@ -39,10 +39,10 @@ NF = [0]
 F = 0
 
 for i in range(1, N+1):
-    #M = randint(1, 4) # number of feed for ith user
-    M = 4
+    M = randint(1, 4) # number of feed for ith user
+    #M = 4
     print('3-{0}. user test{0} will post {1} feed'.format(i,M))
-    NF += [M]
+    NF.append(M)
     F += M
     uname = "test{0}".format(i)
     upwd = "test{0}passwd".format(i)
