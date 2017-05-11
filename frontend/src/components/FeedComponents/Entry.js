@@ -18,7 +18,7 @@ class Entry extends React.Component {
       <div id="feed-wrapper">
         <div id="feed-title">
           <div id="feed-writer">
-            MK_RD
+            {feed.author}
           </div>
           <button id="feed-delete">
             delete
