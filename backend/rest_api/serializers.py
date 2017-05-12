@@ -31,14 +31,18 @@ class LikeSerializer(serializers.BaseSerializer):
         likes = []
         for e in obj.like.all():
             likes += [ e.username ]
-        return likes
+        return {
+            'likes': likes
+        }
 
 class DislikeSerializer(serializers.BaseSerializer):
     def to_representation(self,obj):
         dislikes = []
         for e in obj.dislike.all():
             dislikes += [ e.username ]
-        return dislikes
+        return {
+            'dislikes': dislikes
+        }
 
 class ReplySerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
