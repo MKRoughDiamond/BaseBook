@@ -24,26 +24,28 @@ class FeedSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
     class Meta:
         model = Feed
-        fields = ('id', 'contents', 'like', 'dislike', 'scope', 'author')
+        fields = ('id', 'contents', 'scope', 'author')
 
 class LikeSerializer(serializers.BaseSerializer):
     def to_representation(self,obj):
         likes = []
         for e in obj.like.all():
-            likes += [ e.id ]
+            likes += [ e.username ]
         return likes
 
 class DislikeSerializer(serializers.BaseSerializer):
     def to_representation(self,obj):
         dislikes = []
         for e in obj.dislike.all():
-            dislikes += [ e.id ]
+            dislikes += [ e.username ]
         return dislikes
 
 class ReplySerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
+        replylist = []
+        for e in obj:
+            replylist += [ e.id ]
+
         return {
-            'id': obj.id,
-            'contents': obj.contents,
-            'author': obj.author.username
+            'id': replylist
         }

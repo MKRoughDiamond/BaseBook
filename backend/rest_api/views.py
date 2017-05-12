@@ -6,6 +6,7 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db import IntegrityError
+from django.core.exceptions import ObjectDoesNotExist
 
 from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, LikeSerializer, DislikeSerializer
 from rest_api.permissions import IsCurrUser, IsCurrUserReply
@@ -90,12 +91,18 @@ class FeedDetail(generics.RetrieveUpdateDestroyAPIView):
 class LikeList(APIView):
 
     def get(self, request,pk):
-        likes = Feed.objects.get(pk=pk)
+        try:
+            likes = Feed.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
         serializer = LikeSerializer(likes)
         return Response(serializer.data)
 
     def post(self, request,pk):
-        likes = Feed.objects.get(pk=pk)
+        try:
+            likes = Feed.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
         serializer = LikeSerializer(likes)
         data = serializer.data
         if int(request.user.id) in data:
@@ -106,10 +113,13 @@ class LikeList(APIView):
             return Response('', status=200)
 
     def delete(self, request,pk):
-        likes = Feed.objects.get(pk=pk)
+        try:
+            likes = Feed.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
         serializer = LikeSerializer(likes)
         data = serializer.data
-        if int(request.user.id) in data:
+        if request.user.username in data:
             user = User.objects.get(id=request.user.id)
             likes.like.remove(user)
             return Response('', status=200)
@@ -119,12 +129,18 @@ class LikeList(APIView):
 class DislikeList(APIView):
 
     def get(self, request,pk):
-        dislikes = Feed.objects.get(pk=pk)
+        try:
+            dislikes = Feed.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
         serializer = DislikeSerializer(dislikes)
         return Response(serializer.data)
 
     def post(self, request,pk):
-        dislikes = Feed.objects.get(pk=pk)
+        try:
+            dislikes = Feed.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
         serializer = DislikeSerializer(dislikes)
         data = serializer.data
         if int(request.user.id) in data:
@@ -135,10 +151,13 @@ class DislikeList(APIView):
             return Response('', status=200)
 
     def delete(self, request,pk):
-        dislikes = Feed.objects.get(pk=pk)
+        try:
+            dislikes = Feed.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
         serializer = DislikeSerializer(dislikes)
         data = serializer.data
-        if int(request.user.id) in data:
+        if request.user.username in data:
             user = User.objects.get(id=request.user.id)
             dislikes.dislike.remove(user)
             return Response('', status=200)
@@ -146,10 +165,9 @@ class DislikeList(APIView):
             return Response('Not Yet Dislike', status=400)
 
 class ReplyList(APIView):
-    permission_classes = (permissions.AllowAny,)
     def get(self, request, pk):
-        replies = Reply.objects.filter(feed_id=pk)
-        serializer = ReplySerializer(replies, many=True)
+        replies = Reply.objects.filter(feed__id=pk)
+        serializer = ReplySerializer(replies)
         return Response(serializer.data)
 
     def post(self, request, pk):
@@ -164,4 +182,4 @@ class ReplyDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated, IsCurrUserReply,)
     queryset = Reply.objects.all()
     serializer_class = ReplySerializer
-    lookup_url_kwarg = 'pk2'
+    lookup_url_kwarg = 'pk'
