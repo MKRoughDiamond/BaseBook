@@ -6,8 +6,6 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db import IntegrityError
-from django.contrib.sessions.backends.db import SessionStore
-from django.views.decorators.csrf import csrf_exempt
 
 from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer
 from core.models import Feed, Reply
