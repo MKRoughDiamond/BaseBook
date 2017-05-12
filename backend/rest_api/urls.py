@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^feed/$', views.FeedList.as_view()),
     url(r'^feed/(?P<pk>[0-9]+)/$', views.FeedDetail.as_view()),
     url(r'^feed/(?P<pk>[0-9]+)/reply/$', views.ReplyList.as_view()),
-		url(r'^feed/(?P<pk>[0-9]+)/reply/(?P<pk2>[0-9]+)/$', views.ReplyDetail.as_view()),
     url(r'^feed/(?P<pk>[0-9]+)/likes/$', views.LikeList.as_view()),
     url(r'^feed/(?P<pk>[0-9]+)/dislikes/$', views.DislikeList.as_view()),
+    url(r'^reply/(?P<pk>[0-9]+)/$', views.ReplyDetail.as_view()),
 ]
