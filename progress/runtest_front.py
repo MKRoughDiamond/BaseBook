@@ -48,7 +48,7 @@ def click(browser, name):
     except Exception as e:
         print('Message: ', e)
         sys.exit(1)
-    sleep(0.6)
+    sleep(0.5)
 
 
 def signup_post_test(browser, uname, upwd, duplication):
@@ -70,11 +70,17 @@ def signup_post_test(browser, uname, upwd, duplication):
             click(browser, 'login-error-confirm')
             print('Duplicated SignUp('+uname+') test success')
         else:
-            print(uname + ' SignUp success')
+            exist = find_or_error(browser, 'login-error-box') or \
+                    find_or_error(browser, 'login-error-msg') or \
+                    find_or_error(browser, 'login-error-confirm')
+            if exist:
+                print('SignUp(' + uname + ') test failed')
+                sys.exit(1)
     except Exception as e:
         print('SignUp test failed')
         print(e)
         sys.exit(1)
+    print(uname + ' SignUp success')
 
 
 def signin_post_test(browser, uname, upwd):
@@ -82,11 +88,11 @@ def signin_post_test(browser, uname, upwd):
         send(browser, 'input-username', uname)
         send(browser, 'input-password', upwd)
         click(browser, 'SignIn')
-        print(uname + ' SignIn success')
     except Exception as e:
         print('SignIn test failed')
         print(e)
         sys.exit(1)
+    print(uname + ' SignIn success')
 
 
 def feed_post_test(browser, contents):
@@ -94,9 +100,10 @@ def feed_post_test(browser, contents):
         send(browser, 'newFeed-text', contents)
         click(browser, 'newFeed-post')
     except Exception as e:
-        print('SignIn test failed')
+        print('POST Feed test failed')
         print(e)
         sys.exit(1)
+    print(uname + ' POST Feed success')
 
 
 print('################################################################')

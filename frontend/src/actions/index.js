@@ -8,11 +8,22 @@ export const TOSIGNUP = 'TOSIGNUP';
 export const LOGIN ='LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_PAGE_ERROR = 'LOGIN_PAGE_ERROR';
+
 export const GET_FEED_LIST = 'GET_FEED_LIST';
 export const SET_FEED_LIST = 'SET_FEED_LIST';
 export const GET_FEED = 'GET_FEED';
 export const SET_FEED = 'SET_FEED';
 export const POST_FEED = 'POST_FEED';
+
+export const TOCHAT = 'TOCHAT';
+export const START_CHAT = 'START_CHAT';
+
+export const GET_CHAT_LIST = 'GET_CHAT_LIST';
+export const SET_CHAT_LIST = 'SET_CHAT_LIST';
+export const GET_CHAT = 'GET_CHAT';
+export const SET_CHAT = 'SET_CHAT';
+export const POST_CHAT = 'POST_CHAT';
+
 
 export function setID(value) {
   return {
@@ -114,5 +125,53 @@ export function postFeed(contents, scope) {
     type: POST_FEED,
     contents: contents,
     scope: scope
+  };
+}
+
+export function getChatList() {
+  return {
+    type: GET_CHAT_LIST
+  };
+}
+
+export function setChatList(list) {
+  return {
+    type: SET_CHAT_LIST,
+    list: list
+  };
+}
+
+export function getChat(id) {
+  return {
+    type: GET_CHAT,
+    id: id
+  };
+}
+
+export function setChat(id, chat) {
+  return {
+    type: SET_CHAT,
+    id: id,
+    feed: chat
+  };
+}
+
+export function postChat(contents) {
+  return {
+    type: POST_CHAT,
+    contents: contents
+  };
+}
+
+export function toChat() {
+  return {
+    type : TOCHAT
+  };
+}
+
+export function startChat(username) {
+  return {
+    type: START_CHAT,
+    username: username
   };
 }
