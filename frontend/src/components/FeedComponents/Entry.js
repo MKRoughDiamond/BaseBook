@@ -3,8 +3,10 @@ import {connect} from 'react-redux';
 import {getFeed} from '../../actions';
 
 class Entry extends React.Component {
+
   componentDidMount() {
-    if(this.props.feedList[this.props.feedID].contents === null)
+    const feed = this.props.feedList[this.props.feedID];
+    if(feed.contents === null)
       this.props.getFeed(this.props.feedID);
   }
 
@@ -34,7 +36,7 @@ class Entry extends React.Component {
         <div id="feed-content">
           {feed.contents}
         </div>
-			</div>
+      </div>
     );  // TODO: add reply
   }
 }
