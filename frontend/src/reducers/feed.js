@@ -6,6 +6,7 @@ const initState = {
 };
 
 const feedInitState = {
+  author: null,
   contents: null,
   like: null,
   dislike: null,
@@ -28,6 +29,7 @@ const feed = (state = initState, action) => {
   }
   case SET_FEED: {
     const newFeed = {
+      author: action.feed.author,
       contents: action.feed.contents,
       like: action.feed.like,
       dislike: action.feed.dislike,
