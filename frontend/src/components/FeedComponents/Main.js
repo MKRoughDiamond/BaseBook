@@ -8,7 +8,6 @@ class Main extends React.Component {
   componentDidMount() {
     this.props.getFeedList();
   }
-
   handleToChat() {
     this.props.toChat();
   }
@@ -29,8 +28,8 @@ class Main extends React.Component {
         <div id="main-content">
           <div id="Pagename">
             MK_RD's Page
-            <button id="chat_button" onClick={this.handleToChat.bind(self)}>
-              To Chat
+            <button id="chat_button" onClick={this.handleToChat}>
+              Chat
             </button>
           </div>
           <Post/>

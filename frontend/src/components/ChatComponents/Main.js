@@ -4,9 +4,12 @@ import {getChatList, startChat} from '../../actions';
 import Entry from './Entry';
 
 class Main extends React.Component {
+  /*constructor(props) {
+    super(props);
+    this.handleStartChat = this.handleStartChat().bind(this);
+  }*/
   componentDidMount() {
     this.props.getChatList();
-    this.handleStartChat = this.handleStartChat().bind(this);
   }
 
   handleStartChat() {
@@ -36,7 +39,7 @@ class Main extends React.Component {
               <input type="input" id="username-textbox" />
             </div>
             <div id="chatting-start-button-wrapper">
-              <button id="chatting-start-button" onClick={this.props.startChat}>
+              <button id="chatting-start-button" onClick={this.handleStartChat}>
                 START
               </button>
             </div>
