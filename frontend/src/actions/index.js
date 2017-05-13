@@ -191,7 +191,7 @@ export function toChat() {
 
 export function startChat(username) {
   return {
-   type: START_CHAT,
+    type: START_CHAT,
     username: username
   };
 }
