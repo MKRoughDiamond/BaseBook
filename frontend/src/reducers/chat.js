@@ -1,9 +1,13 @@
-import { TOCHAT, START_CHAT, SET_CHAT_LIST, SET_CHAT } from '../actions';
+import {
+  TOCHAT, START_CHAT, GET_CHAT_ROOM_ID,
+  SET_CHAT_LIST, SET_CHAT
+} from '../actions';
 
 const initState = {
   //desiredChatCount: 0,
   chatOn: false,
   otherUsername: null,
+  chatRoomID: null,
   chatList: {}
 };
 
@@ -19,6 +23,8 @@ const chat = (state = initState, action) => {
     return Object.assign({}, state, { chatOn : true });
   case START_CHAT:
     return Object.assign({}, state, { otherUsername : action.username });
+  case GET_CHAT_ROOM_ID:
+    return Object.assign({}, state, { chatRoomID : action.chatRoomID });
   case SET_CHAT_LIST: {
     // copy existing chat to prevent redundant GET requests
     let newChatList = {};
