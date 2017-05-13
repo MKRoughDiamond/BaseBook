@@ -13,13 +13,7 @@ export const GET_FEED_LIST = 'GET_FEED_LIST';
 export const SET_FEED_LIST = 'SET_FEED_LIST';
 export const GET_FEED = 'GET_FEED';
 export const SET_FEED = 'SET_FEED';
-export const POST_FEED = 'POST_FEED'; 
-export const POST_LIKES = 'POST_LIKES';
-export const POST_DISLIKES = 'POST_DISLIKES';
-export const GET_LIKES = 'GET_LIKES';
-export const GET_DISLIKES = 'GET_DISLIKES';
-export const SET_LIKES = 'SET_LIKES';
-export const SET_DISLIKES = 'SET_DISLIKES';
+export const POST_FEED = 'POST_FEED';
 
 export const POST_LIKES = 'POST_LIKES';
 export const POST_DISLIKES = 'POST_DISLIKES';
