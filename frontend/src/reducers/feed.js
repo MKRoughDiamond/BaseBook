@@ -1,4 +1,4 @@
-import { SET_FEED_LIST, SET_FEED } from '../actions';
+import { SET_FEED_LIST, SET_FEED , SET_LIKES, SET_DISLIKES} from '../actions';
 
 const initState = {
   desiredFeedCount: 0,
@@ -10,7 +10,9 @@ const feedInitState = {
   contents: null,
   like: null,
   dislike: null,
-  scope: null
+  scope: null,
+  doLike: false,
+  doDislike: false
 };
 
 const feed = (state = initState, action) => {
@@ -28,16 +30,65 @@ const feed = (state = initState, action) => {
     return Object.assign({}, state, { feedList : newFeedList });
   }
   case SET_FEED: {
-    const newFeed = {
-      author: action.feed.author,
-      contents: action.feed.contents,
-      like: action.feed.like,
-      dislike: action.feed.dislike,
-      scope: action.feed.scope
-    };
+    let newFeed = {};
+    if(action.id in state.feedList) {
+      newFeed = Object.assign({}, state.feedList[action.id],
+        {
+          author: action.feed.author,
+          contents: action.feed.contents,
+          scope: action.feed.scope
+        });
+    }
+    else {
+      newFeed = Object.assign({}, feedInitState, {
+        author: action.feed.author,
+        contents: action.feed.contents,
+        scope: action.feed.scope
+      });
+    }
     let newFeedList = Object.assign({}, state.feedList);
     newFeedList[action.id] = newFeed;
     return Object.assign({}, state, { feedList : newFeedList });
+  }
+  case SET_LIKES: {
+    let newFeed = {};
+    const likes = action.likes.length;
+    if(action.id in state.feedList) {
+      newFeed = Object.assign({}, state.feedList[action.id],
+        {
+          like: likes,
+          doLike: !state.feedList[action.id].doLike
+        });
+    }
+    else {
+      newFeed = Object.assign({}, feedInitState, {
+        like: likes,
+        doLike: true
+      });
+    }
+    let newFeedList = Object.assign({}, state.feedList);
+    newFeedList[action.id] = newFeed;
+    return Object.assign({}, state, { feedList : newFeedList });
+  }
+  case SET_DISLIKES: {
+    let newFeed = {};
+    const dislikes = action.dislikes.length;
+    if(action.id in state.feedList) {
+      newFeed = Object.assign({}, state.feedList[action.id],
+        {
+          dislike: dislikes,
+          doDislike: !state.feedList[action.id].doDislike
+        });
+    }
+    else {
+      newFeed = Object.assign({}, feedInitState, {
+        dislike: dislikes,
+        doDislike: true
+      });
+    }
+    let newFeedList = Object.assign({}, state.feedList);
+    newFeedList[action.id] = newFeed;
+    return Object.assign({}, state, { feedList: newFeedList });
   }
   default:
     return state;
