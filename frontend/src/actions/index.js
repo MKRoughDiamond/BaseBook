@@ -15,6 +15,13 @@ export const GET_FEED = 'GET_FEED';
 export const SET_FEED = 'SET_FEED';
 export const POST_FEED = 'POST_FEED';
 
+export const POST_LIKES = 'POST_LIKES';
+export const POST_DISLIKES = 'POST_DISLIKES';
+export const GET_LIKES = 'GET_LIKES';
+export const GET_DISLIKES = 'GET_DISLIKES';
+export const SET_LIKES = 'SET_LIKES';
+export const SET_DISLIKES = 'SET_DISLIKES';
+
 export const TOCHAT = 'TOCHAT';
 export const START_CHAT = 'START_CHAT';
 
@@ -125,6 +132,52 @@ export function postFeed(contents, scope) {
     type: POST_FEED,
     contents: contents,
     scope: scope
+  };
+}
+
+export function postLikes(id) {
+  return {
+    type: POST_LIKES,
+    id: id
+  };
+}
+
+export function postDislikes(id) {
+  return {
+    type: POST_DISLIKES,
+    id: id
+  };
+}
+
+export function getLikes(id) {
+  return {
+    type: GET_LIKES,
+    id: id
+  };
+}
+
+export function getDislikes(id) {
+  return {
+    type: GET_DISLIKES,
+    id: id
+  };
+}
+
+export function setLikes(id, likes)
+{
+  return {
+    type: SET_LIKES,
+    id: id,
+    likes: likes
+  };
+}
+
+export function setDislikes(id, dislikes)
+{
+  return {
+    type: SET_DISLIKES,
+    id: id,
+    dislikes: dislikes
   };
 }
 
