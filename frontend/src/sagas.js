@@ -209,7 +209,13 @@ export function* startChat(username) {
       'Content-Type': 'application/json'
     }
   });
-  if(response.ok === false) {
+  const res = yield response.json();
+  console.log(res);
+  console.log('res.id: ', res.id);
+  if(response.ok === true) {
+    //
+  }
+  else {
     let res = {};
     try {
       res = yield response.json();
