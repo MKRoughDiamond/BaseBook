@@ -4,18 +4,22 @@ import {getFeedList, toChat} from '../../actions';
 import Entry from './Entry';
 import Post from './Post';
 
-class Main extends React.Component {
+class FeedMain extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleToChat = this.handleToChat.bind(this);
+  }
   componentDidMount() {
     this.props.getFeedList();
   }
-
   handleToChat() {
+    console.log('Chat!');
     this.props.toChat();
   }
 
   render() {
     const feedList = this.props.feedList;
-    console.log(Object.keys(feedList));
+    //console.log(Object.keys(feedList));
     return (
       <div id="main-wrapper">
         <div id="main-title">
@@ -29,9 +33,7 @@ class Main extends React.Component {
         <div id="main-content">
           <div id="Pagename">
             MK_RD's Page
-            <button id="chat_button" onClick={this.handleToChat.bind(self)}>
-              To Chat
-            </button>
+            <button id="chat_button" onClick={this.handleToChat}>Chat</button>
           </div>
           <Post/>
           <div id="feed-entries">
@@ -59,4 +61,4 @@ let mapDispatchToProps = (dispatch) => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedMain);

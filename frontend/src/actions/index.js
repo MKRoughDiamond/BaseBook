@@ -183,6 +183,19 @@ export function setDislikes(id, dislikes, didDislike)
   };
 }
 
+export function toChat() {
+  return {
+    type: TOCHAT
+  };
+}
+
+export function startChat(username) {
+  return {
+    type: START_CHAT,
+    username: username
+  };
+}
+
 export function getChatList() {
   return {
     type: GET_CHAT_LIST
@@ -207,7 +220,7 @@ export function setChat(id, chat) {
   return {
     type: SET_CHAT,
     id: id,
-    feed: chat
+    chat: chat
   };
 }
 
@@ -215,18 +228,5 @@ export function postChat(contents) {
   return {
     type: POST_CHAT,
     contents: contents
-  };
-}
-
-export function toChat() {
-  return {
-    type : TOCHAT
-  };
-}
-
-export function startChat(username) {
-  return {
-    type: START_CHAT,
-    username: username
   };
 }

@@ -1,17 +1,28 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getChatList, startChat} from '../../actions';
+import {getChatList, startChat, setChat} from '../../actions';
 import Entry from './Entry';
 
-class Main extends React.Component {
+class ChatMain extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleStartChat = this.handleStartChat.bind(this);
+    this.handlePostChat = this.handlePostChat.bind(this);
+  }
   componentDidMount() {
     this.props.getChatList();
-    this.handleStartChat = this.handleStartChat().bind(this);
   }
 
   handleStartChat() {
+    console.log('Start Chat!');
     const username = document.getElementById('username-textbox').value;
     this.props.startChat(username);
+  }
+
+  handlePostChat() {
+    console.log('Post Chat!');
+    const contents = document.getElementById('new-chat-text').value;
+    this.props.setChat(contents);
   }
 
   render() {
@@ -36,7 +47,7 @@ class Main extends React.Component {
               <input type="input" id="username-textbox" />
             </div>
             <div id="chatting-start-button-wrapper">
-              <button id="chatting-start-button" onClick={this.props.startChat}>
+              <button id="chatting-start-button" onClick={this.handleStartChat}>
                 START
               </button>
             </div>
@@ -49,9 +60,9 @@ class Main extends React.Component {
             </div>
             <div id="new-chat">
               <div id="new-chat-text-wrapper">
-                <textarea id="new-chat-text" rows="1">Uh</textarea>
+                <textarea id="new-chat-text" rows="1" defaultValue="Uh"/>
               </div>
-              <button id="new-chat-post">
+              <button id="new-chat-post" onClick={this.handlePostChat}>
                 POST
               </button>
             </div>
@@ -71,9 +82,10 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     getChatList: () => dispatch(getChatList()),
-    startChat: (username) => dispatch(startChat(username))
+    startChat: (username) => dispatch(startChat(username)),
+    setChat: () => dispatch(setChat())
   };
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatMain);

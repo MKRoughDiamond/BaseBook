@@ -1,6 +1,10 @@
 import { take, fork, call, select, put } from 'redux-saga/effects';
-import { TOMAIN, LOGIN, GET_FEED_LIST, GET_FEED, POST_FEED, POST_LIKES, POST_DISLIKES, GET_LIKES, GET_DISLIKES,
-  loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getLikes, getDislikes, setLikes, setDislikes} from './actions';
+import { TOMAIN, LOGIN, GET_FEED_LIST, GET_FEED, POST_FEED,
+  POST_LIKES, POST_DISLIKES, GET_LIKES, GET_DISLIKES,
+  START_CHAT,
+  loginSuccess, loginPageError, getFeedList, setFeedList, setFeed,
+  getLikes, getDislikes, setLikes, setDislikes
+} from './actions';
 
 export function* postSignUp() {
   const state = yield select();
@@ -97,7 +101,6 @@ export function* fetchFeed(id) {
   }
   yield put(setFeed(res.id, res));
 }
-
 
 export function* fetchLikes(id) {
   const state = yield select();
@@ -199,6 +202,33 @@ export function* postDislikes(id) {
   yield put(getDislikes(id));
 }
 
+export function* startChat(username) {
+  const state = yield select();
+  const response = yield call(fetch, '/chat/user/' + username + '/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  const res = yield response.json();
+  console.log(res);
+  console.log('res.id: ', res.id);
+  if(response.ok === true) {
+    //
+  }
+  else {
+    let res = {};
+    try {
+      res = yield response.json();
+    }
+    catch (e) {
+      res.message = 'POST /chat/user/username error.';
+    }
+    console.log(res.message);
+  }
+}
+
 export function* watchSignUp() {
   let state;
   do {
@@ -276,6 +306,16 @@ export function* watchPostDislikes() {
   }
 }
 
+export function* watchStartChat() {
+  let state;
+  do {
+    state = yield select();
+    const action = yield take(START_CHAT);
+    yield call(startChat, action.username);
+  }
+  while(state.chat.otherUsername === null);
+}
+
 export function* rootSaga() {
   yield fork(watchSignUp);
   yield fork(watchLogin);
@@ -286,4 +326,5 @@ export function* rootSaga() {
   yield fork(watchPostDislikes);
   yield fork(watchGetLikes);
   yield fork(watchGetDislikes);
+  yield fork(watchStartChat);
 }

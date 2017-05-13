@@ -1,13 +1,19 @@
 import React from 'react';
 import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
-import Main from './FeedComponents/Main';
+import FeedMain from './FeedComponents/Main';
+import ChatMain from './ChatComponents/Main';
 
 class Feed extends React.Component {
   render() {
-    return (this.props.isLoggedIn)?(
-      <Main/>
-    ):(
+    if (this.props.isLoggedIn)
+      return (this.props.isChatOn) ? (
+        <ChatMain/>
+      ):(
+        <FeedMain/>
+      );
+
+    return (
       <Redirect to="/login/"/>
     );
   }
@@ -15,7 +21,8 @@ class Feed extends React.Component {
 
 let mapStateToProps = (state) => {
   return {
-    isLoggedIn : state.server.loggedIn
+    isLoggedIn : state.server.loggedIn,
+    isChatOn : state.chat.chatOn
   };
 };
 
