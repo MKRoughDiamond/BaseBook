@@ -237,12 +237,13 @@ export function* startChat(username) {
 export function* fetchChatList(chatRoomID) {
   const state = yield select();
   console.log('fetchChatListSaga-chatRoomID: ',chatRoomID);
-  const response = yield call(fetch, '/chat/' + chatRoomID, {
+  const response = yield call(fetch, '/chat/' + chatRoomID + '/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
     }
   });
+  console.log(response.status);
   if(response.ok === false) {
     //window.location.href = '/notfound/';
     return;
@@ -255,6 +256,7 @@ export function* fetchChatList(chatRoomID) {
     //window.location.href = '/notfound/';
     return;
   }
+  console.log('############asdf############');
   yield put(setChatList(res.id));
 }
 /*
@@ -284,7 +286,7 @@ export function* fetchChat(id) {
 export function* postChat(chatRoomID, contents) {
   const state = yield select();
   console.log('postChatSaga-chatRoomID: ', chatRoomID,' contents: ',contents);
-  const response = yield call(fetch, '/chat/' + chatRoomID, {
+  const response = yield call(fetch, '/chat/' + chatRoomID + '/', {
     method: 'POST',
     headers: {
       'Authorization': `Basic ${state.server.hash}`,
@@ -295,10 +297,10 @@ export function* postChat(chatRoomID, contents) {
     })
   });
   if(response.ok === false) {
-    //window.location.href = '/notfound/';
+    window.location.href = '/notfound/';
     return;
   }
-  yield put(getChatList()); // refresh news feed
+  yield put(getChatList(chatRoomID)); // refresh news feed
 }
 
 

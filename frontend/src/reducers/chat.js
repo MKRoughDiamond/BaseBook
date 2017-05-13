@@ -28,7 +28,9 @@ const chat = (state = initState, action) => {
   case SET_CHAT_LIST: {
     // copy existing chat to prevent redundant GET requests
     let newChatList = {};
+    console.log('asdfasdf');
     action.list.map((id) => {
+      console.log('id: ',id);
       const sid = id.toString();
       if(sid in state.chatList)
         newChatList[sid] = state.chatList[sid];
