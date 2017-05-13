@@ -163,8 +163,7 @@ export function getDislikes(id) {
   };
 }
 
-export function setLikes(id, likes)
-{
+export function setLikes(id, likes) {
   return {
     type: SET_LIKES,
     id: id,
@@ -172,8 +171,7 @@ export function setLikes(id, likes)
   };
 }
 
-export function setDislikes(id, dislikes)
-{
+export function setDislikes(id, dislikes) {
   return {
     type: SET_DISLIKES,
     id: id,

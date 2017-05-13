@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getChatList, startChat} from '../../actions';
+import {getChatList, startChat, setChat} from '../../actions';
 import Entry from './Entry';
 
 class ChatMain extends React.Component {
@@ -16,6 +16,12 @@ class ChatMain extends React.Component {
     console.log('Start Chat!');
     const username = document.getElementById('username-textbox').value;
     this.props.startChat(username);
+  }
+
+  handlePostChat() {
+    console.log('Post Chat!');
+    const contents = document.getElementById('new-chat-text').value;
+    this.props.setChat(contents);
   }
 
   render() {
@@ -53,9 +59,9 @@ class ChatMain extends React.Component {
             </div>
             <div id="new-chat">
               <div id="new-chat-text-wrapper">
-                <textarea id="new-chat-text" rows="1">Uh</textarea>
+                <textarea id="new-chat-text" rows="1" defaultValue="Uh"/>
               </div>
-              <button id="new-chat-post">
+              <button id="new-chat-post" onClick={this.handlePostChat}>
                 POST
               </button>
             </div>
@@ -75,7 +81,8 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     getChatList: () => dispatch(getChatList()),
-    startChat: (username) => dispatch(startChat(username))
+    startChat: (username) => dispatch(startChat(username)),
+    setChat: () => dispatch(setChat())
   };
 };
 
