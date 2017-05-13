@@ -185,7 +185,7 @@ export function setDislikes(id, dislikes, didDislike)
 
 export function toChat() {
   return {
-    type : TOCHAT
+    type: TOCHAT
   };
 }
 
