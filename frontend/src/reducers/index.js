@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import server from './server';
 import feed from './feed';
+import chat from './chat';
 
 const extra = (state = { value : 'WIP' }, action) => {
   switch(action.type) {
@@ -12,6 +13,7 @@ const extra = (state = { value : 'WIP' }, action) => {
 const reducers = combineReducers({
   server,
   feed,
+  chat,
   extra
 });
 

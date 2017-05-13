@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getFeedList} from '../../actions';
+import {getFeedList, toChat} from '../../actions';
 import Entry from './Entry';
 import Post from './Post';
 
@@ -8,7 +8,11 @@ class Main extends React.Component {
   componentDidMount() {
     this.props.getFeedList();
   }
-  
+
+  handleToChat() {
+    this.props.toChat();
+  }
+
   render() {
     const feedList = this.props.feedList;
     console.log(Object.keys(feedList));
@@ -25,6 +29,9 @@ class Main extends React.Component {
         <div id="main-content">
           <div id="Pagename">
             MK_RD's Page
+            <button id="chat_button" onClick={this.handleToChat.bind(self)}>
+              To Chat
+            </button>
           </div>
           <Post/>
           <div id="feed-entries">
@@ -46,7 +53,8 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    getFeedList: () => dispatch(getFeedList())
+    getFeedList: () => dispatch(getFeedList()),
+    toChat: () => dispatch(toChat())
   };
 };
 

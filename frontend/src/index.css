@@ -251,6 +251,21 @@ button {
 	white-space: pre;
 }
 
+#chat_button {
+    margin-top : 5px;
+    display : inline-block;
+    float : right;
+    padding: 0;
+    width : 10%;
+    height : 20px;
+    border : none;
+    border-radius : 10px;
+    font-size : 15px;
+    font-weight : bold;
+    resize: none;
+    background-color : white;
+}
+
 #reply-wrapper {
 }
 
