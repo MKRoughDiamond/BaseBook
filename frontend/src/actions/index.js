@@ -135,52 +135,6 @@ export function postFeed(contents, scope) {
   };
 }
 
-export function postLikes(id) {
-  return {
-    type: POST_LIKES,
-    id: id
-  };
-}
-
-export function postDislikes(id) {
-  return {
-    type: POST_DISLIKES,
-    id: id
-  };
-}
-
-export function getLikes(id) {
-  return {
-    type: GET_LIKES,
-    id: id
-  };
-}
-
-export function getDislikes(id) {
-  return {
-    type: GET_DISLIKES,
-    id: id
-  };
-}
-
-export function setLikes(id, likes)
-{
-  return {
-    type: SET_LIKES,
-    id: id,
-    likes: likes
-  };
-}
-
-export function setDislikes(id, dislikes)
-{
-  return {
-    type: SET_DISLIKES,
-    id: id,
-    dislikes: dislikes
-  };
-}
-
 export function getChatList() {
   return {
     type: GET_CHAT_LIST
