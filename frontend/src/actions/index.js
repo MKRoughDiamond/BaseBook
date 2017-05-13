@@ -216,7 +216,7 @@ export function setChat(id, chat) {
   return {
     type: SET_CHAT,
     id: id,
-    feed: chat
+    chat: chat
   };
 }
 

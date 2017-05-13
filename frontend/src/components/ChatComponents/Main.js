@@ -7,6 +7,7 @@ class ChatMain extends React.Component {
   constructor(props) {
     super(props);
     this.handleStartChat = this.handleStartChat.bind(this);
+    this.handlePostChat = this.handlePostChat.bind(this);
   }
   componentDidMount() {
     this.props.getChatList();

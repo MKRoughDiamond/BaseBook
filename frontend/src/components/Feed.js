@@ -22,7 +22,7 @@ class Feed extends React.Component {
 let mapStateToProps = (state) => {
   return {
     isLoggedIn : state.server.loggedIn,
-    isChatOn : state.startChat.chatOn
+    isChatOn : state.chat.chatOn
   };
 };
 
