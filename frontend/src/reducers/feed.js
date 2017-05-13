@@ -11,8 +11,8 @@ const feedInitState = {
   like: null,
   dislike: null,
   scope: null,
-  doLike: false,
-  doDislike: false
+  didLike: null,
+  didDislike: null
 };
 
 const feed = (state = initState, action) => {
@@ -57,13 +57,13 @@ const feed = (state = initState, action) => {
       newFeed = Object.assign({}, state.feedList[action.id],
         {
           like: likes,
-          doLike: !state.feedList[action.id].doLike
+          didLike: action.didLike
         });
     }
     else {
       newFeed = Object.assign({}, feedInitState, {
         like: likes,
-        doLike: true
+        didLike: action.didLike
       });
     }
     let newFeedList = Object.assign({}, state.feedList);
@@ -77,13 +77,13 @@ const feed = (state = initState, action) => {
       newFeed = Object.assign({}, state.feedList[action.id],
         {
           dislike: dislikes,
-          doDislike: !state.feedList[action.id].doDislike
+          didDislike: action.didDislike
         });
     }
     else {
       newFeed = Object.assign({}, feedInitState, {
         dislike: dislikes,
-        doDislike: true
+        didDislike: action.didDislike
       });
     }
     let newFeedList = Object.assign({}, state.feedList);

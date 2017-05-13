@@ -119,7 +119,8 @@ export function* fetchLikes(id) {
     window.location.href = '/notfound/';
     return;
   }
-  yield put(setLikes(id, res.likes));
+  const didLike = (res.likes.indexOf(state.server.ID) !== -1) ? true : false;
+  yield put(setLikes(id, res.likes, didLike));
 }
 
 export function* fetchDislikes(id) {
@@ -142,7 +143,8 @@ export function* fetchDislikes(id) {
     window.location.href = '/notfound/';
     return;
   }
-  yield put(setDislikes(id, res.dislikes));
+  const didDislike = (res.dislikes.indexOf(state.server.ID) !== -1) ? true : false;
+  yield put(setDislikes(id, res.dislikes, didDislike));
 }
 
 export function* postFeed(contents, scope) { 
@@ -167,7 +169,7 @@ export function* postFeed(contents, scope) {
 
 export function* postLikes(id) {
   const state = yield select();
-  const req = (state.feed.feedList[id].doLike)?'DELETE':'POST';
+  const req = (state.feed.feedList[id].didLike)?'DELETE':'POST';
   const response = yield call(fetch, '/feed/' + id.toString() + '/likes/', {
     method: req,
     headers: {
@@ -183,7 +185,7 @@ export function* postLikes(id) {
 
 export function* postDislikes(id) {
   const state = yield select();
-  const req = (state.feed.feedList[id].doDislike)?'DELETE':'POST';
+  const req = (state.feed.feedList[id].didDislike)?'DELETE':'POST';
   const response = yield call(fetch, '/feed/' + id.toString() + '/dislikes/', {
     method: req,
     headers: {
