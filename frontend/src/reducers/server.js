@@ -1,4 +1,6 @@
-import { SETID, SETPW, NEWID, NEWPW, RETYPEPW, TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR } from '../actions';
+import { SETID, SETPW, NEWID, NEWPW, RETYPEPW,
+  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR,
+  TOCHAT } from '../actions';
 
 const serverInitialState = {
   ID: '',
@@ -9,6 +11,7 @@ const serverInitialState = {
   retypePW: '',
   isLogin: true,
   loggedIn: false,
+  chatOn: false,
   errorMsg: null
 };
 
@@ -39,6 +42,8 @@ const server = (state = serverInitialState, action) => {
     return Object.assign({}, state, { loggedIn : true, hash: action.hash });
   case LOGIN_PAGE_ERROR:
     return Object.assign({}, state, { errorMsg : action.msg });
+  case TOCHAT:
+    return Object.assign({}, state, { chatOn : true });
   default:
     return state;
   }	

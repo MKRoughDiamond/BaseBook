@@ -3,16 +3,17 @@ import {connect} from 'react-redux';
 import {getChatList, startChat} from '../../actions';
 import Entry from './Entry';
 
-class Main extends React.Component {
-  /*constructor(props) {
+class ChatMain extends React.Component {
+  constructor(props) {
     super(props);
-    this.handleStartChat = this.handleStartChat().bind(this);
-  }*/
+    this.handleStartChat = this.handleStartChat.bind(this);
+  }
   componentDidMount() {
     this.props.getChatList();
   }
 
   handleStartChat() {
+    console.log('Start Chat!');
     const username = document.getElementById('username-textbox').value;
     this.props.startChat(username);
   }
@@ -79,4 +80,4 @@ let mapDispatchToProps = (dispatch) => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatMain);

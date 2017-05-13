@@ -76,11 +76,11 @@ def signup_post_test(browser, uname, upwd, duplication):
             if exist:
                 print('SignUp(' + uname + ') test failed')
                 sys.exit(1)
+            print(uname + ' SignUp success')
     except Exception as e:
         print('SignUp test failed')
         print(e)
         sys.exit(1)
-    print(uname + ' SignUp success')
 
 
 def signin_post_test(browser, uname, upwd):
@@ -120,14 +120,18 @@ print('Browser open successful')
 ################################
 print('\nSignUp test:')
 
-uname = 'user{0}'.format(1)
-upwd = 'user{0}passwd'.format(1)
-signup_post_test(browser, uname, upwd, False)
-signup_post_test(browser, uname, upwd, True)
+for i in range(1, 3):
+    uname = 'user{0}'.format(i)
+    upwd = 'user{0}passwd'.format(i)
+    signup_post_test(browser, uname, upwd, False)
+    signup_post_test(browser, uname, upwd, True)
+
 
 ################################
 print('\nSignIn test:')
 
+uname = 'user{0}'.format(1)
+upwd = 'user{0}passwd'.format(1)
 signin_post_test(browser, uname, upwd)
 
 ################################

@@ -8,9 +8,9 @@ class Feed extends React.Component {
   render() {
     if (this.props.isLoggedIn)
       return (this.props.isChatOn) ? (
-        <FeedMain/>
-      ):(
         <ChatMain/>
+      ):(
+        <FeedMain/>
       );
 
     return (
