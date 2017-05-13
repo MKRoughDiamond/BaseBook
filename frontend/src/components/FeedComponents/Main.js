@@ -29,7 +29,7 @@ class Main extends React.Component {
         <div id="main-content">
           <div id="Pagename">
             MK_RD's Page
-            <button id="chat_button" onCLick={this.handleToChat.bind(self)}>
+            <button id="chat_button" onClick={this.handleToChat.bind(self)}>
               To Chat
             </button>
           </div>

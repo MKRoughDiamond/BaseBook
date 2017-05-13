@@ -95,7 +95,9 @@ export function* fetchFeed(id) {
     window.location.href = '/notfound/';
     return;
   }
-  console.log('Got feed ' + res.id.toString());
+  //console.log('type: '+typeof(res.id)+', res.id: '+res.id);
+  console.log('Get feed ' + res.id.toString());
+  console.log(res);
   yield put(setFeed(res.id, res));
 }
 

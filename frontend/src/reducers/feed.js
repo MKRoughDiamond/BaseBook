@@ -28,6 +28,7 @@ const feed = (state = initState, action) => {
     return Object.assign({}, state, { feedList : newFeedList });
   }
   case SET_FEED: {
+    console.log('action.feed.like: ',action.feed.like);
     const newFeed = {
       author: action.feed.author,
       contents: action.feed.contents,
@@ -35,6 +36,7 @@ const feed = (state = initState, action) => {
       dislike: action.feed.dislike,
       scope: action.feed.scope
     };
+    console.log('newFeed: ',newFeed);
     let newFeedList = Object.assign({}, state.feedList);
     newFeedList[action.id] = newFeed;
     return Object.assign({}, state, { feedList : newFeedList });

@@ -1,7 +1,7 @@
 import { SET_CHAT_LIST, SET_CHAT } from '../actions';
 
 const initState = {
-  desiredChatCount: 0,
+  //desiredChatCount: 0,
   chatList: {}
 };
 

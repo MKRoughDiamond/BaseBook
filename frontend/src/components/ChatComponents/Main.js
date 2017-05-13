@@ -6,6 +6,7 @@ import Entry from './Entry';
 class Main extends React.Component {
   componentDidMount() {
     this.props.getChatList();
+    this.handleStartChat = this.handleStartChat().bind(this);
   }
 
   handleStartChat() {
