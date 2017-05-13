@@ -263,7 +263,7 @@ button {
     font-size : 15px;
     font-weight : bold;
     resize: none;
-    background-color : white;
+    background-color : rgb(0,255,255);
 }
 
 #reply-wrapper {
