@@ -85,6 +85,9 @@ class FeedList(APIView):
         feed.save()
         return Response('', status=200)
 
+    def options(self, request):
+        return options_cors()
+
 class FeedDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated, IsCurrUser,)
     queryset = Feed.objects.all()
@@ -107,7 +110,7 @@ class LikeList(APIView):
             return Response('', status=404)
         serializer = LikeSerializer(likes)
         data = serializer.data
-        if int(request.user.id) in data:
+        if request.user.username in data['likes']:
             return Response('Already Liked', status=400)
         else:
             user = User.objects.get(id=request.user.id)
@@ -121,12 +124,16 @@ class LikeList(APIView):
             return Response('', status=404)
         serializer = LikeSerializer(likes)
         data = serializer.data
-        if request.user.username in data:
+        print(data)
+        if request.user.username in data['likes']:
             user = User.objects.get(id=request.user.id)
             likes.like.remove(user)
             return Response('', status=200)
         else:
             return Response('Not Yet Like', status=400)
+
+    def options(self, request):
+        return options_cors()
 
 class DislikeList(APIView):
 
@@ -145,7 +152,7 @@ class DislikeList(APIView):
             return Response('', status=404)
         serializer = DislikeSerializer(dislikes)
         data = serializer.data
-        if int(request.user.id) in data:
+        if request.user.username in data['dislikes']:
             return Response('Already Disliked', status=400)
         else:
             user = User.objects.get(id=request.user.id)
@@ -159,12 +166,15 @@ class DislikeList(APIView):
             return Response('', status=404)
         serializer = DislikeSerializer(dislikes)
         data = serializer.data
-        if request.user.username in data:
+        if request.user.username in data['dislikes']:
             user = User.objects.get(id=request.user.id)
             dislikes.dislike.remove(user)
             return Response('', status=200)
         else:
             return Response('Not Yet Dislike', status=400)
+
+    def options(self, request):
+        return options_cors()
 
 class ReplyList(APIView):
     def get(self, request, pk):
@@ -179,6 +189,9 @@ class ReplyList(APIView):
         reply = Reply(feed_id=pk, contents=contents, author_id=request.user.id)
         reply.save()
         return Response('', status=200)
+
+    def options(self, request):
+        return options_cors()
 
 class ReplyDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated, IsCurrUserReply,)
