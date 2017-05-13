@@ -186,3 +186,51 @@ export function setDislikes(id, dislikes)
     dislikes: dislikes
   };
 }
+
+export function getChatList() {
+  return {
+    type: GET_CHAT_LIST
+  };
+}
+
+export function setChatList(list) {
+  return {
+    type: SET_CHAT_LIST,
+    list: list
+  };
+}
+
+export function getChat(id) {
+  return {
+    type: GET_CHAT,
+    id: id
+  };
+}
+
+export function setChat(id, chat) {
+  return {
+    type: SET_CHAT,
+    id: id,
+    feed: chat
+  };
+}
+
+export function postChat(contents) {
+  return {
+    type: POST_CHAT,
+    contents: contents
+  };
+}
+
+export function toChat() {
+  return {
+    type : TOCHAT
+  };
+}
+
+export function startChat(username) {
+  return {
+    type: START_CHAT,
+    username: username
+  };
+}
