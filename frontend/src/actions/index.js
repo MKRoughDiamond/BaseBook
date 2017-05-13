@@ -163,21 +163,23 @@ export function getDislikes(id) {
   };
 }
 
-export function setLikes(id, likes)
+export function setLikes(id, likes, didLike)
 {
   return {
     type: SET_LIKES,
     id: id,
-    likes: likes
+    likes: likes,
+    didLike: didLike
   };
 }
 
-export function setDislikes(id, dislikes)
+export function setDislikes(id, dislikes, didDislike)
 {
   return {
     type: SET_DISLIKES,
     id: id,
-    dislikes: dislikes
+    dislikes: dislikes,
+    didDislike: didDislike
   };
 }
 
