@@ -257,9 +257,7 @@ export function* fetchChatList(chatRoomID) {
     //window.location.href = '/notfound/';
     return;
   }
-  /*console.log('Chat res: ',res);
   console.log('Chat res.chat: ',res.chat);
-  console.log('setChatList-red.id: ', res.id);*/
   yield put(setChatList(res.chat));
 }
 /*

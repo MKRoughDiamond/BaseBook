@@ -4,7 +4,7 @@ import {
 } from '../actions';
 
 const initState = {
-  //desiredChatCount: 0,
+  desiredChatCount: 0,
   chatOn: false,
   otherUsername: null,
   chatRoomID: null,
@@ -26,9 +26,10 @@ const chat = (state = initState, action) => {
   case GET_CHAT_ROOM_ID:
     return Object.assign({}, state, { chatRoomID : action.chatRoomID });
   case SET_CHAT_LIST: {
-    let newChatList = {};
-    console.log('chat.js: SET_CHAT_LIST-action.list: ', action.list);
-    newChatList = action.list;
+    console.log('chatList: ', state.chatList);
+    let newChatList = state.chatList;
+    console.log('chat.js: SET_CHAT_LIST-action.list: ', action.list[0]);
+    newChatList[state.desiredChatCount] = action.list[0];
     /*action.list.map((chat) => {
       console.log('set_chat_list id: ',chat);
       const sid = id.toString();
@@ -37,7 +38,11 @@ const chat = (state = initState, action) => {
       else
         newChatList[sid] = Object.assign({}, chatInitState);
     });*/
-    return Object.assign({}, state, { chatList : newChatList });
+    console.log('newChatList: ', newChatList);
+    return Object.assign({}, state, {
+      chatList : newChatList,
+      desiredChatCount: state.desiredChatCount + 1
+    });
   }
   case SET_CHAT: {
     const newChat = {
