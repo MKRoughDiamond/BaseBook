@@ -251,3 +251,22 @@ class ChatDetail(APIView):
         chat.save()
         return Response('')
     
+    
+class ChatAll(APIView):
+    def get(self, request, pk):
+        try:
+            room = ChatRoom.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
+        chats = Chat.objects.filter(room=room)
+        if request.user == room.user1:
+            room.updated1 = timezone.now()
+        elif request.user == room.user2:
+            room.updated2 = timezone.now()
+        else:
+            return Response('', status=401)
+        room.save()
+        serializer = ChatSerializer(chats)
+        return Response(serializer.data)
+
+    

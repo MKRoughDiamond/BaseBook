@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^reply/(?P<pk>[0-9]+)/$', views.ReplyDetail.as_view()),
     url(r'^chat/user/(?P<username>\w+)/$', views.ChatRoomID.as_view()),
     url(r'^chat/(?P<pk>[0-9]+)/$', views.ChatDetail.as_view()),
+    url(r'^chat/(?P<pk>[0-9]+)/all/$', views.ChatAll.as_view()),
 ]

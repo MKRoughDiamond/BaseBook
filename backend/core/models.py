@@ -56,5 +56,8 @@ class Chat(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     contents = models.TextField()
     
+    class Meta:
+        ordering = ['timestamp']
+    
     
     
