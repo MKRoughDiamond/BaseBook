@@ -44,7 +44,7 @@ def signup_post_test(url, unickname, uname, upwd):
 def login_post_test(url, uname, upwd):
     sleep(0.05)
     try:
-        auth_user = uname + ':' + upwd
+        #auth_user = uname + ':' + upwd
         #print(auth_user)
         #hash64 = base64.b64encode(auth_user.encode('utf-8'))  # type = bytes
         headers = {
@@ -63,8 +63,8 @@ def feed_post_test(url, contents, scope, uname, upwd):
     sleep(0.05)
     try:
         #hash = new Buffer(`${uname}:${upwd}`).toString('base64')
-        auth_user = uname + ':' + upwd
-        hash64 = base64.b64encode(auth_user.encode('utf-8')) #type = bytes
+        #auth_user = uname + ':' + upwd
+        #hash64 = base64.b64encode(auth_user.encode('utf-8')) #type = bytes
         #print(hash64)
         data = {'contents': contents, 'scope': scope}
         headers = {

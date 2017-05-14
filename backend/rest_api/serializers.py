@@ -38,13 +38,13 @@ class LikeSerializer(serializers.BaseSerializer):
 class DislikeSerializer(serializers.BaseSerializer):
     def to_representation(self,obj):
         dislikes = []
-        for e in obj.dislike.all():
+        for e in obj:
             dislikes += [ e.username ]
         return {
             'dislikes': dislikes
         }
 
-class ReplySerializer(serializers.BaseSerializer):
+class ReplyListSerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
         replylist = []
         for e in obj:
@@ -53,6 +53,11 @@ class ReplySerializer(serializers.BaseSerializer):
         return {
             'id': replylist
         }
+
+class ReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
+        fields = ('id', 'feed_id', 'contents', 'author',)
 
 class ChatRoomSerializer(serializers.ModelSerializer):
     class Meta:

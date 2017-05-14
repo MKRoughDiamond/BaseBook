@@ -9,8 +9,7 @@ from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 
-from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, \
-    LikeSerializer, DislikeSerializer, ChatRoomSerializer, ChatSerializer
+from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, ChatRoomSerializer, ChatSerializer
 from rest_api.permissions import IsCurrUser, IsCurrUserReply
 from core.models import Feed, Reply, Chat, ChatRoom, Friend
 #from core.models import BaseUser, Friend, Feed, Reply, Picture
@@ -196,8 +195,8 @@ class DislikeList(APIView):
 
 class ReplyList(APIView):
     def get(self, request, pk):
-        replies = Reply.objects.filter(feed__id=pk)
-        serializer = ReplySerializer(replies)
+        replies = Reply.objects.filter(feed__id=pk).order_by('-timestamp')
+        serializer = ReplyListSerializer(replies)
         return Response(serializer.data)
 
     def post(self, request, pk):
