@@ -19,14 +19,14 @@ class ChatMain extends React.Component {
   handlePostChat() {
     console.log('Post Chat!');
     const contents = document.getElementById('new-chat-text').value;
-    console.log('new-chat-text.value: ', contents);
-    console.log('this.props.chatRoomID: ', this.props.chatRoomID);
+    //console.log('new-chat-text.value: ', contents);
+    //console.log('this.props.chatRoomID: ', this.props.chatRoomID);
     this.props.postChat(this.props.chatRoomID, contents);
   }
 
   render() {
     const chatList = this.props.chatList;
-    console.log(Object.keys(chatList));
+    console.log('Object.keys(chatList): ', Object.keys(chatList));
     return (
       <div id="main-wrapper">
         <div id="main-title">
