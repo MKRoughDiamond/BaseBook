@@ -5,13 +5,13 @@ import {getChat} from '../../actions';
 class Entry extends React.Component {
 
   componentDidMount() {
-    const chat = this.props.chatList[this.props.params.id];
+    const chat = this.props.chatList[this.props.chatID];
     if(chat.contents === null)
-      this.props.getChat(this.props.params.id);
+      this.props.getChat(this.props.chatID);
   }
 
   render() {
-    const chat = this.props.chatList[this.props.params.id];
+    const chat = this.props.chatList[this.props.chatID];
     if(chat.contents === null)
       return <div/>;
     return (

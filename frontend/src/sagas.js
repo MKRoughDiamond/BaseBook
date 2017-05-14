@@ -5,7 +5,7 @@ import {
   START_CHAT, GET_CHAT_LIST, /*GET_CHAT,*/ POST_CHAT,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed,
   getLikes, getDislikes, setLikes, setDislikes,
-  getChatRoomID, getChatList, setChatList, //setChat,
+  getChatRoomID, getChatList, setChatList, /*setChat,*/
 } from './actions';
 
 export function* postSignUp() {
@@ -79,6 +79,7 @@ export function* fetchFeedList() {
     window.location.href = '/notfound/';
     return;
   }
+  console.log('Feed res: ',res);
   yield put(setFeedList(res.id));
 }
 
@@ -243,7 +244,7 @@ export function* fetchChatList(chatRoomID) {
       'Authorization': `Basic ${state.server.hash}`
     }
   });
-  console.log(response.status);
+  console.log('fetchChatListSaga-status: ', response.status);
   if(response.ok === false) {
     //window.location.href = '/notfound/';
     return;
@@ -256,20 +257,22 @@ export function* fetchChatList(chatRoomID) {
     //window.location.href = '/notfound/';
     return;
   }
-  console.log('############asdf############');
-  yield put(setChatList(res.id));
+  /*console.log('Chat res: ',res);
+  console.log('Chat res.chat: ',res.chat);
+  console.log('setChatList-red.id: ', res.id);*/
+  yield put(setChatList(res.chat));
 }
 /*
 export function* fetchChat(id) {
   const state = yield select();
-  const response = yield call(fetch, '/feed/' + id.toString() + '/', {
+  const response = yield call(fetch, '/chat/' + id.toString() + '/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
     }
   });
   if(response.ok === false) {
-    window.location.href = '/notfound/';
+    //window.location.href = '/notfound/';
     return;
   }
   let res;
@@ -277,10 +280,10 @@ export function* fetchChat(id) {
     res = yield response.json();
   }
   catch(e) {
-    window.location.href = '/notfound/';
+    //window.location.href = '/notfound/';
     return;
   }
-  yield put(setFeed(res.id, res));
+  yield put(setChat(res.id, res));
 }
 */
 export function* postChat(chatRoomID, contents) {
@@ -296,11 +299,12 @@ export function* postChat(chatRoomID, contents) {
       contents: contents
     })
   });
+  console.log('postChatSaga-response.code: ', response.status);
   if(response.ok === false) {
     window.location.href = '/notfound/';
     return;
   }
-  yield put(getChatList(chatRoomID)); // refresh news feed
+  yield put(getChatList(chatRoomID)); // refresh chat log
 }
 
 
@@ -408,6 +412,7 @@ export function* watchGetChat() {
   const t = true;
   while(t) {
     const action = yield take(GET_CHAT);
+    console.log('watchGetChatSaga-id: ',action.id);
     // Use fork to send multiple request at the same time
     yield fork(fetchChat, action.id);
   }

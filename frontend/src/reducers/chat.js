@@ -10,13 +10,13 @@ const initState = {
   chatRoomID: null,
   chatList: {}
 };
-
+/*
 const chatInitState = {
-  author: null,
-  timeStamp: null,
+  timestamp: null,
+  username: null,
   contents: null
 };
-
+*/
 const chat = (state = initState, action) => {
   switch(action.type) {
   case TOCHAT:
@@ -26,17 +26,17 @@ const chat = (state = initState, action) => {
   case GET_CHAT_ROOM_ID:
     return Object.assign({}, state, { chatRoomID : action.chatRoomID });
   case SET_CHAT_LIST: {
-    // copy existing chat to prevent redundant GET requests
     let newChatList = {};
-    console.log('asdfasdf');
-    action.list.map((id) => {
-      console.log('id: ',id);
+    console.log('chat.js: SET_CHAT_LIST-action.list: ', action.list);
+    newChatList = action.list;
+    /*action.list.map((chat) => {
+      console.log('set_chat_list id: ',chat);
       const sid = id.toString();
       if(sid in state.chatList)
         newChatList[sid] = state.chatList[sid];
       else
         newChatList[sid] = Object.assign({}, chatInitState);
-    });
+    });*/
     return Object.assign({}, state, { chatList : newChatList });
   }
   case SET_CHAT: {
