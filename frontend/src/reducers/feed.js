@@ -2,7 +2,8 @@ import { SET_FEED_LIST, SET_FEED , SET_LIKES, SET_DISLIKES} from '../actions';
 
 const initState = {
   desiredFeedCount: 0,
-  feedList: {}
+  feedList: {},
+  orderedFeedIdList: []
 };
 
 const feedInitState = {
@@ -27,7 +28,10 @@ const feed = (state = initState, action) => {
       else
         newFeedList[sid] = Object.assign({}, feedInitState);
     });
-    return Object.assign({}, state, { feedList : newFeedList });
+    return Object.assign({}, state, {
+      feedList : newFeedList,
+      orderedFeedIdList: action.list
+    });
   }
   case SET_FEED: {
     let newFeed = {};

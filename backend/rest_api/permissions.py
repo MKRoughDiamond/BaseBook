@@ -1,16 +1,27 @@
 from rest_framework import permissions
+from core.models import Friend
 
 
 class IsCurrUser(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        if obj.author_id == request.user.id:
+        if request.method != 'GET':
             return True
+        if obj.scope == 'Public':
+            return True
+        elif obj.scope == 'Friends Only':
+            return request.user == obj.author or \
+                request.user in Friend.objects.filter(user=obj.author).values('friend')
         else:
-            return request.method == 'GET' and obj.scope == 'Public'
+            return request.user == obj.author
             
 class IsCurrUserReply(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        if obj.author_id == request.user.id:
+        if request.method != 'GET':
             return True
+        if obj.scope == 'Public':
+            return True
+        elif obj.scope == 'Friends Only':
+            return request.user == obj.author or \
+                request.user in Friend.objects.filter(user=obj.author).values('friend')
         else:
-            return request.method == 'GET'
+            return request.user == obj.author

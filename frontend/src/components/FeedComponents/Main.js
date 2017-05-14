@@ -18,8 +18,6 @@ class FeedMain extends React.Component {
   }
 
   render() {
-    const feedList = this.props.feedList;
-    //console.log(Object.keys(feedList));
     return (
       <div id="main-wrapper">
         <div id="main-title">
@@ -32,13 +30,13 @@ class FeedMain extends React.Component {
         </div>
         <div id="main-content">
           <div id="Pagename">
-            MK_RD's Page
+            {this.props.username + '\'s Page'}
             <button id="chat_button" onClick={this.handleToChat}>Chat</button>
           </div>
           <Post/>
           <div id="feed-entries">
-            {Object.keys(feedList).map( (id, i) => {
-              return <Entry feedID={id} index={i}/>;
+            {this.props.feedIdList.map( (id) => {
+              return <Entry feedID={id} key={id}/>;
             })}
           </div>
         </div>
@@ -49,7 +47,8 @@ class FeedMain extends React.Component {
 
 let mapStateToProps = (state) => {
   return {
-    feedList: state.feed.feedList
+    feedIdList: state.feed.orderedFeedIdList,
+    username: state.server.ID
   };
 };
 

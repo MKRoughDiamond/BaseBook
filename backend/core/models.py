@@ -17,6 +17,7 @@ class Feed(models.Model):
         ('Private', 'Private'),
         ('Hidden', 'Hidden'),   # Same as 'private', but user can't change scope
     )
+    timestamp = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User,on_delete=models.CASCADE)
     contents = models.TextField()
     scope = models.CharField(max_length=13, choices=SCOPE_CHOICES)
@@ -55,6 +56,9 @@ class Chat(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     contents = models.TextField()
+    
+    class Meta:
+        ordering = ['timestamp']
     
     
     

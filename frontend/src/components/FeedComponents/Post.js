@@ -24,9 +24,9 @@ class Post extends React.Component {
             New Feed
           </div>
           <select name="scope" id="newFeed-scope">
-            <option value="">Public</option>
-            <option value="">Friend Only</option>
-            <option value="">Private</option>
+            <option value="Public">Public</option>
+            <option value="Friends Only">Friends Only</option>
+            <option value="Private">Private</option>
           </select>
         </div>
         <div id="newFeed-text-wrapper">
