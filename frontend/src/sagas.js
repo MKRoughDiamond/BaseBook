@@ -1,6 +1,10 @@
 import { take, fork, call, select, put } from 'redux-saga/effects';
 import { TOMAIN, LOGIN, GET_FEED_LIST, GET_FEED, POST_FEED,
-  loginSuccess, loginPageError, getFeedList, setFeedList, setFeed } from './actions';
+  POST_LIKES, POST_DISLIKES, GET_LIKES, GET_DISLIKES,
+  START_CHAT,
+  loginSuccess, loginPageError, getFeedList, setFeedList, setFeed,
+  getLikes, getDislikes, setLikes, setDislikes
+} from './actions';
 
 export function* postSignUp() {
   const state = yield select();
@@ -73,7 +77,6 @@ export function* fetchFeedList() {
     return;
   }
   yield put(setFeedList(res.id));
-  console.log(res.id);
 }
 
 export function* fetchFeed(id) {
@@ -96,8 +99,55 @@ export function* fetchFeed(id) {
     window.location.href = '/notfound/';
     return;
   }
-  console.log('Got feed ' + res.id.toString());
   yield put(setFeed(res.id, res));
+}
+
+export function* fetchLikes(id) {
+  const state = yield select();
+  const response = yield call(fetch, '/feed/' + id.toString() + '/likes/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  const didLike = (res.likes.indexOf(state.server.ID) !== -1) ? true : false;
+  yield put(setLikes(id, res.likes, didLike));
+}
+
+export function* fetchDislikes(id) {
+  const state = yield select();
+  const response = yield call(fetch, '/feed/' + id.toString() + '/dislikes/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  const didDislike = (res.dislikes.indexOf(state.server.ID) !== -1) ? true : false;
+  yield put(setDislikes(id, res.dislikes, didDislike));
 }
 
 export function* postFeed(contents, scope) { 
@@ -118,6 +168,65 @@ export function* postFeed(contents, scope) {
     return;
   }
   yield put(getFeedList()); // refresh news feed
+}
+
+export function* postLikes(id) {
+  const state = yield select();
+  const req = (state.feed.feedList[id].didLike)?'DELETE':'POST';
+  const response = yield call(fetch, '/feed/' + id.toString() + '/likes/', {
+    method: req,
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  if(response.ok === false) {
+    return;
+  }
+  yield put(getLikes(id));
+}
+
+export function* postDislikes(id) {
+  const state = yield select();
+  const req = (state.feed.feedList[id].didDislike)?'DELETE':'POST';
+  const response = yield call(fetch, '/feed/' + id.toString() + '/dislikes/', {
+    method: req,
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  if(response.ok === false) {
+    return;
+  }
+  yield put(getDislikes(id));
+}
+
+export function* startChat(username) {
+  const state = yield select();
+  const response = yield call(fetch, '/chat/user/' + username + '/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  const res = yield response.json();
+  console.log(res);
+  console.log('res.id: ', res.id);
+  if(response.ok === true) {
+    //
+  }
+  else {
+    let res = {};
+    try {
+      res = yield response.json();
+    }
+    catch (e) {
+      res.message = 'POST /chat/user/username error.';
+    }
+    console.log(res.message);
+  }
 }
 
 export function* watchSignUp() {
@@ -157,6 +266,22 @@ export function* watchGetFeed() {
   }
 }
 
+export function* watchGetLikes() {
+  const t = true;
+  while(t) {
+    const action = yield take(GET_LIKES);
+    yield fork(fetchLikes, action.id);
+  }
+}
+
+export function* watchGetDislikes() {
+  const t = true;
+  while(t) {
+    const action = yield take(GET_DISLIKES);
+    yield fork(fetchDislikes, action.id);
+  }
+}
+
 export function* watchPostFeed() {
   const t = true;
   while(t) {
@@ -165,10 +290,41 @@ export function* watchPostFeed() {
   }
 }
 
+export function* watchPostLikes() {
+  const t = true;
+  while(t) {
+    const action = yield take(POST_LIKES);
+    yield call(postLikes, action.id);
+  }
+}
+
+export function* watchPostDislikes() {
+  const t = true;
+  while(t) {
+    const action = yield take(POST_DISLIKES);
+    yield call(postDislikes, action.id);
+  }
+}
+
+export function* watchStartChat() {
+  let state;
+  do {
+    state = yield select();
+    const action = yield take(START_CHAT);
+    yield call(startChat, action.username);
+  }
+  while(state.chat.otherUsername === null);
+}
+
 export function* rootSaga() {
   yield fork(watchSignUp);
   yield fork(watchLogin);
   yield fork(watchGetFeedList);
   yield fork(watchGetFeed);
   yield fork(watchPostFeed);
+  yield fork(watchPostLikes);
+  yield fork(watchPostDislikes);
+  yield fork(watchGetLikes);
+  yield fork(watchGetDislikes);
+  yield fork(watchStartChat);
 }

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from core.models import BaseUser, Friend, Feed, Reply, Picture
+from core.models import BaseUser, Friend, Feed, Reply, Picture, ChatRoom, Chat
 from django.db import models
 
 
@@ -24,26 +24,52 @@ class FeedSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
     class Meta:
         model = Feed
-        fields = ('id', 'contents', 'like', 'dislike', 'scope', 'author')
+        fields = ('id', 'contents', 'scope', 'author')
 
 class LikeSerializer(serializers.BaseSerializer):
     def to_representation(self,obj):
         likes = []
         for e in obj.like.all():
-            likes += [ e.id ]
-        return likes
+            likes += [ e.username ]
+        return {
+            'likes': likes
+        }
 
 class DislikeSerializer(serializers.BaseSerializer):
     def to_representation(self,obj):
         dislikes = []
         for e in obj.dislike.all():
-            dislikes += [ e.id ]
-        return dislikes
+            dislikes += [ e.username ]
+        return {
+            'dislikes': dislikes
+        }
 
 class ReplySerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
+        replylist = []
+        for e in obj:
+            replylist += [ e.id ]
+
         return {
-            'id': obj.id,
-            'contents': obj.contents,
-            'author': obj.author.username
+            'id': replylist
         }
+
+class ChatRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatRoom
+        fields = ('id',)
+
+
+class ChatSerializer(serializers.BaseSerializer):
+    def to_representation(self, obj):
+        chatlist = []
+        for e in obj:
+            chatlist += [ {
+                'username': e.user.username,
+                'timestamp': e.timestamp,
+                'contents': e.contents
+            }]
+        return {
+            'chat': chatlist
+        }
+    

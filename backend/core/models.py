@@ -17,6 +17,7 @@ class Feed(models.Model):
         ('Private', 'Private'),
         ('Hidden', 'Hidden'),   # Same as 'private', but user can't change scope
     )
+    timestamp = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User,on_delete=models.CASCADE)
     contents = models.TextField()
     scope = models.CharField(max_length=13, choices=SCOPE_CHOICES)
@@ -39,3 +40,25 @@ class Picture(models.Model):
     feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=upload_path)
     # Access url with instance.image.url()
+
+
+class ChatRoom(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    # user1's ID is always smaller than user2's ID
+    user1 = models.ForeignKey(User, related_name='user1', on_delete=models.CASCADE)
+    user2 = models.ForeignKey(User, related_name='user2', on_delete=models.CASCADE)
+    updated1 = models.DateTimeField()
+    updated2 = models.DateTimeField()
+
+
+class Chat(models.Model):
+    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    contents = models.TextField()
+    
+    class Meta:
+        ordering = ['timestamp']
+    
+    
+    

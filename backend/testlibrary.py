@@ -34,9 +34,7 @@ def signup_post_test(url, unickname, uname, upwd):
     try:
         data = {'id':uname,'password':upwd}
         headers = {'Content-Type': 'application/json'}
-        res = requests.post(url,
-                            data=json.dumps(data),
-                            headers=headers)
+        res = requests.post(url, data=json.dumps(data), headers=headers)
         if res.status_code != 200:
             wrong_status_code('post signup',url,res.status_code)
     except Exception as e:
@@ -46,11 +44,15 @@ def signup_post_test(url, unickname, uname, upwd):
 def login_post_test(url, uname, upwd):
     sleep(0.05)
     try:
-        data = {'id': uname, 'password': upwd}
-        headers = {'Content-Type': 'application/json'}
-        res = requests.post(url,
-                            data=json.dumps(data),
-                            headers=headers)
+        auth_user = uname + ':' + upwd
+        #print(auth_user)
+        #hash64 = base64.b64encode(auth_user.encode('utf-8'))  # type = bytes
+        headers = {
+            'Content-Type': 'application/json',
+            #'Authorization': 'Basic %s' % hash64
+        }
+        res = requests.post(url, headers=headers, auth=(uname,upwd))
+        #print(res.text)
         if res.status_code != 200:
             wrong_status_code('post login', url, res.status_code)
     except Exception as e:
@@ -61,34 +63,17 @@ def feed_post_test(url, contents, scope, uname, upwd):
     sleep(0.05)
     try:
         #hash = new Buffer(`${uname}:${upwd}`).toString('base64')
-        hash64 = base64.encodestring(uname + ":" + upwd)
+        auth_user = uname + ':' + upwd
+        hash64 = base64.b64encode(auth_user.encode('utf-8')) #type = bytes
+        #print(hash64)
         data = {'contents': contents, 'scope': scope}
         headers = {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + hash64
+            #'Authorization': 'Basic %s' % hash64
         }
-        res = requests.post(url,
-                            data=json.dumps(data),
-                            headers=headers)
+        res = requests.post(url, data=json.dumps(data), headers=headers, auth=(uname,upwd))
         if res.status_code != 200:
             wrong_status_code('post feed', url, res.status_code)
-
-        '''client = requests.Session()
-        csrftoken = client.get(url).cookies['csrftoken']
-        data = {'id':auth_user['id'], 'password':auth_user['password'],
-                    'contents':contents, 'scope':scope,
-                    'csrfmiddlewaretoken':csrftoken, 'next':'/'}
-        res = client.post(url,
-                          data=json.dumps(data),
-                          #headers=headers,
-                          auth=auth_user)
-        if res.status_code != 200:
-            wrong_status_code('post feed', url, res.status_code)'''
-        '''content = r.json()
-        status = content.get('status')
-        print('status code: {0}'.format(status), end=' ')
-        if status == 200:
-            print('good')'''
     except Exception as e:
         unexpected_exception('post feed', url, e)
     print('success')
@@ -97,20 +82,19 @@ def feed_get_test(url, uname, upwd):
     sleep(0.05)
     try:
         headers = {'Content-Type': 'application/json'}
-        res = requests.post(url,
-                            headers=headers)
+        res = requests.get(url, headers=headers, auth=(uname,upwd))
         if res.status_code != 200:
             wrong_status_code('post feed', url, res.status_code)
         pass
     except Exception as e:
         unexpected_exception('get feed', url, e)
+    print('success')
 
 def feed_id_get_test(url, uname, upwd, seen):
     sleep(0.05)
     try:
         headers = {'Content-Type': 'application/json'}
-        res = requests.get(url,
-                           headers = headers)
+        res = requests.get(url, headers = headers, auth=(uname,upwd))
         if (seen and res.status_code!=200) or \
             (not seen and res.status_code==200):
             wrong_status_code('get feed', url, res.status_code)
@@ -121,16 +105,25 @@ def feed_id_get_test(url, uname, upwd, seen):
 def feed_reply_post_test(url, contents, uname, upwd):
     sleep(0.05)
     try:
-        pass
+        data = {'contents': contents}
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(url, data=json.dumps(data), headers=headers, auth=(uname, upwd))
+        if res.status_code != 200:
+            wrong_status_code('post feed', url, res.status_code)
     except Exception as e:
         unexpected_exception('get feed', url, e)
+    print('success')
 
-def feed_reply_get_test(url, contents, uname, upwd):
+def feed_reply_get_test(url, uname, upwd):
     sleep(0.05)
     try:
-        pass
+        headers = {'Content-Type': 'application/json'}
+        res = requests.get(url, headers=headers, auth=(uname, upwd))
+        if res.status_code != 200:
+            wrong_status_code('post feed', url, res.status_code)
     except Exception as e:
         unexpected_exception('get feed', url, e)
+    print('success')
 
 def profile_test(url, ):
     sleep(0.05)
@@ -138,4 +131,5 @@ def profile_test(url, ):
         pass
     except Exception as e:
         unexpected_exception('get feed', url, e)
+    print('success')
 

@@ -1,4 +1,6 @@
-import { SETID, SETPW, NEWID, NEWPW, RETYPEPW, TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR } from '../actions';
+import { SETID, SETPW, NEWID, NEWPW, RETYPEPW,
+  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR
+} from '../actions';
 
 const serverInitialState = {
   ID: '',
