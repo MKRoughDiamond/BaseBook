@@ -47,7 +47,7 @@ const chat = (state = initState, action) => {
   case SET_CHAT: {
     const newChat = {
       author: action.chat.author,
-      timeStamp: action.chat.timeStamp,
+      timeStamp: action.chat.timestamp,
       contents: action.chat.contents
     };
     let newChatList = Object.assign({}, state.chatList);
