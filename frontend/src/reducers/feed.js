@@ -27,7 +27,10 @@ const feed = (state = initState, action) => {
       if(sid in state.feedList)
         newFeedList[sid] = state.feedList[sid]; 
       else
-        newFeedList[sid] = Object.assign({}, feedInitState);
+        newFeedList[sid] = Object.assign({}, feedInitState, {
+          like: 0,
+          dislike: 0
+        });
     });
     return Object.assign({}, state, {
       feedList : newFeedList,
@@ -48,7 +51,9 @@ const feed = (state = initState, action) => {
       newFeed = Object.assign({}, feedInitState, {
         author: action.feed.author,
         contents: action.feed.contents,
-        scope: action.feed.scope
+        scope: action.feed.scope,
+        like: 0,
+        dislike: 0
       });
     }
     let newFeedList = Object.assign({}, state.feedList);
