@@ -18,10 +18,4 @@ class IsCurrUserReply(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method != 'GET':
             return True
-        if obj.scope == 'Public':
-            return True
-        elif obj.scope == 'Friends Only':
-            return request.user == obj.author or \
-                request.user in Friend.objects.filter(user=obj.author).values('friend')
-        else:
-            return request.user == obj.author
+        return request.user == obj.author

@@ -45,11 +45,11 @@ class Entry extends React.Component {
           <button id="feed-modify">
             modify
           </button>
-          <button id="feed-bad" onClick={this.handlePostDislikes}>
-            {'Bad ' + feed.dislike}
+          <button id="feed-dislike" onClick={this.handlePostDislikes}>
+            {'Dislike ' + feed.dislike}
           </button>
-          <button id="feed-good" onClick={this.handlePostLikes}>
-            {'Good ' + feed.like}
+          <button id="feed-like" onClick={this.handlePostLikes}>
+            {'Like ' + feed.like}
           </button>
         </div>
         <div id="feed-content">

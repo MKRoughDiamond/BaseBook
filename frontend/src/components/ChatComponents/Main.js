@@ -26,7 +26,7 @@ class ChatMain extends React.Component {
 
   render() {
     const chatList = this.props.chatList;
-    console.log('Object.keys(chatList): ', Object.keys(chatList));
+    console.log('Object.keys(chatList): ', chatList);
     return (
       <div id="main-wrapper">
         <div id="main-title">
@@ -53,8 +53,8 @@ class ChatMain extends React.Component {
           </div>
           <div id="chatting-main">
             <div id="chatting-content">
-              {Object.keys(chatList).map( (i) => {
-                return <Entry index={i}/>;
+              {chatList.map( (item) => {
+                return <Entry index={item.id}/>;
               })}
             </div>
             <div id="new-chat">
