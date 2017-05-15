@@ -155,7 +155,7 @@ print('################################################################')
 for i in range(0, N):
     print('drivers[{0}] open'.format(i))
     drivers.append(webdriver.Chrome('/usr/local/bin/chromedriver'))
-    drivers[i].get('http://localhost:3000')
+    drivers[i].get('http://13.124.80.116:3000')
     print('drivers[{0}] open successful'.format(i))
 
 ################################################################
