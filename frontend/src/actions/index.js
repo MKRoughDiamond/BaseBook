@@ -24,6 +24,7 @@ export const SET_DISLIKES = 'SET_DISLIKES';
 
 export const TOCHAT = 'TOCHAT';
 export const START_CHAT = 'START_CHAT';
+export const GET_CHAT_ROOM_ID = 'GET_CHAT_ROOM_ID';
 
 export const GET_CHAT_LIST = 'GET_CHAT_LIST';
 export const SET_CHAT_LIST = 'SET_CHAT_LIST';
@@ -163,8 +164,7 @@ export function getDislikes(id) {
   };
 }
 
-export function setLikes(id, likes, didLike)
-{
+export function setLikes(id, likes, didLike) {
   return {
     type: SET_LIKES,
     id: id,
@@ -173,8 +173,7 @@ export function setLikes(id, likes, didLike)
   };
 }
 
-export function setDislikes(id, dislikes, didDislike)
-{
+export function setDislikes(id, dislikes, didDislike) {
   return {
     type: SET_DISLIKES,
     id: id,
@@ -196,9 +195,17 @@ export function startChat(username) {
   };
 }
 
-export function getChatList() {
+export function getChatRoomID(chatRoomID) {
   return {
-    type: GET_CHAT_LIST
+    type: GET_CHAT_ROOM_ID,
+    chatRoomID: chatRoomID
+  };
+}
+
+export function getChatList(chatRoomID) {
+  return {
+    type: GET_CHAT_LIST,
+    chatRoomID: chatRoomID
   };
 }
 
@@ -209,24 +216,24 @@ export function setChatList(list) {
   };
 }
 
-export function getChat(id) {
+export function getChat(chatRoomID) {
   return {
     type: GET_CHAT,
-    id: id
+    chatRoomID: chatRoomID
   };
 }
 
-export function setChat(id, chat) {
+export function setChat(list) {
   return {
     type: SET_CHAT,
-    id: id,
-    chat: chat
+    list: list
   };
 }
 
-export function postChat(contents) {
+export function postChat(chatRoomID, contents) {
   return {
     type: POST_CHAT,
+    chatRoomID: chatRoomID,
     contents: contents
   };
 }

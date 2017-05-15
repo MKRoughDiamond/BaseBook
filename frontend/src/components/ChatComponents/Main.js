@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getChatList, startChat, setChat} from '../../actions';
+import {getChatList, startChat, postChat} from '../../actions';
 import Entry from './Entry';
 
 class ChatMain extends React.Component {
@@ -8,9 +8,6 @@ class ChatMain extends React.Component {
     super(props);
     this.handleStartChat = this.handleStartChat.bind(this);
     this.handlePostChat = this.handlePostChat.bind(this);
-  }
-  componentDidMount() {
-    this.props.getChatList();
   }
 
   handleStartChat() {
@@ -22,12 +19,14 @@ class ChatMain extends React.Component {
   handlePostChat() {
     console.log('Post Chat!');
     const contents = document.getElementById('new-chat-text').value;
-    this.props.setChat(contents);
+    //console.log('new-chat-text.value: ', contents);
+    //console.log('this.props.chatRoomID: ', this.props.chatRoomID);
+    this.props.postChat(this.props.chatRoomID, contents);
   }
 
   render() {
     const chatList = this.props.chatList;
-    console.log(Object.keys(chatList));
+    console.log('Object.keys(chatList): ', Object.keys(chatList));
     return (
       <div id="main-wrapper">
         <div id="main-title">
@@ -54,8 +53,8 @@ class ChatMain extends React.Component {
           </div>
           <div id="chatting-main">
             <div id="chatting-content">
-              {Object.keys(chatList).map( (id, i) => {
-                return <Entry chatID={id} index={i}/>;
+              {Object.keys(chatList).map( (i) => {
+                return <Entry index={i}/>;
               })}
             </div>
             <div id="new-chat">
@@ -75,15 +74,16 @@ class ChatMain extends React.Component {
 
 let mapStateToProps = (state) => {
   return {
+    chatRoomID: state.chat.chatRoomID,
     chatList: state.chat.chatList
   };
 };
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    getChatList: () => dispatch(getChatList()),
+    getChatList: (chatRoomID) => dispatch(getChatList(chatRoomID)),
     startChat: (username) => dispatch(startChat(username)),
-    setChat: () => dispatch(setChat())
+    postChat: (chatRoomID, contents) => dispatch(postChat(chatRoomID, contents))
   };
 };
 
