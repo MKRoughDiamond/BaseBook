@@ -1,11 +1,12 @@
-import { take, fork, call, select, put } from 'redux-saga/effects';
+import { take, fork, call, select, put} from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 import {
   TOMAIN, LOGIN, GET_FEED_LIST, GET_FEED, POST_FEED,
   POST_LIKES, POST_DISLIKES, GET_LIKES, GET_DISLIKES,
-  START_CHAT, GET_CHAT_LIST, /*GET_CHAT,*/ POST_CHAT,
+  START_CHAT, GET_CHAT_LIST, GET_CHAT, POST_CHAT, SET_CHAT_LIST,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed,
   getLikes, getDislikes, setLikes, setDislikes,
-  getChatRoomID, getChatList, setChatList, /*setChat,*/
+  getChatRoomID, getChatList, setChatList, setChat, getChat
 } from './actions';
 
 export function* postSignUp() {
@@ -79,7 +80,7 @@ export function* fetchFeedList() {
     window.location.href = '/notfound/';
     return;
   }
-  console.log('Feed res: ',res);
+  //console.log('Feed res: ',res);
   yield put(setFeedList(res.id));
 }
 
@@ -218,10 +219,12 @@ export function* startChat(username) {
     }
   });
   const res = yield response.json();
-  console.log(res);
-  console.log('res.id: ', res.id);
+  //console.log(res);
+  //console.log('res.id: ', res.id);
   if(response.ok === true) {
     yield put(getChatRoomID(res.id));
+    const st = yield select();
+    yield put(getChatList(st.chat.chatRoomID));
   }
   else {
     let res = {};
@@ -237,14 +240,38 @@ export function* startChat(username) {
 
 export function* fetchChatList(chatRoomID) {
   const state = yield select();
-  console.log('fetchChatListSaga-chatRoomID: ',chatRoomID);
+  //console.log('fetchChatListSaga-chatRoomID: ',chatRoomID);
+  const response = yield call(fetch, '/chat/' + chatRoomID + '/all/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  //console.log('fetchChatListSaga-status: ', response.status);
+  if(response.ok === false) {
+    //window.location.href = '/notfound/';
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
+    //window.location.href = '/notfound/';
+    return;
+  }
+  //console.log('Chat res.chat: ',res.chat);
+  yield put(setChatList(res.chat));
+}
+
+export function* fetchChat(chatRoomID) {
+  const state = yield select();
   const response = yield call(fetch, '/chat/' + chatRoomID + '/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
     }
   });
-  console.log('fetchChatListSaga-status: ', response.status);
   if(response.ok === false) {
     //window.location.href = '/notfound/';
     return;
@@ -257,36 +284,12 @@ export function* fetchChatList(chatRoomID) {
     //window.location.href = '/notfound/';
     return;
   }
-  console.log('Chat res.chat: ',res.chat);
-  yield put(setChatList(res.chat));
+  yield put(setChat(res.chat));
 }
-/*
-export function* fetchChat(id) {
-  const state = yield select();
-  const response = yield call(fetch, '/chat/' + id.toString() + '/', {
-    method: 'GET',
-    headers: {
-      'Authorization': `Basic ${state.server.hash}`
-    }
-  });
-  if(response.ok === false) {
-    //window.location.href = '/notfound/';
-    return;
-  }
-  let res;
-  try {
-    res = yield response.json();
-  }
-  catch(e) {
-    //window.location.href = '/notfound/';
-    return;
-  }
-  yield put(setChat(res.id, res));
-}
-*/
+
 export function* postChat(chatRoomID, contents) {
   const state = yield select();
-  console.log('postChatSaga-chatRoomID: ', chatRoomID,' contents: ',contents);
+  //console.log('postChatSaga-chatRoomID: ', chatRoomID,' contents: ',contents);
   const response = yield call(fetch, '/chat/' + chatRoomID + '/', {
     method: 'POST',
     headers: {
@@ -297,12 +300,12 @@ export function* postChat(chatRoomID, contents) {
       contents: contents
     })
   });
-  console.log('postChatSaga-response.code: ', response.status);
+  //console.log('postChatSaga-response.code: ', response.status);
   if(response.ok === false) {
     window.location.href = '/notfound/';
     return;
   }
-  yield put(getChatList(chatRoomID)); // refresh chat log
+  yield put(getChat(chatRoomID)); // refresh chat log
 }
 
 
@@ -405,22 +408,32 @@ export function* watchGetChatList() {
     yield call(fetchChatList, action.chatRoomID);
   }
 }
-/*
+
 export function* watchGetChat() {
   const t = true;
   while(t) {
     const action = yield take(GET_CHAT);
-    console.log('watchGetChatSaga-id: ',action.id);
+    //console.log('watchGetChatSaga-id: ',action.id);
     // Use fork to send multiple request at the same time
-    yield fork(fetchChat, action.id);
+    yield fork(fetchChat, action.chatRoomID);
   }
 }
-*/
+
 export function* watchPostChat() {
   const t = true;
   while(t) {
     const action = yield take(POST_CHAT);
     yield call(postChat, action.chatRoomID, action.contents);
+  }
+}
+
+export function* createChatReciever() {
+  const t = true;
+  yield take(SET_CHAT_LIST);
+  while(t) {
+    yield delay(1000);
+    const state = yield select();
+    yield put(getChat(state.chat.chatRoomID));
   }
 }
 
@@ -437,6 +450,7 @@ export function* rootSaga() {
   yield fork(watchGetDislikes);
   yield fork(watchStartChat);
   yield fork(watchGetChatList);
-  //yield fork(watchGetChat);
+  yield fork(watchGetChat);
   yield fork(watchPostChat);
+  yield fork(createChatReciever);
 }
