@@ -95,7 +95,7 @@ class FeedList(APIView):
     def post(self, request):
         contents = request.data.get('contents', None)
         scope = request.data.get('scope', None)
-        if contents is None or (scope, scope) not in Feed.SCOPE_CHOICES:
+        if contents is None or (scope,scope) not in Feed.SCOPE_CHOICES:
             return Response('No Contents', status=400)
         
         feed = Feed(author_id=request.user.id, contents=contents, scope=scope)

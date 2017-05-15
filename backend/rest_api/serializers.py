@@ -38,7 +38,7 @@ class LikeSerializer(serializers.BaseSerializer):
 class DislikeSerializer(serializers.BaseSerializer):
     def to_representation(self,obj):
         dislikes = []
-        for e in obj:
+        for e in obj.dislike.all():
             dislikes += [ e.username ]
         return {
             'dislikes': dislikes

@@ -3,7 +3,7 @@ import testlibrary as TL
 from random import randint
 
 
-localhost = 'http://localhost:8000/'
+localhost = 'http://localhost:8000/' #'http://localhost:8000/'
 
 TL.test_start('BackEnd')
 
@@ -93,7 +93,7 @@ NfR = [0]
 R = 0
 
 for i in range(1, N+1):
-    print('6-{0}. user test{0} will post {1} reply'.format(i, NF[i]))
+    print('6-{0}. user test{0} will post {1} reply(replies)'.format(i, NF[i]))
     uname = "test{0}".format(i)
     upwd = "test{0}passwd".format(i)
     for j in range(1, NF[i]+1):
@@ -117,42 +117,150 @@ sum = 0
 R = 0
 
 for i in range(1, N+1):
-    print('7-{0}. user test{0} will get {1} reply'.format(i, NF[i]))
+    print('7-{0}. user test{0} will get {1} reply(replies)'.format(i, NF[i]))
     uname = "test{0}".format(i)
     upwd = "test{0}passwd".format(i)
     sum += NF[i-1]
     for j in range(1, NF[i]+1):
         R += 1
-        print('getting all reply of feed{0}: '.format(R), end=' ')
-        link = localhost + 'feed/' + str(sum+j) + '/reply/'
+        print('getting all replies of feed{0}: '.format(R), end=' ')
+        link = localhost + 'feed/' + str(R) + '/reply/'
         TL.feed_reply_get_test(link, uname, upwd)
         for k in range(1, 1+1):
             print('getting 1 reply of id {0}: '.format(R), end=' ')
-            link = localhost + 'feed/' + str(sum + j) + '/reply/' + str(R)
+            link = localhost + 'reply/' + str(sum + j)
             TL.feed_reply_get_test(link, uname, upwd)
+            
+#####################################################
+print('8. POST feed/<id>/likes')
+sum = 0
 
+for i in range(1, N+1):
+    print('8-{0}. user test{0} will post likes to {1} feeds '.format(i, NF[i]))
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
+    sum += NF[i-1]
+    for j in range(1, NF[i]+1):
+        print('post like to feed{0}: '.format(sum+j), end=' ')
+        link = localhost + 'feed/' + str(sum+j) + '/likes/'
+        TL.feed_likes_post_test(link, uname, upwd)
+            
+#####################################################
+print('9. GET feed/<id>/likes')
+sum = 0
+
+for i in range(1, N+1):
+    print('9-{0}. user test{0} will get likes to {1} feeds '.format(i, NF[i]))
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
+    sum += NF[i-1]
+    for j in range(1, NF[i]+1):
+        print('get like to feed{0}: '.format(sum+j), end=' ')
+        link = localhost + 'feed/' + str(sum+j) + '/likes/'
+        TL.feed_likes_get_test(link, uname, upwd)
+            
+#####################################################
+print('10. delete feed/<id>/likes')
+sum = 0
+
+for i in range(1, N+1):
+    print('10-{0}. user test{0} will delete likes to {1} feeds '.format(i, NF[i]))
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
+    sum += NF[i-1]
+    for j in range(1, NF[i]+1):
+        print('delete like to feed{0}: '.format(sum+j), end=' ')
+        link = localhost + 'feed/' + str(sum+j) + '/likes/'
+        TL.feed_likes_delete_test(link, uname, upwd)
+                                
+#####################################################
+print('11. POST feed/<id>/dislikes')
+sum = 0
+
+for i in range(1, N+1):
+    print('11-{0}. user test{0} will post dislikes to {1} feeds '.format(i, NF[i]))
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
+    sum += NF[i-1]
+    for j in range(1, NF[i]+1):
+        print('post dislike to feed{0}: '.format(sum+j), end=' ')
+        link = localhost + 'feed/' + str(sum+j) + '/dislikes/'
+        TL.feed_likes_post_test(link, uname, upwd)
+            
+#####################################################
+print('12. GET feed/<id>/dislikes')
+sum = 0
+
+for i in range(1, N+1):
+    print('12-{0}. user test{0} will get dislikes to {1} feeds '.format(i, NF[i]))
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
+    sum += NF[i-1]
+    for j in range(1, NF[i]+1):
+        print('get dislike to feed{0}: '.format(sum+j), end=' ')
+        link = localhost + 'feed/' + str(sum+j) + '/dislikes/'
+        TL.feed_likes_get_test(link, uname, upwd)
+        
+#####################################################
+print('13. delete feed/<id>/dislikes')
+sum = 0
+
+for i in range(1, N+1):
+    print('13-{0}. user test{0} will delete dislikes to {1} feeds '.format(i, NF[i]))
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
+    sum += NF[i-1]
+    for j in range(1, NF[i]+1):
+        print('delete dislike to feed{0}: '.format(sum+j), end=' ')
+        link = localhost + 'feed/' + str(sum+j) + '/dislikes/'
+        TL.feed_dislikes_delete_test(link, uname, upwd)
+        
+#####################################################
+print('14. make new chat chat/user/<username>')
+
+for i in range(1, (N+1)//2):
+    print('14-{0}. user test{1} makes new chat with test{2}'.format(i,2*i-1, 2*i))
+    uname = "test{0}".format(2*i-1)
+    upwd = "test{0}passwd".format(2*i-1)
+    link = localhost + 'chat/user/test{0}/'.format(2*i)
+    TL.chat_new_chat_test(link, uname, upwd)
+                
+#####################################################
+print('15. post chat chat/<id>')
+
+for i in range(1, (N+1)//2):
+    print('15-{0}. user test{1} chat to test{2} in room{3}'.format(i,2*i-1, 2*i,i))
+    uname = "test{0}".format(2*i-1)
+    upwd = "test{0}passwd".format(2*i-1)
+    link = localhost + 'chat/{0}/'.format(i)
+    contents = "asdf"
+    TL.chat_post_chat_test(link, contents, uname, upwd)
+        
+#####################################################
+print('16. get prev chat chat/<id>')
+
+for i in range(1, (N+1)//2):
+    print('16-{0}. user test{1} get prev chat from room{2}'.format(i,2*i,i))
+    uname = "test{0}".format(2*i)
+    upwd = "test{0}passwd".format(2*i)
+    link = localhost + 'chat/{0}/'.format(i)
+    TL.chat_get_prev_chat_test(link, uname, upwd)
+
+#####################################################
+print('17. get all chat chat/<id>/all')
+
+for i in range(1, (N+1)//2):
+    print('17-{0}. user test{1} get all chat from room{2}'.format(i,2*i,i))
+    uname = "test{0}".format(2*i)
+    upwd = "test{0}passwd".format(2*i)
+    link = localhost + 'chat/{0}/all/'.format(i)
+    TL.chat_get_all_chat_test(link, uname, upwd)    
+        
 #####################################################
 #print('8. profile')
 
-for i in range(1, N+1):
+#for i in range(1, N+1):
     #link = localhost + 'profile'
-    pass
+    #pass
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+TL.test_end()
