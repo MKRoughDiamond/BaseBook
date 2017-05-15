@@ -22,6 +22,7 @@ const feed = (state = initState, action) => {
     // copy existing feed to prevent redundant GET requests 
     let newFeedList = {};
     action.list.map((id) => {
+      console.log('set_feed_list id: ',id);
       const sid = id.toString();
       if(sid in state.feedList)
         newFeedList[sid] = state.feedList[sid]; 
