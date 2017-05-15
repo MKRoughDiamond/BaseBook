@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from core.models import BaseUser, Friend, Feed, Reply, Picture
+from core.models import BaseUser, Friend, Feed, Reply, Picture, ChatRoom, Chat
 from django.db import models
 
 
@@ -53,3 +53,23 @@ class ReplySerializer(serializers.BaseSerializer):
         return {
             'id': replylist
         }
+
+class ChatRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatRoom
+        fields = ('id',)
+
+
+class ChatSerializer(serializers.BaseSerializer):
+    def to_representation(self, obj):
+        chatlist = []
+        for e in obj:
+            chatlist += [ {
+                'username': e.user.username,
+                'timestamp': e.timestamp,
+                'contents': e.contents
+            }]
+        return {
+            'chat': chatlist
+        }
+    

@@ -39,16 +39,16 @@ NF = [0]
 F = 0
 
 for i in range(1, N+1):
-    #M = randint(1, 4) # number of feed for ith user
-    M = 4
+    M = randint(1, 4) # number of feed for ith user
+    #M = 4
     print('3-{0}. user test{0} will post {1} feed'.format(i,M))
-    NF += [M]
+    NF.append(M)
     F += M
     uname = "test{0}".format(i)
     upwd = "test{0}passwd".format(i)
     for j in range(1, M+1):
         print('posting feed{0}: '.format(j), end=' ')
-        contents = 'contents of POST {0}-{1} feed: 종강하고싶다{1}{1}'.format(i,j)
+        contents = 'Backend - contents of POST {0}-{1} feed: 종강하고싶다{1}{1}'.format(i,j)
         scope = scopes[0] #global or private, will be changed by i%4 later
         TL.feed_post_test(link, contents, scope, uname, upwd)
 
@@ -88,7 +88,7 @@ for i in range(1, N+1):
 print('6. POST feed/<id>/reply')
 
 # number of reply of each feed
-NR = [0]
+NfR = [0]
 #total number of reply
 R = 0
 

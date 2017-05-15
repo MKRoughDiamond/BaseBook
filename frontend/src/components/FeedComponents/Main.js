@@ -1,17 +1,23 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getFeedList} from '../../actions';
+import {getFeedList, toChat} from '../../actions';
 import Entry from './Entry';
 import Post from './Post';
 
-class Main extends React.Component {
+class FeedMain extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleToChat = this.handleToChat.bind(this);
+  }
   componentDidMount() {
     this.props.getFeedList();
   }
-  
+  handleToChat() {
+    console.log('Chat!');
+    this.props.toChat();
+  }
+
   render() {
-    const feedList = this.props.feedList;
-    console.log(Object.keys(feedList));
     return (
       <div id="main-wrapper">
         <div id="main-title">
@@ -24,12 +30,13 @@ class Main extends React.Component {
         </div>
         <div id="main-content">
           <div id="Pagename">
-            MK_RD's Page
+            {this.props.username + '\'s Page'}
+            <button id="chat_button" onClick={this.handleToChat}>Chat</button>
           </div>
           <Post/>
           <div id="feed-entries">
-            {Object.keys(feedList).map( (id, i) => {
-              return <Entry feedID={id} index={i}/>;
+            {this.props.feedIdList.map( (id) => {
+              return <Entry feedID={id} key={id}/>;
             })}
           </div>
         </div>
@@ -40,15 +47,17 @@ class Main extends React.Component {
 
 let mapStateToProps = (state) => {
   return {
-    feedList: state.feed.feedList
+    feedIdList: state.feed.orderedFeedIdList,
+    username: state.server.ID
   };
 };
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    getFeedList: () => dispatch(getFeedList())
+    getFeedList: () => dispatch(getFeedList()),
+    toChat: () => dispatch(toChat())
   };
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedMain);
