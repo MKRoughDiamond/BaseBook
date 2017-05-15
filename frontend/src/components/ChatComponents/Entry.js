@@ -5,20 +5,21 @@ import {getChat} from '../../actions';
 class Entry extends React.Component {
 
   componentDidMount() {
-    const chat = this.props.chatList[this.props.timeStamp];
+    const chat = this.props.chatList[this.props.index];
+    //console.log(chat);
     if(chat.contents === null)
-      this.props.getChat(this.props.timeStamp);
+      this.props.getChat(this.props.index);
   }
 
   render() {
-    const chat = this.props.chatList[this.props.timeStamp];
+    const chat = this.props.chatList[this.props.index];
     if(chat.contents === null)
       return <div/>;
     return (
       <div id="chat-wrapper">
         <div id="chat-title">
           <div id="chat-writer">
-            {chat.author}
+            {chat.username}
           </div>
         </div>
         <div id="chat-timestamp">
@@ -40,7 +41,7 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    getChat: (id) => dispatch(getChat(id))
+    getChat: (chatRoomID) => dispatch(getChat(chatRoomID))
   };
 };
 

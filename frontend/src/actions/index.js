@@ -216,18 +216,17 @@ export function setChatList(list) {
   };
 }
 
-export function getChat(id) {
+export function getChat(chatRoomID) {
   return {
     type: GET_CHAT,
-    id: id
+    chatRoomID: chatRoomID
   };
 }
 
-export function setChat(id, chat) {
+export function setChat(list) {
   return {
     type: SET_CHAT,
-    id: id,
-    chat: chat
+    list: list
   };
 }
 

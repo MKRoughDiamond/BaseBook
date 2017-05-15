@@ -10,13 +10,13 @@ const initState = {
   chatRoomID: null,
   chatList: {}
 };
-/*
+
 const chatInitState = {
   timestamp: null,
   username: null,
   contents: null
 };
-*/
+
 const chat = (state = initState, action) => {
   switch(action.type) {
   case TOCHAT:
@@ -27,32 +27,46 @@ const chat = (state = initState, action) => {
     return Object.assign({}, state, { chatRoomID : action.chatRoomID });
   case SET_CHAT_LIST: {
     console.log('chatList: ', state.chatList);
-    let newChatList = state.chatList;
-    console.log('chat.js: SET_CHAT_LIST-action.list: ', action.list[0]);
-    newChatList[state.desiredChatCount] = action.list[0];
-    /*action.list.map((chat) => {
+    let newChatList = Object.assign({}, state.chatList);
+    let count = 0;
+    /*console.log('chat.js: SET_CHAT_LIST-action.list: ', action.list[0]);
+    newChatList[state.desiredChatCount] = action.list[0];*/
+    action.list.map((chat) => {
       console.log('set_chat_list id: ',chat);
-      const sid = id.toString();
-      if(sid in state.chatList)
-        newChatList[sid] = state.chatList[sid];
+      if(count in state.chatList)
+        newChatList[count] = state.chatList[count];
       else
-        newChatList[sid] = Object.assign({}, chatInitState);
-    });*/
+        newChatList[count] = Object.assign({}, chatInitState, {
+          timestamp: chat.timestamp,
+          username: chat.username,
+          contents: chat.contents
+        });
+      count = count + 1;
+    });
     console.log('newChatList: ', newChatList);
     return Object.assign({}, state, {
       chatList : newChatList,
-      desiredChatCount: state.desiredChatCount + 1
+      desiredChatCount: count
     });
   }
   case SET_CHAT: {
-    const newChat = {
-      author: action.chat.author,
-      timeStamp: action.chat.timestamp,
-      contents: action.chat.contents
-    };
     let newChatList = Object.assign({}, state.chatList);
-    newChatList[action.id] = newChat;
-    return Object.assign({}, state, { chatList : newChatList });
+    let count = state.desiredChatCount;
+    action.list.map((chat) => {
+      if(count in state.chatList)
+        newChatList[count] = state.chatList[count];
+      else
+        newChatList[count] = Object.assign({}, chatInitState, {
+          timestamp: chat.timestamp,
+          username: chat.username,
+          contents: chat.contents
+        });
+      count = count + 1;
+    });
+    return Object.assign({}, state, { 
+      chatList : newChatList,
+      desiredChatCount: count
+    });
   }
   default:
     return state;
