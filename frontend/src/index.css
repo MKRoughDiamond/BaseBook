@@ -209,7 +209,7 @@ button {
 	float : left;
 }
 
-#feed-good {
+#feed-like {
 	display : inline-block;
 	float : right;
 	background-color : rgba(255,255,255,0);
@@ -218,7 +218,7 @@ button {
 	width: 15%;
 }
 
-#feed-bad {
+#feed-dislike {
 	display : inline-block;
 	float : right;
 	background-color : rgba(255,255,255,0);
