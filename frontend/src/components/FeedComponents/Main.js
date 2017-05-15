@@ -31,7 +31,7 @@ class FeedMain extends React.Component {
         <div id="main-content">
           <div id="Pagename">
             {this.props.username + '\'s Page'}
-            <button id="chat_button" onClick={this.handleToChat}>Chat</button>
+            <button id="chat-button" onClick={this.handleToChat}>Chat</button>
           </div>
           <Post/>
           <div id="feed-entries">
