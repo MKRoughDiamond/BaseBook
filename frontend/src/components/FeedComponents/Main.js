@@ -18,8 +18,6 @@ class FeedMain extends React.Component {
   }
 
   render() {
-    const feedList = this.props.feedList;
-    console.log(Object.keys(feedList));
     return (
       <div id="main-wrapper">
         <div id="main-title">
