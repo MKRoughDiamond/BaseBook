@@ -53,8 +53,8 @@ class ChatMain extends React.Component {
           </div>
           <div id="chatting-main">
             <div id="chatting-content">
-              {Object.keys(chatList).map( (timeStamp, i) => {
-                return <Entry timeStamp={timeStamp} index={i}/>;
+              {Object.keys(chatList).map( (i) => {
+                return <Entry index={i}/>;
               })}
             </div>
             <div id="new-chat">
