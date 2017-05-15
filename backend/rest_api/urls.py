@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^login/$', views.user_login.as_view()),
     url(r'^signup/$', views.user_signup.as_view()),
     url(r'^feed/$', views.FeedList.as_view()),
+    url(r'^feed/user/(?P<username>\w+)/$', views.FeedList.as_view()),
     url(r'^feed/(?P<pk>[0-9]+)/$', views.FeedDetail.as_view()),
     url(r'^feed/(?P<pk>[0-9]+)/reply/$', views.ReplyList.as_view()),
     url(r'^feed/(?P<pk>[0-9]+)/likes/$', views.LikeList.as_view()),
@@ -15,4 +16,5 @@ urlpatterns = [
     url(r'^reply/(?P<pk>[0-9]+)/$', views.ReplyDetail.as_view()),
     url(r'^chat/user/(?P<username>\w+)/$', views.ChatRoomID.as_view()),
     url(r'^chat/(?P<pk>[0-9]+)/$', views.ChatDetail.as_view()),
+    url(r'^chat/(?P<pk>[0-9]+)/all/$', views.ChatAll.as_view()),
 ]
