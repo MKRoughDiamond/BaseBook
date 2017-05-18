@@ -34,25 +34,27 @@ class Entry extends React.Component {
     if(feed.contents === null)
       return <div/>;
     return (
-      <div id="feed-wrapper">
-        <div id="feed-title">
-          <div id="feed-writer">
+      <div className="feed-wrapper">
+        <div className="feed-title">
+          <div className="feed-writer">
             {feed.author}
           </div>
-          <button id="feed-delete">
+          <button className="feed-delete" id={'feed'+this.props.feedID+'-delete'}>
             delete
           </button>
-          <button id="feed-modify">
+          <button className="feed-modify" id={'feed'+this.props.feedID+'-modify'}>
             modify
           </button>
-          <button id="feed-bad" onClick={this.handlePostDislikes}>
-            {'Bad ' + feed.dislike}
+          <button className="feed-dislike" id={'feed'+this.props.feedID+'-dislike'}
+            onClick={this.handlePostDislikes}>
+            {'Dislike ' + feed.dislike}
           </button>
-          <button id="feed-good" onClick={this.handlePostLikes}>
-            {'Good ' + feed.like}
+          <button className="feed-like" id={'feed'+this.props.feedID+'-like'}
+            onClick={this.handlePostLikes}>
+            {'Like ' + feed.like}
           </button>
         </div>
-        <div id="feed-content">
+        <div className="feed-content" id={'feed'+this.props.feedID+'-content'}>
           {feed.contents}
         </div>
       </div>

@@ -4,28 +4,19 @@ import {getChat} from '../../actions';
 
 class Entry extends React.Component {
 
-  componentDidMount() {
-    const chat = this.props.chatList[this.props.index];
-    //console.log(chat);
-    if(chat.contents === null)
-      this.props.getChat(this.props.index);
-  }
-
   render() {
     const chat = this.props.chatList[this.props.index];
     if(chat.contents === null)
       return <div/>;
     return (
-      <div id="chat-wrapper">
-        <div id="chat-title">
-          <div id="chat-writer">
-            {chat.username}
-          </div>
+      <div className="chat-wrapper">
+        <div className="chat-writer">
+          {chat.username}
         </div>
-        <div id="chat-timestamp">
+        <div className="chat-timestamp">
           {chat.timestamp}
         </div>
-        <div id="chat-content">
+        <div className="chat-content">
           {chat.contents}
         </div>
       </div>

@@ -193,23 +193,23 @@ button {
 	background-color:rgba(255,255,255,0.6);
 }
 
-#feed-wrapper {
+.feed-wrapper {
 	border : 1px solid black;
 	padding : 10px;
 	margin-bottom : 15px;
 }
 
-#feed-title {
+.feed-title {
 	height : 30px;
 	border-bottom : 1px solid black;
 }
 
-#feed-writer {
+.feed-writer {
 	display : inline-block;
 	float : left;
 }
 
-#feed-good {
+.feed-like {
 	display : inline-block;
 	float : right;
 	background-color : rgba(255,255,255,0);
@@ -218,7 +218,7 @@ button {
 	width: 15%;
 }
 
-#feed-bad {
+.feed-dislike {
 	display : inline-block;
 	float : right;
 	background-color : rgba(255,255,255,0);
@@ -227,7 +227,7 @@ button {
 	width: 15%;
 }
 
-#feed-modify {
+.feed-modify {
 	display : inline-block;
 	float : right;
 	background-color : rgba(255,255,255,0);
@@ -235,14 +235,14 @@ button {
 	margin-right : 5px;
 }
 
-#feed-delete {
+.feed-delete {
 	display : inline-block;
 	float : right;
 	background-color : rgba(255,255,255,0);
 	margin-top : 5px;
 }
 
-#feed-content {
+.feed-content {
 	width : 100%;
 	margin: 5px 0 20px 0;
 	padding: 5px 0 5px 0;
@@ -389,10 +389,7 @@ button {
 	height: 500px;
 	background-color: rgba(255,255,255,0.8);
 	overflow: scroll;
-}
-
-#chatting-content{
-	font-weight: normal;
+  font-weight: normal;
 }
 
 .my-chat{
@@ -421,8 +418,27 @@ button {
 
 .partner-chat-content{
 	display: inline-block;
-
 }
+
+.chat-wrapper{
+  color: black;
+}
+
+.chat-writer{
+ 	display: inline-block;
+	font-weight: bold;
+	width: 10%;
+}
+
+.chat-timestamp{
+  display: inline-block;
+  width: 20%;
+}
+
+.chat-content{
+  display: inline-block;
+}
+
 
 #new-chat{
 	margin-top: 5px;
