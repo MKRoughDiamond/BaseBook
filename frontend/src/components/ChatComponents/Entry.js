@@ -9,14 +9,14 @@ class Entry extends React.Component {
     if(chat.contents === null)
       return <div/>;
     return (
-      <div id="chat-wrapper">
-        <div id="chat-writer">
+      <div className="chat-wrapper">
+        <div className="chat-writer">
           {chat.username}
         </div>
-        <div id="chat-timestamp">
+        <div className="chat-timestamp">
           {chat.timestamp}
         </div>
-        <div id="chat-content">
+        <div className="chat-content">
           {chat.contents}
         </div>
       </div>
