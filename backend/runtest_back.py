@@ -3,7 +3,7 @@ import testlibrary as TL
 from random import randint
 
 
-localhost = 'http://localhost:8000/' #'http://localhost:8000/'
+localhost = 'http://13.124.80.116:8000/' #'http://localhost:8000/'
 
 TL.test_start('BackEnd')
 
