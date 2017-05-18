@@ -251,7 +251,7 @@ button {
 	white-space: pre;
 }
 
-#chat_button {
+#chat-button {
     margin-top : 5px;
     display : inline-block;
     float : right;
