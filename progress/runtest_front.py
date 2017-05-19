@@ -8,7 +8,7 @@ import sys
 #(number of users)
 N = 2
 #(number of feed per scope) * (number of scope)
-F = 2*3
+F = 1*3
 #(number of reply per feed)
 R = 2
 #(number of chat)
@@ -16,8 +16,7 @@ C = 1
 ################################################################
 drivers = []
 scopes = ['Public', 'Friend Only', 'Private']
-goods = ['good', 'bad']
-likes = ['Like', 'Dislike']
+likes = ['like', 'dislike']
 ################################################################
 def end_test(message, e):
     print(message)
@@ -61,30 +60,33 @@ def click(driver, name):
         end_test('Cannot click %s' % name, e)
     sleep(0.5)
 
-def signup_post_test(driver, uname, upwd, duplication):
+def signup_post_test(driver, uname, upwd, duplication, masterS):
     try:
         click(driver, 'SignUp')
         send(driver, 'input-username', uname)
         send(driver, 'input-password', upwd)
         send(driver, 'input-retypepassword', upwd)
         click(driver, 'SignUp')
-        if duplication==True:
-            exist = find_or_error(driver, 'login-error-box') and \
-                    find_or_error(driver, 'login-error-msg') and \
-                    find_or_error(driver, 'login-error-confirm')
-            if(not exist):
-                print('Duplicated SignUp('+uname+') test failed')
-                sys.exit(1)
+        if masterS == False: ######
+            if duplication==True:
+                exist = find_or_error(driver, 'login-error-box') and \
+                        find_or_error(driver, 'login-error-msg') and \
+                        find_or_error(driver, 'login-error-confirm')
+                if(not exist):
+                    print('Duplicated SignUp('+uname+') test failed')
+                    sys.exit(1)
+                click(driver, 'login-error-confirm')
+                print('Duplicated SignUp('+uname+') test success')
+            else:
+                exist = find_or_error(driver, 'login-error-box') or \
+                        find_or_error(driver, 'login-error-msg') or \
+                        find_or_error(driver, 'login-error-confirm')
+                if exist:
+                    print('SignUp(' + uname + ') test failed')
+                    sys.exit(1)
+                print(uname + ' SignUp success')
+        if find_or_error(driver, 'login-error-confirm') == True:
             click(driver, 'login-error-confirm')
-            print('Duplicated SignUp('+uname+') test success')
-        else:
-            exist = find_or_error(driver, 'login-error-box') or \
-                    find_or_error(driver, 'login-error-msg') or \
-                    find_or_error(driver, 'login-error-confirm')
-            if exist:
-                print('SignUp(' + uname + ') test failed')
-                sys.exit(1)
-            print(uname + ' SignUp success')
     except Exception as e:
         end_test('\nSignUp test failed', e)
 
@@ -110,12 +112,12 @@ def feed_post_test(driver, contents, scope_index):
 def like_dislike_post_test(driver, feed_index):
     like_index = feed_index % 2
     try:
-        click(driver, 'feed{0}-'.format(feed_index) + goods[like_index])
+        click(driver, 'feed{0}-'.format(feed_index + 1) + likes[like_index])
         #button = driver.find_element_by_xpath("//div[@id='feed-entries']/div[{0}]/div[1]/button[{1}]/".format(feed_index + 1, 4 - like_index))
         #button.click()
     except Exception as e:
-        end_test('\n{0} POST Good/Bad test failed'.format(goods[like_index]), e)
-    print('POST ' + goods[like_index] + ' success')
+        end_test('\n{0} POST Good/Bad test failed'.format(likes[like_index]), e)
+    print('POST ' + likes[like_index] + ' success')
 
 def reply_post_test(driver, contents, feed_index):
     try:
@@ -163,17 +165,17 @@ for i in range(0, N):
 print('\nSignUp test:')
 
 for i in range(0, N):
-    uname = 'user{0}'.format(i)
-    upwd = 'user{0}passwd'.format(i)
-    signup_post_test(drivers[i], uname, upwd, False)
-    signup_post_test(drivers[i], uname, upwd, True)
+    uname = 'userF{0}'.format(i)
+    upwd = 'userF{0}passwd'.format(i)
+    signup_post_test(drivers[i], uname, upwd, False, True)
+    signup_post_test(drivers[i], uname, upwd, True, True)
 
 ################################################################
 print('\nSignIn test:')
 
 for i in range(0, N):
-    uname = 'user{0}'.format(i)
-    upwd = 'user{0}passwd'.format(i)
+    uname = 'userF{0}'.format(i)
+    upwd = 'userF{0}passwd'.format(i)
     signin_post_test(drivers[i], uname, upwd)
 
 ################################################################
@@ -182,16 +184,16 @@ print('\nPOST Feed test:')
 for i in range(0, N):
     for j in range(0, F):
         print('{0} Feed {1}'.format(scopes[int(j / 2)], (j % 2) + 1), end=' ')
-        contents = 'Frontend - contents of POST user{0}-{1} feed: 종강하고싶다{1}{1}'.format(i, j + 1)
+        contents = 'Frontend - contents of POST userF{0}-{1} feed: 종강하고싶다{1}{1}'.format(i, j + 1)
         feed_post_test(drivers[i], contents, int(j/2))
 
 ################################################################
-print('\nPOST Good/Bad test:')
+print('\nPOST like/dislike test:')
 
 for i in range(0, N):
-    for j in range(0, 3): #(0, F)
-        print('{0}({1}) Feed {2}'.format(goods[(i % 2)], likes[(i % 2)], j), end=' ')
-        like_dislike_post_test(drivers[i], j)
+    for j in range(0, F): #(0, F)
+        print('{0} Feed {1}'.format(likes[(i % 2)], j), end=' ')
+        like_dislike_post_test(drivers[i], F * i + j)
 
 ################################################################
 '''print('\nPOST Reply test:')
@@ -199,7 +201,7 @@ for i in range(0, N):
 for i in range(0, N):
     for j in range(0, F):
         print('Reply {0}'.format(j), end=' ')
-        contents = 'Frontend - contents of POST user{0}-{1} reply: 종강하고싶다{1}{1}'.format(i, j + 1)
+        contents = 'Frontend - contents of POST userF{0}-{1} reply: 종강하고싶다{1}{1}'.format(i, j + 1)
         reply_post_test(drivers[i], contents, j)
 '''
 ################################################################
@@ -207,7 +209,7 @@ print('\nTO and START Chat test:')
 
 for i in range(0, N):
     j = (i + 1) % N
-    other_username = 'user{0}'.format(j)
+    other_username = 'userF{0}'.format(j)
     start_chat_test(drivers[i], other_username)
 
 
@@ -217,8 +219,8 @@ print('\nPOST Chat test:')
 for j in range(0, C):
     for i in range(0, N):
         i2 = (i + 1) % N
-        other_username = 'user{0}'.format(j)
-        chat_post_test(drivers[i], 'Hey user{0} {1}{1}!'.format(i2, j), other_username)
+        other_username = 'userF{0}'.format(j)
+        chat_post_test(drivers[i], 'Hey userF{0} {1}{1}!'.format(i2, j), other_username)
     pass
 
 print('one-side chat test')
@@ -226,8 +228,8 @@ print('one-side chat test')
 i = 0
 for j in range(0, C * 5):
     i2 = (i + 1) % N
-    other_username = 'user{0}'.format(j)
-    chat_post_test(drivers[i], 'Hey user{0} {1}{1}!(one side)'.format(i2, j), other_username)
+    other_username = 'userF{0}'.format(j)
+    chat_post_test(drivers[i], 'Hey userF{0} {1}{1}!(one side)'.format(i2, j), other_username)
 
 ################################################################
 sleep(4)
