@@ -110,7 +110,7 @@ def feed_post_test(driver, contents, scope_index):
 def like_dislike_post_test(driver, feed_index):
     like_index = feed_index % 2
     try:
-        click(driver, 'feed-' + goods[like_index])
+        click(driver, 'feed{0}-'.format(feed_index) + goods[like_index])
         #button = driver.find_element_by_xpath("//div[@id='feed-entries']/div[{0}]/div[1]/button[{1}]/".format(feed_index + 1, 4 - like_index))
         #button.click()
     except Exception as e:
@@ -155,7 +155,8 @@ print('################################################################')
 for i in range(0, N):
     print('drivers[{0}] open'.format(i))
     drivers.append(webdriver.Chrome('/usr/local/bin/chromedriver'))
-    drivers[i].get('http://13.124.80.116:3000')
+    drivers[i].get('http://localhost:3000')
+    #drivers[i].get('http://13.124.80.116:3000')
     print('drivers[{0}] open successful'.format(i))
 
 ################################################################
