@@ -6,7 +6,7 @@ import Main from './ChatComponents/Main';
 class Chat extends React.Component {
   render() {
     return (this.props.isLoggedIn)?(
-      <Main/>
+      <Main />
     ):(
       <Redirect to="/login/"/>
     );

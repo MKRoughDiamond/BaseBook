@@ -29,7 +29,7 @@ body::-webkit-scrollbar {
 	display: inline-block;
 	vertical-align: middle;
 	background-color : #88B04B;
-	width: 30%;
+	width: 40%;
 	padding : 15px;
 	font-size : 20pt;
 }
@@ -40,6 +40,12 @@ body::-webkit-scrollbar {
 }
 
 #password {
+	width : 30%;
+	display: inline-block;
+	font-weight: bold;
+}
+
+#retypepassword {
 	width : 30%;
 	display: inline-block;
 	font-weight: bold;
@@ -64,6 +70,12 @@ body::-webkit-scrollbar {
 	width : 60%;
 	display: inline-block;
 	font-size : 20pt;
+}
+
+#password-check {
+  position: fixed;
+  display: inline-block;
+  margin-left: 5px;
 }
 
 #SignIn {
@@ -473,13 +485,26 @@ button {
 	background-color : white;
 }
 
-/* this is temporary css*/
 #login-error-box {
 	position: absolute;
-	left: 100px;
-	top: 100px;
-	width: 300px;
-	height: 200px;
+	left: 25%;
+	top: 10%;
+	width: 50%;
 	z-index: 2;
-	background-color: black;
+	background-color: #88B04B;
+}
+
+#login-error-msg {
+  font-size: 24px;
+  font-weight: bold;
+  color: #87200d;
+  margin-top: 10px;
+}
+
+#login-error-confirm {
+  font-size: 24px;
+  background-color: white;
+  width: 80%;
+  border-radius: 10px;
+  margin: 10px 0 10px;
 }
