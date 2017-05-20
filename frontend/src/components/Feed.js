@@ -6,12 +6,19 @@ import ChatMain from './ChatComponents/Main';
 
 class Feed extends React.Component {
   render() {
-    if (this.props.isLoggedIn)
+    if (this.props.isLoggedIn) {
+      if (this.props.onTimeline) {
+//        const timelineUrl = '/timeline/'+this.props.timelineUser+'/';
+        return (
+          <Redirect to="/timeline/asdf"/>
+        );
+      }
       return (this.props.isChatOn) ? (
         <ChatMain/>
       ):(
         <FeedMain/>
       );
+    }
 
     return (
       <Redirect to="/login/"/>
@@ -22,7 +29,9 @@ class Feed extends React.Component {
 let mapStateToProps = (state) => {
   return {
     isLoggedIn : state.server.loggedIn,
-    isChatOn : state.chat.chatOn
+    isChatOn : state.chat.chatOn,
+    onTimeline : state.server.onTimeline,
+    timelineUser : state.server.timelineUser
   };
 };
 

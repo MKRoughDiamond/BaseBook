@@ -1,5 +1,5 @@
 import { SETID, SETPW, NEWID, NEWPW, RETYPEPW,
-  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR
+  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED
 } from '../actions';
 
 const serverInitialState = {
@@ -11,7 +11,9 @@ const serverInitialState = {
   retypePW: '',
   isLogin: true,
   loggedIn: false,
-  errorMsg: null
+  errorMsg: null,
+  onTimeline: false,
+  timelineUser: null
 };
 
 const server = (state = serverInitialState, action) => {
@@ -26,19 +28,27 @@ const server = (state = serverInitialState, action) => {
     return Object.assign({}, state, { newPW : action.newPW });
   case RETYPEPW:
     return Object.assign({}, state, { retypePW : action.retypePW });
+  case TOFEED:
+    return Object.assign({}, state, { onTimeline: false });
   case TOMAIN:
     return Object.assign({}, state,
       { isLogin : true,
         ID : '',
-        PW : '' });
+        PW : '',
+        onTimeline: false});
   case TOSIGNUP:
     return Object.assign({}, state, 
       { isLogin : false,
         newID : '',
         newPW : '',
-        retypePW : '' });
+        retypePW : '',
+        onTimeline: false});
+  case TOTIMELINE:
+    return Object.assign({}, state, 
+      { onTimeline : true, 
+        timelineUser : action.username });
   case LOGIN_SUCCESS:
-    return Object.assign({}, state, { loggedIn : true, hash: action.hash });
+    return Object.assign({}, state, { loggedIn : true, hash: action.hash, onTimeline: false});
   case LOGIN_PAGE_ERROR:
     return Object.assign({}, state, { errorMsg : action.msg });
   default:

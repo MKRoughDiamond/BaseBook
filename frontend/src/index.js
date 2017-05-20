@@ -8,6 +8,7 @@ import {Provider} from 'react-redux';
 import Login from './components/Login';
 import Feed from './components/Feed';
 import Chat from './components/Chat';
+import Timeline from './components/Timeline';
 import NotFound from './components/NotFound';
 import reducers from './reducers';
 import './index.css';
@@ -24,6 +25,7 @@ ReactDOM.render(
       <Switch>
         <Route exact path="/" component={Feed}/>
         <Route path="/login" component={Login}/>
+        <Route path="/timeline/:username" component={Timeline}/>
         <Route path="/chat/:id" component={Chat}/>
         <Route component={NotFound}/>
       </Switch>
