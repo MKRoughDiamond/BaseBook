@@ -19,8 +19,6 @@ class ChatMain extends React.Component {
   handlePostChat() {
     console.log('Post Chat!');
     const contents = document.getElementById('new-chat-text').value;
-    //console.log('new-chat-text.value: ', contents);
-    //console.log('this.props.chatRoomID: ', this.props.chatRoomID);
     this.props.postChat(this.props.chatRoomID, contents);
   }
 
@@ -31,7 +29,7 @@ class ChatMain extends React.Component {
       <div id="main-wrapper">
         <div id="main-title">
           <div id="main-title-name">
-            BaseBook
+              BaseBook
           </div>
           <div id="logout">
             logout
