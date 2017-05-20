@@ -9,7 +9,7 @@ from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 
-from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, ChatRoomSerializer, ChatSerializer
+from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, ChatRoomSerializer, ChatSerializer, FriendListSerializer
 from rest_api.permissions import IsCurrUser, IsCurrUserReply
 from core.models import Feed, Reply, Chat, ChatRoom, Friend
 #from core.models import BaseUser, Friend, Feed, Reply, Picture
@@ -113,7 +113,7 @@ class FeedDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class LikeList(APIView):
 
-    def get(self, request,pk):
+    def get(self, request, pk):
         try:
             likes = Feed.objects.get(pk=pk)
         except ObjectDoesNotExist:
@@ -121,7 +121,7 @@ class LikeList(APIView):
         serializer = LikeSerializer(likes)
         return Response(serializer.data)
 
-    def post(self, request,pk):
+    def post(self, request, pk):
         try:
             likes = Feed.objects.get(pk=pk)
         except ObjectDoesNotExist:
@@ -135,7 +135,7 @@ class LikeList(APIView):
             likes.like.add(user)
             return Response('', status=200)
 
-    def delete(self, request,pk):
+    def delete(self, request, pk):
         try:
             likes = Feed.objects.get(pk=pk)
         except ObjectDoesNotExist:
@@ -154,7 +154,7 @@ class LikeList(APIView):
 
 class DislikeList(APIView):
 
-    def get(self, request,pk):
+    def get(self, request, pk):
         try:
             dislikes = Feed.objects.get(pk=pk)
         except ObjectDoesNotExist:
@@ -162,7 +162,7 @@ class DislikeList(APIView):
         serializer = DislikeSerializer(dislikes)
         return Response(serializer.data)
 
-    def post(self, request,pk):
+    def post(self, request, pk):
         try:
             dislikes = Feed.objects.get(pk=pk)
         except ObjectDoesNotExist:
@@ -176,7 +176,7 @@ class DislikeList(APIView):
             dislikes.dislike.add(user)
             return Response('', status=200)
 
-    def delete(self, request,pk):
+    def delete(self, request, pk):
         try:
             dislikes = Feed.objects.get(pk=pk)
         except ObjectDoesNotExist:
@@ -216,7 +216,6 @@ class ReplyDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ReplySerializer
     lookup_url_kwarg = 'pk'
 
-
 class ChatRoomID(APIView):
     def post(self, request, username):
         user1 = request.user
@@ -238,8 +237,7 @@ class ChatRoomID(APIView):
             room.save()
         serializer = ChatRoomSerializer(room)
         return Response(serializer.data)
-    
-        
+
 class ChatDetail(APIView):
     def get(self, request, pk):
         try:
@@ -267,8 +265,7 @@ class ChatDetail(APIView):
         chat = Chat(room=room, user=request.user, contents=request.data.get('contents', ''))
         chat.save()
         return Response('')
-    
-    
+
 class ChatAll(APIView):
     def get(self, request, pk):
         try:
@@ -286,4 +283,24 @@ class ChatAll(APIView):
         serializer = ChatSerializer(chats)
         return Response(serializer.data)
 
-    
+class FriendList(APIView):
+    def post(self, request, username):
+        user1 = request.user
+        user2 = User.objects.get(username=username)
+        try:
+            friend = Friend.objects.get(user=user1, friend=user2)
+        except ObjectDoesNotExist:
+            friend1 = Friend(user=user1, friend=user2)
+            friend2 = Friend(user=user2, friend=user1)
+            friend1.save()
+            friend2.save()
+            return Response('', status=200)
+        # You are already friends!
+        return Response('', status=400)
+    def get(self, request, username):
+        friends = Friend.objects.filter(user__username=username)
+        serializer = FriendListSerializer(friends)
+        return Response(serializer.data)
+
+
+
