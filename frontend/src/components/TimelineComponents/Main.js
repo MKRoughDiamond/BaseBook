@@ -1,27 +1,31 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getFeedList, toChat} from '../../actions';
-import Entry from './Entry';
-import Post from './Post';
+import {getTimelineList, toChat, toFeed} from '../../actions';
+import Entry from '../FeedComponents/Entry';
+import Post from '../FeedComponents/Post';
 
-class FeedMain extends React.Component {
+class TimelineMain extends React.Component {
   constructor(props) {
     super(props);
     this.handleToChat = this.handleToChat.bind(this);
+    this.handleToFeed = this.handleToFeed.bind(this);
   }
   componentDidMount() {
-    this.props.getFeedList();
+    this.props.getTimelineList();
   }
   handleToChat() {
-    //console.log('Chat!');
     this.props.toChat();
+  }
+
+  handleToFeed() {
+    this.props.toFeed();
   }
 
   render() {
     return (
       <div id="main-wrapper">
         <div id="main-title">
-          <div id="main-title-name">
+          <div id="main-title-name" onClick={this.handleToFeed}>
             BaseBook
           </div>
           <div id="logout">
@@ -54,10 +58,11 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    getFeedList: () => dispatch(getFeedList()),
-    toChat: () => dispatch(toChat())
+    getTimelineList: () => dispatch(getTimelineList()),
+    toChat: () => dispatch(toChat()),
+    toFeed: () => dispatch(toFeed())
   };
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeedMain);
+export default connect(mapStateToProps, mapDispatchToProps)(TimelineMain);
