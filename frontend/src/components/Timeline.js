@@ -29,7 +29,8 @@ class Timeline extends React.Component {
 
 let mapStateToProps = (state) => {
   return {
-    onTimeline : state.server.onTimeline
+    onTimeline : state.server.onTimeline,
+    isLoggedIn : state.server.loggedIn
   };
 };
 

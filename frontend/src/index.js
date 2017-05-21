@@ -24,8 +24,8 @@ ReactDOM.render(
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Feed}/>
-        <Route path="/login" component={Login}/>
         <Route path="/timeline/:username" component={Timeline}/>
+        <Route path="/login" component={Login}/>
         <Route path="/chat/:id" component={Chat}/>
         <Route component={NotFound}/>
       </Switch>

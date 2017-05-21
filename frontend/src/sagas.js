@@ -61,6 +61,7 @@ export function* postLogin() {
 
 export function* fetchTimelineList() {
   const state = yield select();
+  console.log('fetchtimelinlist');
   const response = yield call(fetch, '/feed/user/' + state.server.timelineUser + '/', {
     method: 'GET',
     headers: {
