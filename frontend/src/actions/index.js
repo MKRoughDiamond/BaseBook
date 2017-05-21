@@ -15,6 +15,12 @@ export const GET_FEED = 'GET_FEED';
 export const SET_FEED = 'SET_FEED';
 export const POST_FEED = 'POST_FEED';
 
+export const GET_REPLY_LIST = 'GET_REPLY_LIST';
+export const SET_REPLY_LIST = 'SET_REPLY_LIST';
+export const GET_REPLY = 'GET_REPLY';
+export const SET_REPLY = 'SET_REPLY';
+export const POST_REPLY = 'POST_REPLY';
+
 export const POST_LIKES = 'POST_LIKES';
 export const POST_DISLIKES = 'POST_DISLIKES';
 export const GET_LIKES = 'GET_LIKES';
@@ -195,6 +201,46 @@ export function setDislikes(id, dislikes, didDislike) {
     id: id,
     dislikes: dislikes,
     didDislike: didDislike
+  };
+}
+
+export function getReplyList(feedId) {
+  return {
+    type: GET_REPLY_LIST,
+    feedId: feedId
+  };
+}
+
+export function setReplyList(feedId, list) {
+  return {
+    type: SET_REPLY_LIST,
+    feedId: feedId,
+    list: list
+  };
+}
+
+export function getReply(feedId, replyId) {
+  return {
+    type: GET_REPLY,
+    feedId: feedId,
+    replyId: replyId
+  };
+}
+
+export function setReply(feedId, replyId, reply) {
+  return {
+    type: SET_REPLY,
+    feedId: feedId,
+    replyId: replyId,
+    reply: reply
+  };
+}
+
+export function postReply(feedId, contents) {
+  return {
+    type: POST_REPLY,
+    feedId: feedId,
+    contents: contents,
   };
 }
 

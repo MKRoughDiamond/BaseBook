@@ -1,4 +1,4 @@
-import { SET_FEED_LIST, SET_FEED , SET_LIKES, SET_DISLIKES} from '../actions';
+import { SET_FEED_LIST, SET_FEED , SET_LIKES, SET_DISLIKES, SET_REPLY_LIST, SET_REPLY } from '../actions';
 
 const initState = {
   desiredFeedCount: 0,
@@ -13,7 +13,14 @@ const feedInitState = {
   dislike: null,
   scope: null,
   didLike: null,
-  didDislike: null
+  didDislike: null,
+  replyList: {},
+  orderedReplyIdList: []
+};
+
+const replyInitState = {
+  author: null,
+  contents: null
 };
 
 const feed = (state = initState, action) => {
@@ -99,6 +106,46 @@ const feed = (state = initState, action) => {
     let newFeedList = Object.assign({}, state.feedList);
     newFeedList[action.id] = newFeed;
     return Object.assign({}, state, { feedList: newFeedList });
+  }
+  case SET_REPLY_LIST: {
+    // copy existing reply to prevent redundant GET requests 
+    let newReplyList = {};
+    action.list.map((id) => {
+      const sid = id.toString();
+      const replyList = state.feedList[action.feedId].replyList;
+      if(sid in replyList)
+        newReplyList[sid] = replyList[sid]; 
+      else
+        newReplyList[sid] = Object.assign({}, replyInitState, {});
+    });
+    let newFeedList = Object.assign({}, state.feedList, {});
+    newFeedList[action.feedId].replyList = newReplyList;
+    newFeedList[action.feedId].orderedReplyIdList = action.list;
+    return Object.assign({}, state, {
+      feedList : newFeedList,
+    });
+  }
+  case SET_REPLY: {
+    let newReply = {};
+    let replyList = state.feedList[action.feedId].replyList;
+    if(action.id in replyList) {
+      newReply = Object.assign({}, replyList[action.replyId],
+        {
+          author: action.reply.author,
+          contents: action.reply.contents,
+        });
+    }
+    else {
+      newReply = Object.assign({}, replyInitState, {
+        author: action.reply.author,
+        contents: action.reply.contents,
+      });
+    }
+    let newReplyList = Object.assign({}, replyList);
+    newReplyList[action.replyId] = newReply;
+    let newFeedList = Object.assign({}, state.feedList);
+    newFeedList[action.feedId].replyList = newReplyList;
+    return Object.assign({}, state, { feedList : newFeedList });
   }
   default:
     return state;

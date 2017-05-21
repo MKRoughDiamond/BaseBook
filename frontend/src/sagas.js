@@ -2,9 +2,10 @@ import { take, fork, call, select, put} from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import {
   TOMAIN, LOGIN, GET_FEED_LIST, GET_FEED, POST_FEED,
+  GET_REPLY_LIST, GET_REPLY, POST_REPLY,
   POST_LIKES, POST_DISLIKES, GET_LIKES, GET_DISLIKES,
   START_CHAT, GET_CHAT_LIST, GET_CHAT, POST_CHAT, SET_CHAT_LIST, GET_TIMELINE_LIST,
-  loginSuccess, loginPageError, getFeedList, setFeedList, setFeed,
+  loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat
 } from './actions';
@@ -232,6 +233,71 @@ export function* postDislikes(id) {
   yield put(getDislikes(id));
 }
 
+export function* fetchReplyList(feedId) {
+  const state = yield select();
+  const response = yield call(fetch, '/feed/' + feedId.toString() + '/reply/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  yield put(setReplyList(feedId, res.id));
+}
+
+export function* fetchReply(feedId, replyId) {
+  const state = yield select();
+  const response = yield call(fetch, '/reply/' + replyId.toString() + '/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  yield put(setReply(feedId, replyId, res));
+}
+
+export function* postReply(feedId, contents) {
+  const state = yield select();
+  const response = yield call(fetch, '/feed/' + feedId.toString() + '/reply/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      contents: contents
+    })
+  });
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  yield put(getReplyList(feedId)); // refresh news feed
+}
+
 
 export function* startChat(username) {
   const state = yield select();
@@ -414,6 +480,30 @@ export function* watchPostDislikes() {
   }
 }
 
+export function* watchGetReplyList() {
+  const t = true;
+  while(t) {
+    const action = yield take(GET_REPLY_LIST);
+    yield call(fetchReplyList, action.feedId);
+  }
+}
+
+export function* watchGetReply() {
+  const t = true;
+  while(t) {
+    const action = yield take(GET_REPLY);
+    // Use fork to send multiple request at the same time
+    yield fork(fetchReply, action.feedId, action.replyId);
+  }
+}
+
+export function* watchPostReply() {
+  const t = true;
+  while(t) {
+    const action = yield take(POST_REPLY);
+    yield call(postReply, action.feedId, action.contents);
+  }
+}
 
 export function* watchStartChat() {
   let state;

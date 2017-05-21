@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {getFeed, postLikes, postDislikes, getLikes, getDislikes, toTimeline} from '../../actions';
-
+import ReplyEntry from './ReplyEntry';
 class Entry extends React.Component {
   constructor(props) {
     super(props);
@@ -60,6 +60,16 @@ class Entry extends React.Component {
         </div>
         <div className="feed-content" id={'feed'+this.props.feedID+'-content'}>
           {feed.contents}
+        </div>
+        <div id="reply-wrapper">
+          {feed.orderedReplyIdList.map( (id) => {
+            return (
+              <ReplyEntry
+                feedID={this.props.feedID}
+                replyID={id}
+                key={this.props.feedID.toString() + '_' + id.toString()}
+              />);
+          })}
         </div>
       </div>
     );  // TODO: add reply
