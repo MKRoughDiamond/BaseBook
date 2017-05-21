@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {getFeed, postLikes, postDislikes, getLikes, getDislikes, toTimeline} from '../../actions';
+import ReplyPost from './ReplyPost';
 import ReplyEntry from './ReplyEntry';
 class Entry extends React.Component {
   constructor(props) {
@@ -62,6 +63,7 @@ class Entry extends React.Component {
           {feed.contents}
         </div>
         <div id="reply-wrapper">
+          <ReplyPost/>
           {feed.orderedReplyIdList.map( (id) => {
             return (
               <ReplyEntry
@@ -72,7 +74,7 @@ class Entry extends React.Component {
           })}
         </div>
       </div>
-    );  // TODO: add reply
+    );
   }
 }
 
