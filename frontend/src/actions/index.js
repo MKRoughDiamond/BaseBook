@@ -31,6 +31,9 @@ export const SET_CHAT_LIST = 'SET_CHAT_LIST';
 export const GET_CHAT = 'GET_CHAT';
 export const SET_CHAT = 'SET_CHAT';
 export const POST_CHAT = 'POST_CHAT';
+export const TOFEED = 'TOFEED';
+export const TOTIMELINE = 'TOTIMELINE';
+export const GET_TIMELINE_LIST = 'GET_TIMELINE_LIST';
 
 
 export function setID(value) {
@@ -77,6 +80,19 @@ export function toMain() {
 export function toSignUp() {
   return {
     type : TOSIGNUP
+  };
+}
+
+export function toFeed() {
+  return {
+    type : TOFEED
+  };
+}
+
+export function toTimeline(username) {
+  return {
+    type : TOTIMELINE,
+    username : username
   };
 }
 
@@ -235,5 +251,11 @@ export function postChat(chatRoomID, contents) {
     type: POST_CHAT,
     chatRoomID: chatRoomID,
     contents: contents
+  };
+}
+
+export function getTimelineList() {
+  return {
+    type: GET_TIMELINE_LIST
   };
 }

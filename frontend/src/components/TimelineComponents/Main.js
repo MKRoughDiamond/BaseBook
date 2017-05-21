@@ -1,27 +1,30 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getFeedList, toChat} from '../../actions';
-import Entry from './Entry';
-import Post from './Post';
+import {getTimelineList, toChat, toFeed} from '../../actions';
+import Entry from '../FeedComponents/Entry';
 
-class FeedMain extends React.Component {
+class TimelineMain extends React.Component {
   constructor(props) {
     super(props);
     this.handleToChat = this.handleToChat.bind(this);
+    this.handleToFeed = this.handleToFeed.bind(this);
   }
   componentDidMount() {
-    this.props.getFeedList();
+    this.props.getTimelineList();
   }
   handleToChat() {
-    //console.log('Chat!');
     this.props.toChat();
+  }
+
+  handleToFeed() {
+    this.props.toFeed();
   }
 
   render() {
     return (
       <div id="main-wrapper">
         <div id="main-title">
-          <div id="main-title-name">
+          <div id="main-title-name" onClick={this.handleToFeed}>
             BaseBook
           </div>
           <div id="logout">
@@ -30,10 +33,9 @@ class FeedMain extends React.Component {
         </div>
         <div id="main-content">
           <div id="Pagename">
-            {this.props.username + '\'s Page'}
+            {this.props.timelineUser + '\'s Timeline'}
             <button id="chat-button" onClick={this.handleToChat}>Chat</button>
           </div>
-          <Post/>
           <div id="feed-entries">
             {this.props.feedIdList.map( (id) => {
               return <Entry feedID={id} key={id}/>;
@@ -48,16 +50,18 @@ class FeedMain extends React.Component {
 let mapStateToProps = (state) => {
   return {
     feedIdList: state.feed.orderedFeedIdList,
-    username: state.server.ID
+    timelineUser: state.server.timelineUser
   };
 };
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    getFeedList: () => dispatch(getFeedList()),
-    toChat: () => dispatch(toChat())
+    getTimelineList: () => dispatch(getTimelineList()),
+    toChat: () => dispatch(toChat()),
+    toFeed: () => dispatch(toFeed())
+
   };
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeedMain);
+export default connect(mapStateToProps, mapDispatchToProps)(TimelineMain);

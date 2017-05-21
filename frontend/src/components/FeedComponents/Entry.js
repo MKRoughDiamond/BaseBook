@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getFeed, postLikes, postDislikes, getLikes, getDislikes} from '../../actions';
+import {getFeed, postLikes, postDislikes, getLikes, getDislikes, toTimeline} from '../../actions';
 
 class Entry extends React.Component {
   constructor(props) {
@@ -8,6 +8,7 @@ class Entry extends React.Component {
 
     this.handlePostLikes = this.handlePostLikes.bind(this);
     this.handlePostDislikes = this.handlePostDislikes.bind(this);
+    this.handleToTimeline = this.handleToTimeline.bind(this);
   }
 
   componentDidMount() {
@@ -29,6 +30,11 @@ class Entry extends React.Component {
     this.props.postDislikes(id);
   }
 
+  handleToTimeline() {
+    const username = this.props.feedList[this.props.feedID].author;
+    this.props.toTimeline(username);
+  }
+
   render() {
     const feed = this.props.feedList[this.props.feedID];
     if(feed.contents === null)
@@ -36,7 +42,7 @@ class Entry extends React.Component {
     return (
       <div className="feed-wrapper">
         <div className="feed-title">
-          <div className="feed-writer">
+          <div className="feed-writer" onClick={this.handleToTimeline}>
             {feed.author}
           </div>
           <button className="feed-delete" id={'feed'+this.props.feedID+'-delete'}>
@@ -45,12 +51,10 @@ class Entry extends React.Component {
           <button className="feed-modify" id={'feed'+this.props.feedID+'-modify'}>
             modify
           </button>
-          <button className="feed-dislike" id={'feed'+this.props.feedID+'-dislike'}
-            onClick={this.handlePostDislikes}>
+          <button className="feed-dislike" id={'feed'+this.props.feedID+'-dislike'} onClick={this.handlePostDislikes}>
             {'Dislike ' + feed.dislike}
           </button>
-          <button className="feed-like" id={'feed'+this.props.feedID+'-like'}
-            onClick={this.handlePostLikes}>
+          <button className="feed-like" id={'feed'+this.props.feedID+'-like'} onClick={this.handlePostLikes}>
             {'Like ' + feed.like}
           </button>
         </div>
@@ -74,7 +78,8 @@ let mapDispatchToProps = (dispatch) => {
     postLikes: (id) => dispatch(postLikes(id)),
     postDislikes: (id) => dispatch(postDislikes(id)),
     getLikes: (id) => dispatch(getLikes(id)),
-    getDislikes: (id) => dispatch(getDislikes(id))
+    getDislikes: (id) => dispatch(getDislikes(id)),
+    toTimeline: (username) => dispatch(toTimeline(username))
   };
 };
 

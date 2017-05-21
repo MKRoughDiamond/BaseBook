@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getChatList, startChat, postChat} from '../../actions';
+import {getChatList, startChat, postChat, toFeed} from '../../actions';
 import Entry from './Entry';
 
 class ChatMain extends React.Component {
@@ -8,6 +8,7 @@ class ChatMain extends React.Component {
     super(props);
     this.handleStartChat = this.handleStartChat.bind(this);
     this.handlePostChat = this.handlePostChat.bind(this);
+    this.handleToFeed = this.handleToFeed.bind(this);
   }
 
   handleStartChat() {
@@ -24,13 +25,17 @@ class ChatMain extends React.Component {
     this.props.postChat(this.props.chatRoomID, contents);
   }
 
+  handleToFeed() {
+    this.props.toFeed();
+  }
+
   render() {
     const chatList = this.props.chatList;
     console.log('Object.keys(chatList): ', chatList);
     return (
       <div id="main-wrapper">
         <div id="main-title">
-          <div id="main-title-name">
+          <div id="main-title-name" onClick={this.handleToFeed}>
             BaseBook
           </div>
           <div id="logout">
@@ -83,7 +88,8 @@ let mapDispatchToProps = (dispatch) => {
   return {
     getChatList: (chatRoomID) => dispatch(getChatList(chatRoomID)),
     startChat: (username) => dispatch(startChat(username)),
-    postChat: (chatRoomID, contents) => dispatch(postChat(chatRoomID, contents))
+    postChat: (chatRoomID, contents) => dispatch(postChat(chatRoomID, contents)),
+    toFeed: () => dispatch(toFeed())
   };
 };
 
