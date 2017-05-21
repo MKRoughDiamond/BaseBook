@@ -9,6 +9,7 @@ class TimelineMain extends React.Component {
     super(props);
     this.handleToChat = this.handleToChat.bind(this);
     this.handleToFeed = this.handleToFeed.bind(this);
+    this.prevUser = this.props.timelineUser;
   }
   componentDidMount() {
     this.props.getTimelineList();
@@ -22,6 +23,9 @@ class TimelineMain extends React.Component {
   }
 
   render() {
+    if(this.prevUser !== this.props.timelineUser)
+      this.props.getTimelineList();
+    this.prevUser = this.props.timelineUser;
     return (
       <div id="main-wrapper">
         <TopBar/>

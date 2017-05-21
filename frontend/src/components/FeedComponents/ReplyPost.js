@@ -9,7 +9,7 @@ class ReplyPost extends React.Component {
     this.handlePostReply = this.handlePostReply.bind(this);
   }
   
-  handlePostFeed() {
+  handlePostReply() {
     const contents = this.refs.text.value;
     // POST하고 썼던 글이 초기화가 안됨 변경바람
     this.props.postReply(this.props.feedID, contents);

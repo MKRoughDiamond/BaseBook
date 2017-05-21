@@ -7,10 +7,11 @@ class TopBar extends React.Component {
     super(props);
     this.handleToFeed = this.handleToFeed.bind(this);
     this.handleToTimeline = this.handleToTimeline.bind(this);
+    this.handleUserQuery = this.handleUserQuery.bind(this);
   }
 
   componentDidMount() {
-    if(getUserList === null) {
+    if(this.props.userList === null) {
       this.props.getUserList();
     }
   }
@@ -23,6 +24,10 @@ class TopBar extends React.Component {
     this.props.toTimeline(username);
   }
 
+  handleUserQuery() {
+    this.props.userQuery(this.refs.query.value);
+  }
+
   render() {
     return (
       <div id="main-title">
@@ -30,7 +35,7 @@ class TopBar extends React.Component {
           BaseBook
         </div>
         <div id="____usersearch____">
-          <input id="textbox" onChange={this.handleUserQuery}/>
+          <input id="textbox" ref="query" onChange={this.handleUserQuery}/>
           <div id="wrapper">
             {this.props.queriedUser.map( (username) => {
               return (

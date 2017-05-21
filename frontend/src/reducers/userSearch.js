@@ -1,11 +1,11 @@
 import { SET_USER_LIST, USER_QUERY } from '../actions';
 
 const initState = {
-  userList = null,
-  queriedUser = []
+  userList: null,
+  queriedUser: []
 };
 
-const chat = (state = initState, action) => {
+const userSearch = (state = initState, action) => {
   switch(action.type) {
   case SET_USER_LIST: {
     return Object.assign({}, state, {
@@ -13,18 +13,29 @@ const chat = (state = initState, action) => {
     });
   }
   case USER_QUERY: {
+    const MAX_SHOWING_USER = 5;
     if(state.userList === null)
       return state;
-    const newQueriedUser = state.userList.filter((username) => {
-      return username.includes(action.keyword);
-    })
+    if(action.keyword === '')
+      return Object.assign({}, state, {
+        queriedUser: []
+      });
+    // make startsWith() matches appear first
+    const startswith = state.userList.filter((username) => {
+      return username.startsWith(action.keyword);
+    });
+    const includes = state.userList.filter((username) => {
+      return (username.includes(action.keyword) &&
+        !username.startsWith(action.keyword));
+    });
+    const newQueriedUser = (startswith.concat(includes)).slice(0, MAX_SHOWING_USER);
     return Object.assign({}, state, {
       queriedUser: newQueriedUser
-    })
+    });
   }
   default:
     return state;
   }
 };
 
-export default chat;
+export default userSearch;
