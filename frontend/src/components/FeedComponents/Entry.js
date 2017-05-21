@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getFeed, postLikes, postDislikes, getLikes, getDislikes, toTimeline} from '../../actions';
+import {getFeed, postLikes, postDislikes, getLikes, getDislikes, toTimeline, getReplyList} from '../../actions';
 import ReplyPost from './ReplyPost';
 import ReplyEntry from './ReplyEntry';
 class Entry extends React.Component {
@@ -18,6 +18,7 @@ class Entry extends React.Component {
       this.props.getFeed(this.props.feedID);
       this.props.getLikes(this.props.feedID);
       this.props.getDislikes(this.props.feedID);
+      this.props.getReplyList(this.props.feedID);
     }
   }
 
@@ -63,7 +64,6 @@ class Entry extends React.Component {
           {feed.contents}
         </div>
         <div id="reply-wrapper">
-          <ReplyPost/>
           {feed.orderedReplyIdList.map( (id) => {
             return (
               <ReplyEntry
@@ -72,6 +72,7 @@ class Entry extends React.Component {
                 key={this.props.feedID.toString() + '_' + id.toString()}
               />);
           })}
+          <ReplyPost feedID={this.props.feedID}/>
         </div>
       </div>
     );
@@ -91,6 +92,7 @@ let mapDispatchToProps = (dispatch) => {
     postDislikes: (id) => dispatch(postDislikes(id)),
     getLikes: (id) => dispatch(getLikes(id)),
     getDislikes: (id) => dispatch(getDislikes(id)),
+    getReplyList: (id) => dispatch(getReplyList(id)),
     toTimeline: (username) => dispatch(toTimeline(username))
   };
 };

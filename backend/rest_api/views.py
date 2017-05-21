@@ -195,7 +195,7 @@ class DislikeList(APIView):
 
 class ReplyList(APIView):
     def get(self, request, pk):
-        replies = Reply.objects.filter(feed__id=pk).order_by('-timestamp')
+        replies = Reply.objects.filter(feed__id=pk).order_by('timestamp')
         serializer = ReplyListSerializer(replies)
         return Response(serializer.data)
 

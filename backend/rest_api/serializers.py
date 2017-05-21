@@ -55,6 +55,7 @@ class ReplyListSerializer(serializers.BaseSerializer):
         }
 
 class ReplySerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
     class Meta:
         model = Reply
         fields = ('id', 'feed_id', 'contents', 'author',)

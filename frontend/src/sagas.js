@@ -484,7 +484,8 @@ export function* watchGetReplyList() {
   const t = true;
   while(t) {
     const action = yield take(GET_REPLY_LIST);
-    yield call(fetchReplyList, action.feedId);
+    // Use fork to send multiple request at the same time
+    yield fork(fetchReplyList, action.feedId);
   }
 }
 
@@ -570,6 +571,9 @@ export function* rootSaga() {
   yield fork(watchPostDislikes);
   yield fork(watchGetLikes);
   yield fork(watchGetDislikes);
+  yield fork(watchGetReplyList);
+  yield fork(watchGetReply);
+  yield fork(watchPostReply);
   yield fork(watchStartChat);
   yield fork(watchGetChatList);
   yield fork(watchGetChat);

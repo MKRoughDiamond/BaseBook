@@ -9,10 +9,10 @@ class ReplyPost extends React.Component {
     this.handlePostReply = this.handlePostReply.bind(this);
   }
   
-  handlePostFeed() {
-    const contents = document.getElementById('newFeed-text').value;
+  handlePostReply() {
+    const contents = this.refs.text.value;
     // POST하고 썼던 글이 초기화가 안됨 변경바람
-    this.props.postReply(feedId, contents);
+    this.props.postReply(this.props.feedID, contents);
   }
 
   render() {
@@ -22,7 +22,7 @@ class ReplyPost extends React.Component {
           reply
         </div>
         <div id="newReply-text-wrapper">
-          <textarea id="newReply-text"></textarea>
+          <textarea id="newReply-text" ref="text"/>
         </div>
         <button id="newReply-post" onClick={this.handlePostReply}>
           POST
@@ -34,7 +34,7 @@ class ReplyPost extends React.Component {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    postFeed: (feedId, contents) => dispatch(postFeed(feedId, contents))
+    postReply: (feedId, contents) => dispatch(postReply(feedId, contents))
   };
 };
 
