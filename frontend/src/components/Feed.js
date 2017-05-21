@@ -8,9 +8,9 @@ class Feed extends React.Component {
   render() {
     if (this.props.isLoggedIn) {
       if (this.props.onTimeline) {
-//        const timelineUrl = '/timeline/'+this.props.timelineUser+'/';
+        const timelineUrl = '/timeline/'+this.props.timelineUser+'/';
         return (
-          <Redirect to="/timeline/asdf"/>
+          <Redirect to={timelineUrl}/>
         );
       }
       return (this.props.isChatOn) ? (

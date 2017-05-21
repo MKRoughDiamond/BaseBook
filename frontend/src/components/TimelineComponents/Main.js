@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {getTimelineList, toChat, toFeed} from '../../actions';
 import Entry from '../FeedComponents/Entry';
-import Post from '../FeedComponents/Post';
 
 class TimelineMain extends React.Component {
   constructor(props) {
@@ -34,10 +33,9 @@ class TimelineMain extends React.Component {
         </div>
         <div id="main-content">
           <div id="Pagename">
-            {this.props.username + '\'s Page'}
+            {this.props.timelineUser + '\'s Timeline'}
             <button id="chat-button" onClick={this.handleToChat}>Chat</button>
           </div>
-          <Post/>
           <div id="feed-entries">
             {this.props.feedIdList.map( (id) => {
               return <Entry feedID={id} key={id}/>;
@@ -52,7 +50,7 @@ class TimelineMain extends React.Component {
 let mapStateToProps = (state) => {
   return {
     feedIdList: state.feed.orderedFeedIdList,
-    username: state.server.ID
+    timelineUser: state.server.timelineUser
   };
 };
 
@@ -61,6 +59,7 @@ let mapDispatchToProps = (dispatch) => {
     getTimelineList: () => dispatch(getTimelineList()),
     toChat: () => dispatch(toChat()),
     toFeed: () => dispatch(toFeed())
+
   };
 };
 
