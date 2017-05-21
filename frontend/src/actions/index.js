@@ -41,6 +41,9 @@ export const TOFEED = 'TOFEED';
 export const TOTIMELINE = 'TOTIMELINE';
 export const GET_TIMELINE_LIST = 'GET_TIMELINE_LIST';
 
+export const GET_USER_LIST = 'GET_USER_LIST';
+export const SET_USER_LIST = 'SET_USER_LIST';
+export const USER_QUERY = 'USER_QUERY';
 
 export function setID(value) {
   return {
@@ -303,5 +306,25 @@ export function postChat(chatRoomID, contents) {
 export function getTimelineList() {
   return {
     type: GET_TIMELINE_LIST
+  };
+}
+
+export function getUserList() {
+  return {
+    type: GET_USER_LIST
+  };
+}
+
+export function setUserList(list) {
+  return {
+    type: SET_USER_LIST,
+    list: list
+  };
+}
+
+export function userQuery(keyword) {
+  return {
+    type: USER_QUERY,
+    keyword: keyword
   };
 }

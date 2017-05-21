@@ -7,7 +7,8 @@ import {
   START_CHAT, GET_CHAT_LIST, GET_CHAT, POST_CHAT, SET_CHAT_LIST, GET_TIMELINE_LIST,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
-  getChatRoomID, getChatList, setChatList, setChat, getChat
+  getChatRoomID, getChatList, setChatList, setChat, getChat,
+  setUserList, GET_USER_LIST
 } from './actions';
 
 export function* postSignUp() {
@@ -398,7 +399,32 @@ export function* postChat(chatRoomID, contents) {
   yield put(getChat(chatRoomID)); // refresh chat log
 }
 
-
+export function* fetchUserList() {
+  const state = yield select();
+  const response = yield call(fetch, '/users/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  let userList = [];
+  res.map((obj) => {
+    userList.push(obj.username);
+  });
+  yield put(setUserList(userList));
+}
 
 
 export function* watchSignUp() {
@@ -560,6 +586,11 @@ export function* createChatReciever() {
   }
 }
 
+// calls the function only once
+export function* watchGetUserList() {
+  yield take(GET_USER_LIST);
+  yield call(fetchUserList);
+}
 
 export function* rootSaga() {
   yield fork(watchSignUp);
@@ -580,4 +611,5 @@ export function* rootSaga() {
   yield fork(watchPostChat);
   yield fork(watchGetTimelineList);
   yield fork(createChatReciever);
+  yield fork(watchGetUserList);
 }

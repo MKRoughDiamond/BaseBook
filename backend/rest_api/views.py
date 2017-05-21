@@ -29,7 +29,6 @@ def options_cors():
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (permissions.IsAdminUser,)
 
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
