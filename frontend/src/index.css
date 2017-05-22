@@ -114,7 +114,7 @@ button {
 
 #main-title {
 	background-color : #88B04B;
-	font-size : 20pt;
+	font-size : 32pt;
 	color : white;
 	padding : 10px;
 	margin-top : 10px;
@@ -129,7 +129,6 @@ button {
 	display : inline-block;
 	float : right;
 	margin-right: 5px;
-	margin-top: 15px;
 	font-size : 15px;
 }
 
@@ -524,3 +523,40 @@ button {
   border-radius: 10px;
   margin: 10px 0 10px;
 }
+
+#find-people{
+  font-size: 18px;
+}
+
+#find-people-title{
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#find-people-search{
+  display: inline-block;
+  font-size: 18px;
+  width: 20%;
+}
+
+#find-people-result-wrapper{
+  margin-top: 5px;
+}
+
+.find-people-entry{
+  display: inline-block;
+}
+
+.find-people-totimeline{
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 5px;
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+  background-color: #4B8740;
+  border-radius: 5px;
+}
+
