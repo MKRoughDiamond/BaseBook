@@ -34,22 +34,25 @@ class TopBar extends React.Component {
         <div id="main-title-name" onClick={this.handleToFeed}>
           BaseBook
         </div>
-        <div id="____usersearch____">
-          <input id="textbox" ref="query" onChange={this.handleUserQuery}/>
-          <div id="wrapper">
+        <div id="logout">
+          logout
+        </div>
+        <div id="find-people">
+          <div id="find-people-title">
+            Find other people :
+          </div>
+          <input id="find-people-search" ref="query" onChange={this.handleUserQuery}/>
+          <div id="find-people-result-wrapper">
             {this.props.queriedUser.map( (username) => {
               return (
-                <div id="entry">
-                  <button id="totimeline" onClick={() => {this.handleToTimeline(username);}}>
+                <div className="find-people-entry">
+                  <button className="find-people-totimeline" onClick={() => {this.handleToTimeline(username);}}>
                     {username}
                   </button>
                 </div>
               );
             })}
           </div>
-        </div>
-        <div id="logout">
-          logout
         </div>
       </div>
     );
