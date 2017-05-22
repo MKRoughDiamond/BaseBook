@@ -24,7 +24,10 @@ class ReplyPost extends React.Component {
         <div id="newReply-text-wrapper">
           <textarea id="newReply-text" ref="text"/>
         </div>
-        <button id="newReply-post" onClick={this.handlePostReply}>
+        <button className="newReply-post"
+          id={this.props.feedID + '-newReply-post'}
+          onClick={this.handlePostReply}
+        >
           POST
         </button>
       </div>
