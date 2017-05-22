@@ -1,5 +1,5 @@
 import { SETID, SETPW, NEWID, NEWPW, RETYPEPW,
-  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED
+  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED, LOGOUT
 } from '../actions';
 
 const serverInitialState = {
@@ -51,6 +51,8 @@ const server = (state = serverInitialState, action) => {
     return Object.assign({}, state, { loggedIn : true, hash: action.hash, onTimeline: false});
   case LOGIN_PAGE_ERROR:
     return Object.assign({}, state, { errorMsg : action.msg });
+  case LOGOUT:
+    return serverInitialState;
   default:
     return state;
   }	
