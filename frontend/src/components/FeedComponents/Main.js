@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {getFeedList, toChat} from '../../actions';
 import Entry from './Entry';
 import Post from './Post';
+import TopBar from '../TopBar';
 
 class FeedMain extends React.Component {
   constructor(props) {
@@ -13,21 +14,13 @@ class FeedMain extends React.Component {
     this.props.getFeedList();
   }
   handleToChat() {
-    //console.log('Chat!');
     this.props.toChat();
   }
 
   render() {
     return (
       <div id="main-wrapper">
-        <div id="main-title">
-          <div id="main-title-name">
-            BaseBook
-          </div>
-          <div id="logout">
-            logout
-          </div>
-        </div>
+        <TopBar/>
         <div id="main-content">
           <div id="Pagename">
             {this.props.username + '\'s Page'}

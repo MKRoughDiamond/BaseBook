@@ -55,6 +55,7 @@ class ReplyListSerializer(serializers.BaseSerializer):
         }
 
 class ReplySerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
     class Meta:
         model = Reply
         fields = ('id', 'feed_id', 'contents', 'author',)
@@ -78,3 +79,13 @@ class ChatSerializer(serializers.BaseSerializer):
             'chat': chatlist
         }
     
+class FriendListSerializer(serializers.BaseSerializer):
+    def to_representation(self, obj):
+        friendlist = []
+        for e in obj:
+            friendlist += [ e.friend.username ]
+        return {
+            'friend': friendlist
+        }
+
+

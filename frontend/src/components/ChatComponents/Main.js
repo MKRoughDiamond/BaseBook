@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {getChatList, startChat, postChat, toFeed} from '../../actions';
 import Entry from './Entry';
+import TopBar from '../TopBar';
 
 class ChatMain extends React.Component {
   constructor(props) {
@@ -20,8 +21,6 @@ class ChatMain extends React.Component {
   handlePostChat() {
     console.log('Post Chat!');
     const contents = document.getElementById('new-chat-text').value;
-    //console.log('new-chat-text.value: ', contents);
-    //console.log('this.props.chatRoomID: ', this.props.chatRoomID);
     this.props.postChat(this.props.chatRoomID, contents);
   }
 
@@ -34,14 +33,7 @@ class ChatMain extends React.Component {
     console.log('Object.keys(chatList): ', chatList);
     return (
       <div id="main-wrapper">
-        <div id="main-title">
-          <div id="main-title-name" onClick={this.handleToFeed}>
-            BaseBook
-          </div>
-          <div id="logout">
-            logout
-          </div>
-        </div>
+        <TopBar/>
         <div id="main-content">
           <div id="chatting-title">
             <div id="username-title">
