@@ -33,6 +33,10 @@ class TimelineMain extends React.Component {
           <div id="Pagename">
             {this.props.timelineUser + '\'s Timeline'}
             <button id="chat-button" onClick={this.handleToChat}>Chat</button>
+            {(this.props.timelineUser===this.props.username)?
+              (<div></div>
+            ):(
+              <button id="friend-button">friend</button>)}
           </div>
           <div id="feed-entries">
             {this.props.feedIdList.map( (id) => {
@@ -48,7 +52,8 @@ class TimelineMain extends React.Component {
 let mapStateToProps = (state) => {
   return {
     feedIdList: state.feed.orderedFeedIdList,
-    timelineUser: state.server.timelineUser
+    timelineUser: state.server.timelineUser,
+    username: state.server.ID
   };
 };
 

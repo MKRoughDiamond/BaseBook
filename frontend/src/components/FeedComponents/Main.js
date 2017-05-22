@@ -14,7 +14,6 @@ class FeedMain extends React.Component {
     this.props.getFeedList();
   }
   handleToChat() {
-    //console.log('Chat!');
     this.props.toChat();
   }
 
