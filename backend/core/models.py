@@ -7,7 +7,7 @@ class BaseUser(models.Model):
 
 class Friend(models.Model):
     user = models.ForeignKey(User,related_name='user', on_delete=models.CASCADE)
-    friend = models.ForeignKey(User, related_name='friends', on_delete=models.CASCADE)
+    friend = models.ForeignKey(User, related_name='friend', on_delete=models.CASCADE)
 
 
 class Feed(models.Model):

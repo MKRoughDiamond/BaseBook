@@ -79,3 +79,13 @@ class ChatSerializer(serializers.BaseSerializer):
             'chat': chatlist
         }
     
+class FriendListSerializer(serializers.BaseSerializer):
+    def to_representation(self, obj):
+        friendlist = []
+        for e in obj:
+            friendlist += [ e.friend.username ]
+        return {
+            'friend': friendlist
+        }
+
+
