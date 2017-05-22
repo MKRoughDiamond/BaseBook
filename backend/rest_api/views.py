@@ -41,7 +41,7 @@ class user_login(APIView):
         if request.user is not None:
             return Response('',status=200)
         else:
-            return Response({'message': 'Invalid ID and password.'},status=400)
+            return Response({'detail':'Invalid ID and password.'},status=400)
     
     def options(self, request):
         return options_cors()
@@ -53,14 +53,14 @@ class user_signup(APIView):
         username = request.data.get('id', None)
         password = request.data.get('password', None)
         if username is None:
-            return Response({'message':'Please put valid ID.'}, status=400)
+            return Response({'detail':'Please put valid ID.'}, status=400)
         if password is None:
-            return Response({'message':'Please put password.'}, status=400)
+            return Response({'detail':'Please put password.'}, status=400)
         
         try:
             user = User.objects.create_user(username, username+'@email.com', password)
         except IntegrityError:
-            return Response({'message':'User already exists!'}, status=400)
+            return Response({'detail':'User already exists!'}, status=400)
         user.save()
         return Response('',status=200)
     

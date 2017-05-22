@@ -33,9 +33,8 @@ export function* postSignUp() {
     try {
       res = yield response.json();
     }
-    catch(e) { res.message = 'Server not responding.'; }
-    console.log(res.message);
-    yield put(loginPageError(res.message));
+    catch(e) { res.detail = 'Server not responding.'; }
+    yield put(loginPageError(res.detail));
   }
 }
 
@@ -56,8 +55,8 @@ export function* postLogin() {
     try {
       res = yield response.json();
     }
-    catch(e) { res.message = 'Server not responding.'; }
-    yield put(loginPageError(res.message));
+    catch(e) { res.detail = 'Server not responding.'; }
+    yield put(loginPageError(res.detail));
   }
 }
 
