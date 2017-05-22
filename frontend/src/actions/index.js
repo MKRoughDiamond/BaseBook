@@ -15,6 +15,12 @@ export const GET_FEED = 'GET_FEED';
 export const SET_FEED = 'SET_FEED';
 export const POST_FEED = 'POST_FEED';
 
+export const GET_REPLY_LIST = 'GET_REPLY_LIST';
+export const SET_REPLY_LIST = 'SET_REPLY_LIST';
+export const GET_REPLY = 'GET_REPLY';
+export const SET_REPLY = 'SET_REPLY';
+export const POST_REPLY = 'POST_REPLY';
+
 export const POST_LIKES = 'POST_LIKES';
 export const POST_DISLIKES = 'POST_DISLIKES';
 export const GET_LIKES = 'GET_LIKES';
@@ -35,6 +41,9 @@ export const TOFEED = 'TOFEED';
 export const TOTIMELINE = 'TOTIMELINE';
 export const GET_TIMELINE_LIST = 'GET_TIMELINE_LIST';
 
+export const GET_USER_LIST = 'GET_USER_LIST';
+export const SET_USER_LIST = 'SET_USER_LIST';
+export const USER_QUERY = 'USER_QUERY';
 
 export function setID(value) {
   return {
@@ -198,6 +207,46 @@ export function setDislikes(id, dislikes, didDislike) {
   };
 }
 
+export function getReplyList(feedId) {
+  return {
+    type: GET_REPLY_LIST,
+    feedId: feedId
+  };
+}
+
+export function setReplyList(feedId, list) {
+  return {
+    type: SET_REPLY_LIST,
+    feedId: feedId,
+    list: list
+  };
+}
+
+export function getReply(feedId, replyId) {
+  return {
+    type: GET_REPLY,
+    feedId: feedId,
+    replyId: replyId
+  };
+}
+
+export function setReply(feedId, replyId, reply) {
+  return {
+    type: SET_REPLY,
+    feedId: feedId,
+    replyId: replyId,
+    reply: reply
+  };
+}
+
+export function postReply(feedId, contents) {
+  return {
+    type: POST_REPLY,
+    feedId: feedId,
+    contents: contents,
+  };
+}
+
 export function toChat() {
   return {
     type: TOCHAT
@@ -257,5 +306,25 @@ export function postChat(chatRoomID, contents) {
 export function getTimelineList() {
   return {
     type: GET_TIMELINE_LIST
+  };
+}
+
+export function getUserList() {
+  return {
+    type: GET_USER_LIST
+  };
+}
+
+export function setUserList(list) {
+  return {
+    type: SET_USER_LIST,
+    list: list
+  };
+}
+
+export function userQuery(keyword) {
+  return {
+    type: USER_QUERY,
+    keyword: keyword
   };
 }

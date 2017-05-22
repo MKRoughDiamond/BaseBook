@@ -2,12 +2,14 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {getTimelineList, toChat, toFeed} from '../../actions';
 import Entry from '../FeedComponents/Entry';
+import TopBar from '../TopBar';
 
 class TimelineMain extends React.Component {
   constructor(props) {
     super(props);
     this.handleToChat = this.handleToChat.bind(this);
     this.handleToFeed = this.handleToFeed.bind(this);
+    this.prevUser = this.props.timelineUser;
   }
   componentDidMount() {
     this.props.getTimelineList();
@@ -21,16 +23,12 @@ class TimelineMain extends React.Component {
   }
 
   render() {
+    if(this.prevUser !== this.props.timelineUser)
+      this.props.getTimelineList();
+    this.prevUser = this.props.timelineUser;
     return (
       <div id="main-wrapper">
-        <div id="main-title">
-          <div id="main-title-name" onClick={this.handleToFeed}>
-            BaseBook
-          </div>
-          <div id="logout">
-            logout
-          </div>
-        </div>
+        <TopBar/>
         <div id="main-content">
           <div id="Pagename">
             {this.props.timelineUser + '\'s Timeline'}
