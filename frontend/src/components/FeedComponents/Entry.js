@@ -65,11 +65,13 @@ class Entry extends React.Component {
         </div>
         <div id="reply-wrapper">
           {feed.orderedReplyIdList.map( (id) => {
+            const sid = 'reply' + this.props.feedID.toString() + '_' + id.toString();
             return (
               <ReplyEntry
                 feedID={this.props.feedID}
                 replyID={id}
-                key={this.props.feedID.toString() + '_' + id.toString()}
+                key={sid}
+                id={sid}
               />);
           })}
           <ReplyPost feedID={this.props.feedID}/>

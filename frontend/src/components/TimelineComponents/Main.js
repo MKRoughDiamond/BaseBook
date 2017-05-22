@@ -34,7 +34,7 @@ class TimelineMain extends React.Component {
             {this.props.timelineUser + '\'s Timeline'}
             <button id="chat-button" onClick={this.handleToChat}>Chat</button>
             {(this.props.timelineUser===this.props.username)?
-              (<div></div>
+              (<div/>
             ):(
               <button id="friend-button">friend</button>)}
           </div>
