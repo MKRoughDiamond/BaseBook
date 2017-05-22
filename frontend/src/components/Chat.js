@@ -6,7 +6,10 @@ import Main from './ChatComponents/Main';
 class Chat extends React.Component {
   render() {
     return (this.props.isLoggedIn)?(
-      <Main/>
+      (this.props.chatOn)?(
+        <Main />
+      ):(
+        <Redirect to="/" />)
     ):(
       <Redirect to="/login/"/>
     );
@@ -15,7 +18,8 @@ class Chat extends React.Component {
 
 let mapStateToProps = (state) => {
   return {
-    isLoggedIn : state.server.loggedIn
+    isLoggedIn : state.server.loggedIn,
+    chatOn : state.chat.chatOn
   };
 };
 

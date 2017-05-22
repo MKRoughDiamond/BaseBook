@@ -29,7 +29,6 @@ def options_cors():
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (permissions.IsAdminUser,)
 
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
@@ -195,7 +194,7 @@ class DislikeList(APIView):
 
 class ReplyList(APIView):
     def get(self, request, pk):
-        replies = Reply.objects.filter(feed__id=pk).order_by('-timestamp')
+        replies = Reply.objects.filter(feed__id=pk).order_by('timestamp')
         serializer = ReplyListSerializer(replies)
         return Response(serializer.data)
 
