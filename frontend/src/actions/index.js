@@ -44,6 +44,7 @@ export const GET_TIMELINE_LIST = 'GET_TIMELINE_LIST';
 export const GET_USER_LIST = 'GET_USER_LIST';
 export const SET_USER_LIST = 'SET_USER_LIST';
 export const USER_QUERY = 'USER_QUERY';
+export const LOGOUT = 'LOGOUT';
 
 export function setID(value) {
   return {
@@ -326,5 +327,11 @@ export function userQuery(keyword) {
   return {
     type: USER_QUERY,
     keyword: keyword
+  };
+}
+
+export function logout() {
+  return {
+    type: LOGOUT
   };
 }

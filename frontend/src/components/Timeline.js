@@ -6,12 +6,19 @@ import TimelineMain from './TimelineComponents/Main';
 
 class Timeline extends React.Component {
   componentDidMount() {
-    this.props.toTimeline(this.props.params.username);
+    this.props.toTimeline(this.props.match.params.username);
   }
 
   render() {
     if (this.props.isLoggedIn) {
       if (this.props.onTimeline) {
+        const urlUsername = this.props.match.params.username;
+        if (this.props.timelineUser !== urlUsername) {
+          const Url = '/timeline/' + this.props.timelineUser;
+          return (
+            <Redirect to={Url} />
+          );
+        }
         return (
           <TimelineMain/>
         );
@@ -30,7 +37,8 @@ class Timeline extends React.Component {
 let mapStateToProps = (state) => {
   return {
     onTimeline : state.server.onTimeline,
-    isLoggedIn : state.server.loggedIn
+    isLoggedIn : state.server.loggedIn,
+    timelineUser : state.server.timelineUser
   };
 };
 

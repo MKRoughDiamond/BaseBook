@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { toFeed, toTimeline, userQuery, getUserList } from '../actions';
+import { toFeed, toTimeline, userQuery, getUserList, logout } from '../actions';
 
 class TopBar extends React.Component {
   constructor(props) {
@@ -8,6 +8,7 @@ class TopBar extends React.Component {
     this.handleToFeed = this.handleToFeed.bind(this);
     this.handleToTimeline = this.handleToTimeline.bind(this);
     this.handleUserQuery = this.handleUserQuery.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   componentDidMount() {
@@ -28,13 +29,17 @@ class TopBar extends React.Component {
     this.props.userQuery(this.refs.query.value);
   }
 
+  handleLogout() {
+    this.props.logout();
+  }
+
   render() {
     return (
       <div id="main-title">
         <div id="main-title-name" onClick={this.handleToFeed}>
           BaseBook
         </div>
-        <div id="logout">
+        <div id="logout" onClick={this.handleLogout}>
           logout
         </div>
         <div id="find-people">
@@ -71,7 +76,8 @@ let mapDispatchToProps = (dispatch) => {
     toFeed: () => dispatch(toFeed()),
     toTimeline: (username) => dispatch(toTimeline(username)),
     userQuery: (keyword) => dispatch(userQuery(keyword)),
-    getUserList: () => dispatch(getUserList())
+    getUserList: () => dispatch(getUserList()),
+    logout: () => dispatch(logout())
   };
 };
 
