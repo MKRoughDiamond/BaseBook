@@ -10,8 +10,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 
 from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, ChatRoomSerializer, ChatSerializer, FriendListSerializer
-from rest_api.permissions import IsCurrUser, IsCurrUserReply
+from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions
 from core.models import Feed, Reply, Chat, ChatRoom, Friend
+from rest_framework.decorators import permission_classes
 #from core.models import BaseUser, Friend, Feed, Reply, Picture
 
 
@@ -22,7 +23,7 @@ def options_cors():
     response['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS, DELETE'
     response['Access-Control-Max-Age'] = 1000
     # note that '*' is not valid for Access-Control-Allow-Headers
-    response['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'
+    response['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept, authorization'
     return response
 
 # may only admin can access
@@ -68,7 +69,6 @@ class user_signup(APIView):
         return options_cors()
 
 class FeedList(APIView):
-
     def get(self, request, username=None):
         if username is None: # Newsfeed query
             friends = Friend.objects.filter(user=request.user).values('friend')
@@ -91,7 +91,7 @@ class FeedList(APIView):
         serializer = FeedListSerializer(feeds)
         return Response(serializer.data)
 
-    def post(self, request):
+    def post(self, request, username=None):
         contents = request.data.get('contents', None)
         scope = request.data.get('scope', None)
         if contents is None or (scope,scope) not in Feed.SCOPE_CHOICES:
@@ -101,17 +101,16 @@ class FeedList(APIView):
         feed.save()
         return Response('', status=200)
 
-    def options(self, request):
+    def options(self, request, username=None):
         return options_cors()
 
 class FeedDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticated, IsCurrUser,)
+    permission_classes = (IsAuthNotOptions, IsCurrUser,)
     queryset = Feed.objects.all()
     serializer_class = FeedSerializer
     lookup_url_kwarg = 'pk'
 
 class LikeList(APIView):
-
     def get(self, request, pk):
         try:
             likes = Feed.objects.get(pk=pk)
@@ -148,7 +147,7 @@ class LikeList(APIView):
         else:
             return Response('Not Yet Like', status=400)
 
-    def options(self, request):
+    def options(self, request, pk):
         return options_cors()
 
 class DislikeList(APIView):
@@ -189,7 +188,7 @@ class DislikeList(APIView):
         else:
             return Response('Not Yet Dislike', status=400)
 
-    def options(self, request):
+    def options(self, request, pk):
         return options_cors()
 
 class ReplyList(APIView):
@@ -206,7 +205,7 @@ class ReplyList(APIView):
         reply.save()
         return Response('', status=200)
 
-    def options(self, request):
+    def options(self, request, pk):
         return options_cors()
 
 class ReplyDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -236,6 +235,9 @@ class ChatRoomID(APIView):
             room.save()
         serializer = ChatRoomSerializer(room)
         return Response(serializer.data)
+    
+    def options(self, request, username):
+        return options_cors()
 
 class ChatDetail(APIView):
     def get(self, request, pk):
@@ -264,6 +266,9 @@ class ChatDetail(APIView):
         chat = Chat(room=room, user=request.user, contents=request.data.get('contents', ''))
         chat.save()
         return Response('')
+    
+    def options(self, request, pk):
+        return options_cors()
 
 class ChatAll(APIView):
     def get(self, request, pk):
@@ -281,6 +286,9 @@ class ChatAll(APIView):
         room.save()
         serializer = ChatSerializer(chats)
         return Response(serializer.data)
+    
+    def options(self, request, pk):
+        return options_cors()
 
 class FriendList(APIView):
     def post(self, request, username):
@@ -301,5 +309,7 @@ class FriendList(APIView):
         serializer = FriendListSerializer(friends)
         return Response(serializer.data)
 
+    def options(self, request, username):
+        return options_cors()
 
 
