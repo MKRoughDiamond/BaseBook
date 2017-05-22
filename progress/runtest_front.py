@@ -8,7 +8,7 @@ import sys
 #(number of users)
 N = 2
 #(number of feed per scope) * (number of scope)
-F = 2*3
+F = 1*3
 #(number of reply per feed)
 R = 2
 #(number of chat)
@@ -16,8 +16,7 @@ C = 1
 ################################################################
 drivers = []
 scopes = ['Public', 'Friend Only', 'Private']
-goods = ['good', 'bad']
-likes = ['Like', 'Dislike']
+likes = ['like', 'dislike']
 ################################################################
 def end_test(message, e):
     print(message)
@@ -107,21 +106,31 @@ def feed_post_test(driver, contents, scope_index):
         end_test('\n{0} POST Feed test failed'.format(scopes[scope_index]), e)
     print(uname + ' POST Feed success')
 
-def like_dislike_post_test(driver, feed_index):
-    like_index = feed_index % 2
+def like_dislike_feed_post_test(driver, like_dislike):
     try:
-        click(driver, 'feed{0}-'.format(feed_index) + goods[like_index])
-        #button = driver.find_element_by_xpath("//div[@id='feed-entries']/div[{0}]/div[1]/button[{1}]/".format(feed_index + 1, 4 - like_index))
-        #button.click()
+        buttons = driver.find_elements_by_xpath("//button[@class='feed-{0}']".format(likes[like_dislike % 2]))
+        for i in range(0, 3):
+            button = buttons[i]
+            button.click()
+            sleep(0.25)
     except Exception as e:
-        end_test('\n{0} POST Good/Bad test failed'.format(goods[like_index]), e)
-    print('POST ' + goods[like_index] + ' success')
+        end_test('\n{0} POST like/dislike test failed'.format(likes[like_dislike]), e)
+    print('POST ' + likes[like_dislike] + ' success')
 
-def reply_post_test(driver, contents, feed_index):
+def reply_post_test(driver, contents):
     try:
-        pass
+        #newReplys = driver.find_elements_by_xpath("//div[@id=newReply]/")
+        textareas = driver.find_elements_by_xpath("//textarea[@id='newReply-text']")
+        buttons = driver.find_elements_by_xpath("//button[@class='newReply-post']")
+        for i in range(0, 3):
+            textarea = textareas[i]
+            send_keys(textarea, contents)
+            button = buttons[i]
+            button.click()
+            sleep(0.25)
+            print(' {0} '.format(i), end=' ')
     except Exception as e:
-        end_test('\n{0} POST Reply test failed'.format(feed_index), e)
+        end_test('\nPOST Reply test failed', e)
 
 def start_chat_test(driver, other_username):
     try:
@@ -164,8 +173,8 @@ print('\nSignUp test:')
 
 for i in range(0, N):
     uname = 'user{0}'.format(i)
-    upwd = 'user{0}passwd'.format(i)
-    signup_post_test(drivers[i], uname, upwd, False)
+    upwd = 'user{0}'.format(i)
+#    signup_post_test(drivers[i], uname, upwd, False)
     signup_post_test(drivers[i], uname, upwd, True)
 
 ################################################################
@@ -173,7 +182,7 @@ print('\nSignIn test:')
 
 for i in range(0, N):
     uname = 'user{0}'.format(i)
-    upwd = 'user{0}passwd'.format(i)
+    upwd = 'user{0}'.format(i)
     signin_post_test(drivers[i], uname, upwd)
 
 ################################################################
@@ -186,22 +195,21 @@ for i in range(0, N):
         feed_post_test(drivers[i], contents, int(j/2))
 
 ################################################################
-print('\nPOST Good/Bad test:')
+print('\nPOST like/dislike test:')
 
 for i in range(0, N):
     for j in range(0, 3): #(0, F)
-        print('{0}({1}) Feed {2}'.format(goods[(i % 2)], likes[(i % 2)], j), end=' ')
-        like_dislike_post_test(drivers[i], j)
+        print('{0} {1}th Feed'.format(likes[(i % 2)], j), end=' ')
+        like_dislike_feed_post_test(drivers[i], i % 2)
 
 ################################################################
-'''print('\nPOST Reply test:')
+print('\nPOST Reply test:')
 
 for i in range(0, N):
-    for j in range(0, F):
-        print('Reply {0}'.format(j), end=' ')
-        contents = 'Frontend - contents of POST user{0}-{1} reply: 종강하고싶다{1}{1}'.format(i, j + 1)
-        reply_post_test(drivers[i], contents, j)
-'''
+    print('Reply user{0}'.format(i), end=' ')
+    contents = 'Frontend - contents of POST user{0} reply: 종강하고싶다'.format(i)
+    reply_post_test(drivers[i], contents)
+
 ################################################################
 print('\nTO and START Chat test:')
 
