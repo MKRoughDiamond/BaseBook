@@ -91,8 +91,8 @@ def signup_test(driver, uname, upwd, duplication):
 for i in range(0, 1):
     print('drivers[{0}] open'.format(i))
     drivers.append(webdriver.Chrome('/usr/local/bin/chromedriver'))
-    drivers[i].get('http://localhost:3000')
-    # drivers[i].get('http://13.124.80.116:3000')
+    #drivers[i].get('http://localhost:3000')
+    drivers[i].get('http://13.124.80.116:3000')
     print('drivers[{0}] open successful'.format(i))
 
 

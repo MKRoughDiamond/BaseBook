@@ -164,8 +164,8 @@ print('################################################################')
 for i in range(0, N):
     print('drivers[{0}] open'.format(i))
     drivers.append(webdriver.Chrome('/usr/local/bin/chromedriver'))
-    drivers[i].get('http://localhost:3000')
-    #drivers[i].get('http://13.124.80.116:3000')
+    #drivers[i].get('http://localhost:3000')
+    drivers[i].get('http://13.124.80.116:9000')
     print('drivers[{0}] open successful'.format(i))
 
 ################################################################
@@ -199,7 +199,7 @@ print('\nPOST like/dislike test:')
 
 for i in range(0, N):
     for j in range(0, 3): #(0, F)
-        print('{0} {1}th Feed'.format(likes[(i % 2)], j), end=' ')
+        print('{0} {1}th Feed'.format(likes[(i % 2)], j + 1), end=' ')
         like_dislike_feed_test(drivers[i], i % 2)
 
 ################################################################
@@ -214,8 +214,8 @@ for i in range(0, N):
 print('\nTO and START Chat test:')
 
 for i in range(0, N):
-    j = (i + 1) % N
-    other_username = 'user{0}'.format(j)
+    i2 = (i + 1) % N
+    other_username = 'user{0}'.format(i2)
     start_chat_test(drivers[i], other_username)
 
 
@@ -225,7 +225,7 @@ print('\nPOST Chat test:')
 for j in range(0, C):
     for i in range(0, N):
         i2 = (i + 1) % N
-        other_username = 'user{0}'.format(j)
+        other_username = 'user{0}'.format(i2)
         chat_test(drivers[i], 'Hey user{0} {1}{1}!'.format(i2, j), other_username)
     pass
 
