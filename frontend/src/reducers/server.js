@@ -50,7 +50,7 @@ const server = (state = serverInitialState, action) => {
   case LOGIN_SUCCESS:
     return Object.assign({}, state, { loggedIn : true, hash: action.hash, onTimeline: false});
   case LOGIN_PAGE_ERROR:
-    return Object.assign({}, state, { errorMsg : action.msg });
+    return Object.assign({}, serverInitialState, { errorMsg : action.msg });
   case LOGOUT:
     return serverInitialState;
   default:

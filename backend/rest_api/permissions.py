@@ -19,3 +19,9 @@ class IsCurrUserReply(permissions.BasePermission):
         if request.method != 'GET':
             return True
         return request.user == obj.author
+
+class IsAuthNotOptions(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method == 'OPTIONS':
+            return True
+        return permissions.IsAuthenticated.has_permission(self, request, view)
