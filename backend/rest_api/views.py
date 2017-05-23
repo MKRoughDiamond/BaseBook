@@ -31,6 +31,9 @@ class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def options(self, request):
+        return options_cors()
+
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -109,6 +112,9 @@ class FeedDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Feed.objects.all()
     serializer_class = FeedSerializer
     lookup_url_kwarg = 'pk'
+
+    def options(self, request, pk):
+        return options_cors()
 
 class LikeList(APIView):
     def get(self, request, pk):
@@ -209,10 +215,13 @@ class ReplyList(APIView):
         return options_cors()
 
 class ReplyDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticated, IsCurrUserReply,)
+    permission_classes = (IsAuthNotOptions, IsCurrUserReply,)
     queryset = Reply.objects.all()
     serializer_class = ReplySerializer
     lookup_url_kwarg = 'pk'
+
+    def options(self, request, pk):
+        return options_cors()
 
 class ChatRoomID(APIView):
     def post(self, request, username):

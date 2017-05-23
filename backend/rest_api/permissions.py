@@ -20,6 +20,9 @@ class IsCurrUserReply(permissions.BasePermission):
             return True
         return request.user == obj.author
 
+    def has_permission(self, request, view):
+        return True
+
 class IsAuthNotOptions(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method == 'OPTIONS':
