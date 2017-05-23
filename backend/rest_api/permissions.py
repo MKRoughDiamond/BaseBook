@@ -16,7 +16,9 @@ class IsCurrUser(permissions.BasePermission):
             
 class IsCurrUserReply(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        if request.method != 'GET':
+        if request.method == 'GET':
+            return True
+        if request.method == 'OPTIONS':
             return True
         return request.user == obj.author
 
