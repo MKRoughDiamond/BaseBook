@@ -60,7 +60,7 @@ def click(driver, name):
         end_test('Cannot click %s' % name, e)
     sleep(0.5)
 
-def signup_post_test(driver, uname, upwd, duplication):
+def signup_test(driver, uname, upwd, duplication):
     try:
         click(driver, 'SignUp')
         send(driver, 'input-username', uname)
@@ -87,7 +87,7 @@ def signup_post_test(driver, uname, upwd, duplication):
     except Exception as e:
         end_test('\nSignUp test failed', e)
 
-def signin_post_test(driver, uname, upwd):
+def signin_test(driver, uname, upwd):
     try:
         send(driver, 'input-username', uname)
         send(driver, 'input-password', upwd)
@@ -96,7 +96,7 @@ def signin_post_test(driver, uname, upwd):
         end_test('\nSignIn test failed', e)
     print(uname + ' SignIn success')
 
-def feed_post_test(driver, contents, scope_index):
+def feed_test(driver, contents, scope_index):
     try:
         dropdown = Select(find_by_id(driver, 'newFeed-scope'))
         dropdown.select_by_index(scope_index)
@@ -106,7 +106,7 @@ def feed_post_test(driver, contents, scope_index):
         end_test('\n{0} POST Feed test failed'.format(scopes[scope_index]), e)
     print(uname + ' POST Feed success')
 
-def like_dislike_feed_post_test(driver, like_dislike):
+def like_dislike_feed_test(driver, like_dislike):
     try:
         buttons = driver.find_elements_by_xpath("//button[@class='feed-{0}']".format(likes[like_dislike % 2]))
         for i in range(0, 3):
@@ -117,7 +117,7 @@ def like_dislike_feed_post_test(driver, like_dislike):
         end_test('\n{0} POST like/dislike test failed'.format(likes[like_dislike]), e)
     print('POST ' + likes[like_dislike] + ' success')
 
-def reply_post_test(driver, contents):
+def reply_test(driver, contents):
     try:
         #newReplys = driver.find_elements_by_xpath("//div[@id=newReply]/")
         textareas = driver.find_elements_by_xpath("//textarea[@id='newReply-text']")
@@ -142,7 +142,7 @@ def start_chat_test(driver, other_username):
         end_test('\nSTART Chat with {0} test failed'.format(other_username), e)
     print('START Chat with {0} test success'.format(other_username))
 
-def chat_post_test(driver, contents, other_username):
+def chat_test(driver, contents, other_username):
     try:
         send(driver, 'new-chat-text', contents)
         click(driver, 'new-chat-post')
@@ -174,8 +174,8 @@ print('\nSignUp test:')
 for i in range(0, N):
     uname = 'user{0}'.format(i)
     upwd = 'user{0}'.format(i)
-#    signup_post_test(drivers[i], uname, upwd, False)
-    signup_post_test(drivers[i], uname, upwd, True)
+#    signup_test(drivers[i], uname, upwd, False)
+    signup_test(drivers[i], uname, upwd, True)
 
 ################################################################
 print('\nSignIn test:')
@@ -183,7 +183,7 @@ print('\nSignIn test:')
 for i in range(0, N):
     uname = 'user{0}'.format(i)
     upwd = 'user{0}'.format(i)
-    signin_post_test(drivers[i], uname, upwd)
+    signin_test(drivers[i], uname, upwd)
 
 ################################################################
 print('\nPOST Feed test:')
@@ -192,7 +192,7 @@ for i in range(0, N):
     for j in range(0, F):
         print('{0} Feed {1}'.format(scopes[int(j / 2)], (j % 2) + 1), end=' ')
         contents = 'Frontend - contents of POST user{0}-{1} feed: 종강하고싶다{1}{1}'.format(i, j + 1)
-        feed_post_test(drivers[i], contents, int(j/2))
+        feed_test(drivers[i], contents, int(j/2))
 
 ################################################################
 print('\nPOST like/dislike test:')
@@ -200,7 +200,7 @@ print('\nPOST like/dislike test:')
 for i in range(0, N):
     for j in range(0, 3): #(0, F)
         print('{0} {1}th Feed'.format(likes[(i % 2)], j), end=' ')
-        like_dislike_feed_post_test(drivers[i], i % 2)
+        like_dislike_feed_test(drivers[i], i % 2)
 
 ################################################################
 print('\nPOST Reply test:')
@@ -208,7 +208,7 @@ print('\nPOST Reply test:')
 for i in range(0, N):
     print('Reply user{0}'.format(i), end=' ')
     contents = 'Frontend - contents of POST user{0} reply: 종강하고싶다'.format(i)
-    reply_post_test(drivers[i], contents)
+    reply_test(drivers[i], contents)
 
 ################################################################
 print('\nTO and START Chat test:')
@@ -226,7 +226,7 @@ for j in range(0, C):
     for i in range(0, N):
         i2 = (i + 1) % N
         other_username = 'user{0}'.format(j)
-        chat_post_test(drivers[i], 'Hey user{0} {1}{1}!'.format(i2, j), other_username)
+        chat_test(drivers[i], 'Hey user{0} {1}{1}!'.format(i2, j), other_username)
     pass
 
 print('one-side chat test')
@@ -235,7 +235,7 @@ i = 0
 for j in range(0, C * 5):
     i2 = (i + 1) % N
     other_username = 'user{0}'.format(j)
-    chat_post_test(drivers[i], 'Hey user{0} {1}{1}!(one side)'.format(i2, j), other_username)
+    chat_test(drivers[i], 'Hey user{0} {1}{1}!(one side)'.format(i2, j), other_username)
 
 ################################################################
 sleep(4)
