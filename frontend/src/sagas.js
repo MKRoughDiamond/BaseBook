@@ -11,13 +11,15 @@ import {
   setUserList, GET_USER_LIST
 } from './actions';
 
+const url = 'http://localhost:8000';
+
 export function* postSignUp() {
   const state = yield select();
   const signUpInfo = {
     'id': state.server.newID,
     'password': state.server.newPW
   };
-  const response = yield call(fetch, '/signup/', {
+  const response = yield call(fetch, url + '/signup/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -33,16 +35,15 @@ export function* postSignUp() {
     try {
       res = yield response.json();
     }
-    catch(e) { res.message = 'Server not responding.'; }
-    console.log(res.message);
-    yield put(loginPageError(res.message));
+    catch(e) { res.detail = 'Server not responding.'; }
+    yield put(loginPageError(res.detail));
   }
 }
 
 export function* postLogin() {
   const state = yield select();
   const hash = new Buffer(`${state.server.ID}:${state.server.PW}`).toString('base64');
-  const response = yield call(fetch, '/login/', {
+  const response = yield call(fetch, url + '/login/', {
     method: 'POST',
     headers: {
       'Authorization': `Basic ${hash}`
@@ -56,15 +57,15 @@ export function* postLogin() {
     try {
       res = yield response.json();
     }
-    catch(e) { res.message = 'Server not responding.'; }
-    yield put(loginPageError(res.message));
+    catch(e) { res.detail = 'Server not responding.'; }
+    yield put(loginPageError(res.detail));
   }
 }
 
 export function* fetchTimelineList() {
   const state = yield select();
   console.log('fetchtimelinlist');
-  const response = yield call(fetch, '/feed/user/' + state.server.timelineUser + '/', {
+  const response = yield call(fetch, url + '/feed/user/' + state.server.timelineUser + '/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
@@ -88,7 +89,7 @@ export function* fetchTimelineList() {
 
 export function* fetchFeedList() {
   const state = yield select();
-  const response = yield call(fetch, '/feed/', {
+  const response = yield call(fetch, url + '/feed/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
@@ -112,7 +113,7 @@ export function* fetchFeedList() {
 
 export function* fetchFeed(id) {
   const state = yield select();
-  const response = yield call(fetch, '/feed/' + id.toString() + '/', {
+  const response = yield call(fetch, url + '/feed/' + id.toString() + '/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
@@ -135,7 +136,7 @@ export function* fetchFeed(id) {
 
 export function* postFeed(contents, scope) {
   const state = yield select();
-  const response = yield call(fetch, '/feed/', {
+  const response = yield call(fetch, url + '/feed/', {
     method: 'POST',
     headers: {
       'Authorization': `Basic ${state.server.hash}`,
@@ -156,7 +157,7 @@ export function* postFeed(contents, scope) {
 
 export function* fetchLikes(id) {
   const state = yield select();
-  const response = yield call(fetch, '/feed/' + id.toString() + '/likes/', {
+  const response = yield call(fetch, url + '/feed/' + id.toString() + '/likes/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
@@ -180,7 +181,7 @@ export function* fetchLikes(id) {
 
 export function* fetchDislikes(id) {
   const state = yield select();
-  const response = yield call(fetch, '/feed/' + id.toString() + '/dislikes/', {
+  const response = yield call(fetch, url + '/feed/' + id.toString() + '/dislikes/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
@@ -205,7 +206,7 @@ export function* fetchDislikes(id) {
 export function* postLikes(id) {
   const state = yield select();
   const req = (state.feed.feedList[id].didLike)?'DELETE':'POST';
-  const response = yield call(fetch, '/feed/' + id.toString() + '/likes/', {
+  const response = yield call(fetch, url + '/feed/' + id.toString() + '/likes/', {
     method: req,
     headers: {
       'Authorization': `Basic ${state.server.hash}`,
@@ -221,7 +222,7 @@ export function* postLikes(id) {
 export function* postDislikes(id) {
   const state = yield select();
   const req = (state.feed.feedList[id].didDislike)?'DELETE':'POST';
-  const response = yield call(fetch, '/feed/' + id.toString() + '/dislikes/', {
+  const response = yield call(fetch, url + '/feed/' + id.toString() + '/dislikes/', {
     method: req,
     headers: {
       'Authorization': `Basic ${state.server.hash}`,
@@ -236,7 +237,7 @@ export function* postDislikes(id) {
 
 export function* fetchReplyList(feedId) {
   const state = yield select();
-  const response = yield call(fetch, '/feed/' + feedId.toString() + '/reply/', {
+  const response = yield call(fetch, url + '/feed/' + feedId.toString() + '/reply/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
@@ -259,7 +260,7 @@ export function* fetchReplyList(feedId) {
 
 export function* fetchReply(feedId, replyId) {
   const state = yield select();
-  const response = yield call(fetch, '/reply/' + replyId.toString() + '/', {
+  const response = yield call(fetch, url + '/reply/' + replyId.toString() + '/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
@@ -282,7 +283,7 @@ export function* fetchReply(feedId, replyId) {
 
 export function* postReply(feedId, contents) {
   const state = yield select();
-  const response = yield call(fetch, '/feed/' + feedId.toString() + '/reply/', {
+  const response = yield call(fetch, url + '/feed/' + feedId.toString() + '/reply/', {
     method: 'POST',
     headers: {
       'Authorization': `Basic ${state.server.hash}`,
@@ -302,7 +303,7 @@ export function* postReply(feedId, contents) {
 
 export function* startChat(username) {
   const state = yield select();
-  const response = yield call(fetch, '/chat/user/' + username + '/', {
+  const response = yield call(fetch, url + '/chat/user/' + username + '/', {
     method: 'POST',
     headers: {
       'Authorization': `Basic ${state.server.hash}`,
@@ -332,7 +333,7 @@ export function* startChat(username) {
 export function* fetchChatList(chatRoomID) {
   const state = yield select();
   //console.log('fetchChatListSaga-chatRoomID: ',chatRoomID);
-  const response = yield call(fetch, '/chat/' + chatRoomID + '/all/', {
+  const response = yield call(fetch, url + '/chat/' + chatRoomID + '/all/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
@@ -357,7 +358,7 @@ export function* fetchChatList(chatRoomID) {
 
 export function* fetchChat(chatRoomID) {
   const state = yield select();
-  const response = yield call(fetch, '/chat/' + chatRoomID + '/', {
+  const response = yield call(fetch, url + '/chat/' + chatRoomID + '/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
@@ -381,7 +382,7 @@ export function* fetchChat(chatRoomID) {
 export function* postChat(chatRoomID, contents) {
   const state = yield select();
   //console.log('postChatSaga-chatRoomID: ', chatRoomID,' contents: ',contents);
-  const response = yield call(fetch, '/chat/' + chatRoomID + '/', {
+  const response = yield call(fetch, url + '/chat/' + chatRoomID + '/', {
     method: 'POST',
     headers: {
       'Authorization': `Basic ${state.server.hash}`,
@@ -401,7 +402,7 @@ export function* postChat(chatRoomID, contents) {
 
 export function* fetchUserList() {
   const state = yield select();
-  const response = yield call(fetch, '/users/', {
+  const response = yield call(fetch, url + '/users/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`

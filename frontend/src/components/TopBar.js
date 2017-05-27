@@ -22,6 +22,8 @@ class TopBar extends React.Component {
   }
 
   handleToTimeline(username) {
+    this.refs.query.value = '';
+    this.props.userQuery('');
     this.props.toTimeline(username);
   }
 
@@ -51,7 +53,10 @@ class TopBar extends React.Component {
             {this.props.queriedUser.map( (username) => {
               return (
                 <div className="find-people-entry">
-                  <button className="find-people-totimeline" onClick={() => {this.handleToTimeline(username);}}>
+                  <button className="find-people-totimeline"
+                    id={'totimeline'+username}
+                    onClick={() => {this.handleToTimeline(username);}}
+                  >
                     {username}
                   </button>
                 </div>
