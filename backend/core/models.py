@@ -42,7 +42,10 @@ class Picture(models.Model):
     image = models.ImageField(upload_to=upload_path)
     # Access url with instance.image.url()
 
-
+'''
+N-user chat example(assumed in mafia):
+    users = models.ManyToManyField(RoomUser, related_name='room', default=None)
+'''
 class ChatRoom(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     # user1's ID is always smaller than user2's ID
@@ -50,13 +53,19 @@ class ChatRoom(models.Model):
     user2 = models.ForeignKey(User, related_name='user2', on_delete=models.CASCADE)
     updated1 = models.DateTimeField()
     updated2 = models.DateTimeField()
-
+    
+    
+class RoomUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    updated = models.DateTimeField()
+    
 
 class Chat(models.Model):
     room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     contents = models.TextField()
+    invisible = models.ManyToManyField(User, related_name='invisible', default=None)
     
     class Meta:
         ordering = ['timestamp']
