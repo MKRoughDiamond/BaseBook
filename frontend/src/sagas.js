@@ -4,7 +4,7 @@ import {
   TOMAIN, LOGIN, GET_FEED_LIST, GET_FEED, POST_FEED,
   GET_REPLY_LIST, GET_REPLY, POST_REPLY,
   POST_LIKES, POST_DISLIKES, GET_LIKES, GET_DISLIKES,
-  START_CHAT, GET_CHAT_LIST, GET_CHAT, POST_CHAT, SET_CHAT_LIST, GET_TIMELINE_LIST, DELETE_FEED,
+  START_CHAT, GET_CHAT_LIST, GET_CHAT, POST_CHAT, SET_CHAT_LIST, GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
@@ -163,6 +163,7 @@ export function* deleteFeed(id) {
     }
   });
   if(response.ok === false) {
+    window.location.href = '/notfound/';
     return;
   }
   
@@ -315,6 +316,21 @@ export function* postReply(feedId, contents) {
   yield put(getReplyList(feedId)); // refresh news feed
 }
 
+export function* deleteReply(feedId, replyId) {
+  const state = yield select();
+  const response = yield call(fetch, url + '/reply/' + replyId.toString() + '/', {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+
+  yield put(getReplyList(feedId));
+}
 
 export function* startChat(username) {
   const state = yield select();
@@ -616,6 +632,14 @@ export function* watchDeleteFeed() {
   }
 }
 
+export function* watchDeleteReply() {
+  const t = true;
+  while(t) {
+    const action = yield take(DELETE_REPLY);
+    yield call(deleteReply, action.feedId, action.replyId);
+  }
+}
+
 export function* rootSaga() {
   yield fork(watchSignUp);
   yield fork(watchLogin);
@@ -637,4 +661,5 @@ export function* rootSaga() {
   yield fork(createChatReciever);
   yield fork(watchGetUserList);
   yield fork(watchDeleteFeed);
+  yield fork(watchDeleteReply);
 }

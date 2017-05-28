@@ -39,8 +39,7 @@ class Entry extends React.Component {
   }
 
   handleDeleteFeed() {
-    const id = this.props.feedID;
-    this.props.deleteFeed(id);
+    this.props.deleteFeed(this.props.feedID);
   }
 
   render() {
