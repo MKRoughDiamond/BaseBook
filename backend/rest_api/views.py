@@ -12,7 +12,7 @@ from django.utils import timezone
 from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, ChatRoomSerializer, ChatSerializer, FriendListSerializer
 from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions
 from core.models import Feed, Reply, Chat, ChatRoom, Friend
-from rest_framework.decorators import permission_classes
+from mafia.interface import mafia_tick
 #from core.models import BaseUser, Friend, Feed, Reply, Picture
 
 
@@ -223,6 +223,7 @@ class ReplyDetail(generics.RetrieveUpdateDestroyAPIView):
     def options(self, request, pk):
         return options_cors()
 
+# TODO: add call to user_entered() in mafia interface
 class ChatRoomID(APIView):
     def post(self, request, username):
         user1 = request.user
@@ -254,6 +255,8 @@ class ChatDetail(APIView):
             room = ChatRoom.objects.get(pk=pk)
         except ObjectDoesNotExist:
             return Response('', status=404)
+        # Update mafia room status
+        mafia_tick(room)
         chats = Chat.objects.filter(room=room)
         if request.user == room.user1:
             chats = chats.filter(timestamp__gt=room.updated1)
@@ -263,7 +266,8 @@ class ChatDetail(APIView):
             room.updated2 = timezone.now()
         else:
             return Response('', status=401)
-        room.save()
+        room.save() 
+        chats = chats.exclude(invisible=request.user)
         serializer = ChatSerializer(chats)
         return Response(serializer.data)
     
