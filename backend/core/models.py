@@ -10,6 +10,10 @@ class Friend(models.Model):
     friend = models.ForeignKey(User, related_name='friend', on_delete=models.CASCADE)
 
 
+class HashTag(models.Model):
+    hashtagName = models.CharField(max_length=50)
+
+
 class Feed(models.Model):
     SCOPE_CHOICES = (
         ('Public', 'Public'),
@@ -21,9 +25,11 @@ class Feed(models.Model):
     author = models.ForeignKey(User,on_delete=models.CASCADE)
     contents = models.TextField()
     scope = models.CharField(max_length=13, choices=SCOPE_CHOICES)
+    
     # Store who liked/disliked
     like = models.ManyToManyField(User, related_name='liked', default=None)
     dislike = models.ManyToManyField(User, related_name='disliked', default=None)
+    hashtag = models.ManyToManyField(HashTag, related_name='hashtags', default=None)
     
 
 class Reply(models.Model):

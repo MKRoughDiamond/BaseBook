@@ -11,7 +11,7 @@ from django.utils import timezone
 
 from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, ChatRoomSerializer, ChatSerializer, FriendListSerializer
 from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions
-from core.models import Feed, Reply, Chat, ChatRoom, Friend
+from core.models import Feed, Reply, Chat, ChatRoom, Friend, HashTag
 from mafia.interface import mafia_tick
 #from core.models import BaseUser, Friend, Feed, Reply, Picture
 
@@ -99,13 +99,41 @@ class FeedList(APIView):
         scope = request.data.get('scope', None)
         if contents is None or (scope,scope) not in Feed.SCOPE_CHOICES:
             return Response('No Contents', status=400)
-        
+
         feed = Feed(author_id=request.user.id, contents=contents, scope=scope)
         feed.save()
+        words = contents.split(' ')
+        for word in words:
+            if word[0]=='#':
+                if HashTag.objects.filter(hashtagName=word[1:]).exists():
+                    hashtag=HashTag.objects.get(hashtagName=word[1:])
+                    feed.hashtag.add(hashtag)
+                else:
+                    hashtag = HashTag(hashtagName = word[1:])
+                    hashtag.save()
+                    feed.hashtag.add(hashtag)
+                    
         return Response('', status=200)
 
     def options(self, request, username=None):
         return options_cors()
+
+class HashTagList(APIView):
+    def get(self, request, hashtag=None):
+        if hashtag is None:
+            return Response('', status=200)
+        feeds = Feed.objects.none()
+        public_feeds = Feed.objects.filter(scope='Public')
+        for feed in public_feeds:
+            for hashtags in feed.hashtag.all():
+                if hashtag == hashtags.hashtagName:
+                    feeds = feeds | Feed.objects.filter(id=feed.id)
+        serializer = FeedListSerializer(feeds)
+        return Response(serializer.data)
+
+    def options(self, request, hashtag=None):
+        return options_cors()
+        
 
 class FeedDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthNotOptions, IsCurrUser,)
