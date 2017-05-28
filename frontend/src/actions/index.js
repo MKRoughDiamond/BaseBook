@@ -46,6 +46,8 @@ export const SET_USER_LIST = 'SET_USER_LIST';
 export const USER_QUERY = 'USER_QUERY';
 export const LOGOUT = 'LOGOUT';
 
+export const DELETE_FEED = 'DELETE_FEED';
+
 export function setID(value) {
   return {
     type : SETID,
@@ -333,5 +335,12 @@ export function userQuery(keyword) {
 export function logout() {
   return {
     type: LOGOUT
+  };
+}
+
+export function deleteFeed(id) {
+  return {
+    type: DELETE_FEED,
+    id: id
   };
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getFeed, postLikes, postDislikes, getLikes, getDislikes, toTimeline, getReplyList} from '../../actions';
+import {getFeed, postLikes, postDislikes, getLikes, getDislikes, toTimeline, getReplyList, deleteFeed} from '../../actions';
 import ReplyPost from './ReplyPost';
 import ReplyEntry from './ReplyEntry';
 class Entry extends React.Component {
@@ -10,6 +10,7 @@ class Entry extends React.Component {
     this.handlePostLikes = this.handlePostLikes.bind(this);
     this.handlePostDislikes = this.handlePostDislikes.bind(this);
     this.handleToTimeline = this.handleToTimeline.bind(this);
+    this.handleDeleteFeed = this.handleDeleteFeed.bind(this);
   }
 
   componentDidMount() {
@@ -37,6 +38,11 @@ class Entry extends React.Component {
     this.props.toTimeline(username);
   }
 
+  handleDeleteFeed() {
+    const id = this.props.feedID;
+    this.props.deleteFeed(id);
+  }
+
   render() {
     const feed = this.props.feedList[this.props.feedID];
     if(feed.contents === null)
@@ -47,7 +53,7 @@ class Entry extends React.Component {
           <div className="feed-writer" onClick={this.handleToTimeline}>
             {feed.author}
           </div>
-          <button className="feed-delete" id={'feed'+this.props.feedID+'-delete'}>
+          <button className="feed-delete" id={'feed'+this.props.feedID+'-delete'} onClick={this.handleDeleteFeed}>
             delete
           </button>
           <button className="feed-modify" id={'feed'+this.props.feedID+'-modify'}>
@@ -95,7 +101,8 @@ let mapDispatchToProps = (dispatch) => {
     getLikes: (id) => dispatch(getLikes(id)),
     getDislikes: (id) => dispatch(getDislikes(id)),
     getReplyList: (id) => dispatch(getReplyList(id)),
-    toTimeline: (username) => dispatch(toTimeline(username))
+    toTimeline: (username) => dispatch(toTimeline(username)),
+    deleteFeed: (id) => dispatch(deleteFeed(id))
   };
 };
 
