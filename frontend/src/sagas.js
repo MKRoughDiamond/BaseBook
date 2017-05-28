@@ -12,6 +12,7 @@ import {
 } from './actions';
 
 const url = 'http://localhost:8000';
+//const url = 'http://13.124.80.116:8001';
 
 export function* postSignUp() {
   const state = yield select();

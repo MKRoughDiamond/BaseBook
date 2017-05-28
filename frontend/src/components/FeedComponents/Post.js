@@ -12,7 +12,6 @@ class Post extends React.Component {
   handlePostFeed() {
     let contents = document.getElementById('newFeed-text');
     const scope = document.getElementById('newFeed-scope').value;
-    // POST하고 썼던 글이 초기화가 안됨 변경바람
     this.props.postFeed(contents.value, scope);
     contents.value = '';
   }
