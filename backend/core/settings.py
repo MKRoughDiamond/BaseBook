@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     
     'core',
     'rest_api',
+    'mafia',
 ]
 
 MIDDLEWARE = [
