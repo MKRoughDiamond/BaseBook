@@ -11,7 +11,7 @@ import {
   setUserList, GET_USER_LIST
 } from './actions';
 
-const url = 'http://13.124.80.116:8000';
+const url = 'http://localhost:8000';
 
 export function* postSignUp() {
   const state = yield select();

@@ -10,9 +10,10 @@ class ReplyPost extends React.Component {
   }
   
   handlePostReply() {
-    const contents = this.refs.text.value;
+    let contents = this.refs.text;
     // POST하고 썼던 글이 초기화가 안됨 변경바람
-    this.props.postReply(this.props.feedID, contents);
+    this.props.postReply(this.props.feedID, contents.value);
+    contents.value = '';
   }
 
   render() {
