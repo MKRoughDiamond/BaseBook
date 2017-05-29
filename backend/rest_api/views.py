@@ -12,7 +12,7 @@ from django.utils import timezone
 from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, ChatRoomSerializer, ChatSerializer, FriendListSerializer
 from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions
 from core.models import Feed, Reply, Chat, ChatRoom, Friend
-from mafia.interface import mafia_tick
+from mafia.interface import mafia_tick, user_chat_team
 #from core.models import BaseUser, Friend, Feed, Reply, Picture
 
 
@@ -277,6 +277,7 @@ class ChatDetail(APIView):
         except ObjectDoesNotExist:
             return Response('', status=404)
         chat = Chat(room=room, user=request.user, contents=request.data.get('contents', ''))
+        chat = user_chat_team(room, request.user, chat)
         chat.save()
         return Response('')
     

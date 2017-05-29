@@ -14,7 +14,7 @@ def _create_system_user():
     user.save()
     return User.objects.get(username='system')
 
-_system_user = _create_system_user()
+_system_user = None
 
 
 MIN_START_PLAYER = 5
@@ -48,6 +48,9 @@ class MafiaRoom:
         self._ghosts = []
         self._daycount = 0
         self._corpse = None
+        
+        if _system_user is None:
+            _system_user = _create_system_user()
     
     def register(self, user):
         for player in self._players.values():
@@ -96,20 +99,57 @@ class MafiaRoom:
             if not p_caster.ability_used:
                 p_caster.ability_used = True
                 p_target.vote_count += 1
+                self._print('{}에게 투표했습니다.'.format(p_target.user.username), [p_caster])
         elif self.status == 'night':
             if not p_caster.ability_used:
                 p_caster.ability_used = True
                 if p_caster.job == 'mafia':
                     p_target.mafia_target += 1
+                    if len(self._mafias) == 1:
+                        self._print('{}(을)를 암살 목표로 지정했습니다.'.format(p_target.user.username), [p_caster])
+                    else:
+                        self._print('{}(이)가 {}(을)를 암살 목표로 지정했습니다.'
+                                    .format(p_caster.user.username, p_target.user.username), self._mafias)
                 elif p_caster.job == 'police':
                     p_target.police_target += 1
+                    if len(self._polices) == 1:
+                        self._print('{}(을)를 수사 목표로 지정했습니다.'.format(p_target.user.username), [p_caster])
+                    else:
+                        self._print('{}(이)가 {}(을)를 수사 목표로 지정했습니다.'
+                                    .format(p_caster.user.username, p_target.user.username), self._polices)
                 elif p_caster.job == 'doctor':
                     p_target.doctor_target += 1
+                    if len(self._doctors) == 1:
+                        self._print('{}(을)를 치유 목표로 지정했습니다.'.format(p_target.user.username), [p_caster])
+                    else:
+                        self._print('{}(이)가 {}(을)를 치유 목표로 지정했습니다.'
+                                    .format(p_caster.user.username, p_target.user.username), self._doctors)
     
     def make_ghost(self, user):
         player = self._player(user)
         if player is not None:
             self._make_ghost(player)
+    
+    def set_chat_team(self, user, chat):
+        player = self._player(user)
+        if self.status == 'night':
+            teams = [
+                self._mafias,
+                self._polices,
+                self._doctors,
+                self._ghosts
+            ]
+            for team in teams:
+                if player in team:
+                    for other in self._players.values():
+                        if other not in team and other not in self._ghosts:
+                            chat.invisible.add(other.user)
+                    break
+            if player in self._civilians:
+                for other in self._players.values():
+                    if other != player and other not in self._ghosts:
+                        chat.invisible.add(other.user)
+        return chat
         
     def tick(self):
         self._scheduler.run(False)

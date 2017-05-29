@@ -11,6 +11,13 @@ def user_entered(room, user):
     mafia.make_ghost(user)
 
 
+def user_chat_team(room, user, chat):
+    mafia = mafia_rooms.get(str(room.id))
+    if mafia is None or mafia.status == 'chat':
+        return chat
+    return mafia.set_chat_team(user, chat)
+
+
 def test_start_game(room, user):
     mafia = mafia_rooms.get(str(room.id))
     if mafia is None:

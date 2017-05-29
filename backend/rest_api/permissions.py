@@ -4,6 +4,8 @@ from core.models import Friend
 
 class IsCurrUser(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
+        if request.method == 'DELETE':
+            return request.user == obj.author
         if request.method != 'GET':
             return True
         if obj.scope == 'Public':
@@ -16,6 +18,8 @@ class IsCurrUser(permissions.BasePermission):
             
 class IsCurrUserReply(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
+        if request.method == 'DELETE':
+            return request.user == obj.author
         if request.method == 'GET':
             return True
         if request.method == 'OPTIONS':
@@ -30,3 +34,4 @@ class IsAuthNotOptions(permissions.BasePermission):
         if request.method == 'OPTIONS':
             return True
         return permissions.IsAuthenticated.has_permission(self, request, view)
+    
