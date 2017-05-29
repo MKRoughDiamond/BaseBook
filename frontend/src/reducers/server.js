@@ -1,7 +1,6 @@
 import { SETID, SETPW, NEWID, NEWPW, RETYPEPW,
-  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED, LOGOUT,START_SOUND,END_SOUND
+  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED, LOGOUT, START_SOUND, END_SOUND, TOHASHFEED
 } from '../actions';
-
 const serverInitialState = {
   ID: '',
   PW: '',
@@ -15,9 +14,10 @@ const serverInitialState = {
   onTimeline: false,
   timelineUser: null,
   url : null,
-  soundStart : false
+  soundStart : false,
+  onHashFeed: false,
+  tagname: '',
 };
-
 const server = (state = serverInitialState, action) => {
   switch(action.type) {
     case SETID:
@@ -49,19 +49,18 @@ const server = (state = serverInitialState, action) => {
       return Object.assign({}, state,
         { onTimeline : true,
           timelineUser : action.username });
+    case TOHASHFEED:
+      return Object.assign({}, state,
+        { onHashFeed : true,
+          tagname : action.tagname});
     case LOGIN_SUCCESS:
       return Object.assign({}, state, { loggedIn : true, hash: action.hash, onTimeline: false});
     case LOGIN_PAGE_ERROR:
       return Object.assign({}, serverInitialState, { errorMsg : action.msg });
     case LOGOUT:
       return serverInitialState;
-    case START_SOUND:
-      return Object.assign({}, state, { url : action.url, soundStart : true });
-    case END_SOUND:
-      return Object.assign({}, state, { soundStart : false });
     default:
       return state;
   }
 };
-
 export default server;
