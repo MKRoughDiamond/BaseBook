@@ -8,7 +8,7 @@ import {
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
-  setUserList, GET_USER_LIST
+  setUserList, GET_USER_LIST, getTimelineList
 } from './actions';
 
 const url = 'http://localhost:8000';
@@ -168,7 +168,10 @@ export function* deleteFeed(id) {
     return;
   }
   
-  yield put(getFeedList());
+  if (state.server.onTimeline)
+    yield put(getTimelineList());
+  else
+    yield put(getFeedList());
 }
 
 
