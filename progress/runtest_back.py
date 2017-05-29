@@ -271,6 +271,17 @@ for i in range(1, N+1):
     TL.post_feed_get_hashtag_test(feedlink, hashtaglink, contents, scope, uname, upwd)
 
 #####################################################
+print('19. get all hashtags')
+
+for i in range(1, N+1):
+    print('19-{0}, user test{0} will get hashtags'.format(i))
+    uname = 'test{0}'.format(i)
+    upwd = 'test{0}passwd'.format(i)
+    uhashtag = 'hashtag{0}'.format(i) 
+    link = localhost + 'hashtag/'
+    TL.get_hashtag_test(link, uhashtag, uname, upwd)
+
+#####################################################
 #print('8. profile')
 
 #for i in range(1, N+1):

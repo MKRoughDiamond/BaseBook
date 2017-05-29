@@ -252,8 +252,27 @@ def post_feed_get_hashtag_test(feedurl, hashtagurl, contents, scope, uname, upwd
         except Exception as e:
             unexpected_exception('get feed', url, e)
         if res.json()['contents'] != contents:
-            print('hashtag error')
+            print('Error')
             sys.exit(1)
+
+    print('success')
+
+def get_hashtag_test(url, uhashtag, uname, upwd):
+    sleep(0.05)
+    try:
+        headers = {'Content-Type': 'application/json'}
+        res = requests.get(url, headers=headers, auth=(uname,upwd))
+
+        if res.status_code != 200:
+            wrong_status_code('get hashtag', url, res.status_code)
+    except Exception as e:
+        unexpected_exception('get hashtag', url, e)
+
+    taglist = res.json()['hashtags']
+
+    if not (uhashtag in taglist):
+        print('Error')
+        sys.exit(1)
 
     print('success')
     
