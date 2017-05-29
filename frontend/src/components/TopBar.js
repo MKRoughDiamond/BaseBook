@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { toFeed, toTimeline, userQuery, getUserList, logout } from '../actions';
+import { toFeed, toTimeline, userQuery, getUserList, logout, startSound } from '../actions';
 
 class TopBar extends React.Component {
   constructor(props) {
@@ -19,6 +19,7 @@ class TopBar extends React.Component {
 
   handleToFeed() {
     this.props.toFeed();
+    this.props.startSound('feedpost');
   }
 
   handleToTimeline(username) {
@@ -82,7 +83,8 @@ let mapDispatchToProps = (dispatch) => {
     toTimeline: (username) => dispatch(toTimeline(username)),
     userQuery: (keyword) => dispatch(userQuery(keyword)),
     getUserList: () => dispatch(getUserList()),
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
+    startSound: (url) => dispatch(startSound(url))
   };
 };
 
