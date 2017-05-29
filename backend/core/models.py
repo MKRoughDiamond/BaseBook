@@ -10,6 +10,10 @@ class Friend(models.Model):
     friend = models.ForeignKey(User, related_name='friend', on_delete=models.CASCADE)
 
 
+class HashTag(models.Model):
+    hashtagName = models.CharField(max_length=50)
+
+
 class Feed(models.Model):
     SCOPE_CHOICES = (
         ('Public', 'Public'),
@@ -21,9 +25,11 @@ class Feed(models.Model):
     author = models.ForeignKey(User,on_delete=models.CASCADE)
     contents = models.TextField()
     scope = models.CharField(max_length=13, choices=SCOPE_CHOICES)
+    
     # Store who liked/disliked
     like = models.ManyToManyField(User, related_name='liked', default=None)
     dislike = models.ManyToManyField(User, related_name='disliked', default=None)
+    hashtag = models.ManyToManyField(HashTag, related_name='hashtags', default=None)
     
 
 class Reply(models.Model):
@@ -42,7 +48,10 @@ class Picture(models.Model):
     image = models.ImageField(upload_to=upload_path)
     # Access url with instance.image.url()
 
-
+'''
+N-user chat example(assumed in mafia):
+    users = models.ManyToManyField(RoomUser, related_name='room', default=None)
+'''
 class ChatRoom(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     # user1's ID is always smaller than user2's ID
@@ -50,13 +59,19 @@ class ChatRoom(models.Model):
     user2 = models.ForeignKey(User, related_name='user2', on_delete=models.CASCADE)
     updated1 = models.DateTimeField()
     updated2 = models.DateTimeField()
-
+    
+    
+class RoomUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    updated = models.DateTimeField()
+    
 
 class Chat(models.Model):
     room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     contents = models.TextField()
+    invisible = models.ManyToManyField(User, related_name='invisible', default=None)
     
     class Meta:
         ordering = ['timestamp']

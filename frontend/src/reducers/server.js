@@ -1,5 +1,5 @@
 import { SETID, SETPW, NEWID, NEWPW, RETYPEPW,
-  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED, LOGOUT
+  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED, LOGOUT,START_SOUND,END_SOUND
 } from '../actions';
 
 const serverInitialState = {
@@ -13,7 +13,9 @@ const serverInitialState = {
   loggedIn: false,
   errorMsg: null,
   onTimeline: false,
-  timelineUser: null
+  timelineUser: null,
+  url : null,
+  soundStart : false
 };
 
 const server = (state = serverInitialState, action) => {
@@ -53,6 +55,10 @@ const server = (state = serverInitialState, action) => {
     return Object.assign({}, serverInitialState, { errorMsg : action.msg });
   case LOGOUT:
     return serverInitialState;
+  case START_SOUND:
+    return Object.assign({}, state, { url : action.url, soundStart : true });
+  case END_SOUND:
+    return Object.assign({}, state, { soundStart : false });
   default:
     return state;
   }	
