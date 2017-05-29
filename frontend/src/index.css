@@ -107,6 +107,11 @@ button {
 	outline : none;
 }
 
+button:hover {
+  text-decoration : underline;
+  cursor : pointer;
+}
+
 #main-wrapper {
 	width: 90%;
 	margin: 0 auto;
@@ -125,11 +130,20 @@ button {
 	display : inline-block;
 }
 
+#main-title-name:hover {
+  cursor : pointer;
+}
+
 #logout {
 	display : inline-block;
 	float : right;
 	margin-right: 5px;
 	font-size : 15px;
+}
+
+#logout:hover {
+  text-decoration : underline;
+  cursor : pointer;
 }
 
 #main-content {
@@ -218,6 +232,11 @@ button {
 .feed-writer {
 	display : inline-block;
 	float : left;
+}
+
+.feed-writer:hover{
+  text-decoration : underline;
+  cursor : pointer;
 }
 
 .feed-like {
