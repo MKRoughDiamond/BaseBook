@@ -53,6 +53,9 @@ export const DELETE_REPLY = 'DELETE_REPLY';
 export const TOHASHFEED = 'TOHASHFEED';
 export const GET_HASHFEED_LIST = 'GET_HASHFEED_LIST';
 
+export const START_SOUND = 'START_SOUND';
+export const END_SOUND = 'END_SOUND';
+
 export function setID(value) {
   return {
     type : SETID,
@@ -368,5 +371,18 @@ export function toHashFeed(tagname) {
 export function getHashFeedList() {
   return {
     type: GET_HASHFEED_LIST
+  };
+}
+
+export function startSound(url) {
+  return {
+    type: START_SOUND,
+    url: url
+  };
+}
+
+export function endSound() {
+  return {
+    type: END_SOUND
   };
 }

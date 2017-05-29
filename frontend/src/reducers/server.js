@@ -1,5 +1,5 @@
 import { SETID, SETPW, NEWID, NEWPW, RETYPEPW,
-  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED, LOGOUT, TOHASHFEED
+  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED, LOGOUT, TOHASHFEED, START_SOUND, END_SOUND
 } from '../actions';
 
 const serverInitialState = {
@@ -16,6 +16,8 @@ const serverInitialState = {
   timelineUser: null,
   onHashFeed: false,
   tagname: '',
+  url : null,
+  soundStart : false
 };
 
 const server = (state = serverInitialState, action) => {
