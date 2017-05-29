@@ -15,7 +15,7 @@ class ChatMain extends React.Component {
 
   handleStartChat() {
     const username = document.getElementById('username-textbox').value;
-    this.props.startSound('../startchat');
+    this.props.startSound('startchat');
     this.props.startChat(username);
   }
 
