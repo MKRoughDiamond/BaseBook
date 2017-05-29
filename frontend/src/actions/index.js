@@ -50,11 +50,12 @@ export const LOGOUT = 'LOGOUT';
 export const DELETE_FEED = 'DELETE_FEED';
 export const DELETE_REPLY = 'DELETE_REPLY';
 
+export const START_SOUND = 'START_SOUND';
+export const END_SOUND = 'END_SOUND';
+
 export const TOHASHFEED = 'TOHASHFEED';
 export const GET_HASHFEED_LIST = 'GET_HASHFEED_LIST';
 
-export const START_SOUND = 'START_SOUND';
-export const END_SOUND = 'END_SOUND';
 
 export function setID(value) {
   return {
@@ -361,6 +362,19 @@ export function deleteReply(feedId, replyId) {
   };
 }
 
+export function startSound(url) {
+  return {
+    type: START_SOUND,
+    url: url
+  };
+}
+
+export function endSound() {
+  return {
+    type: END_SOUND
+  };
+}
+
 export function toHashFeed(tagname) {
   return {
     type : TOHASHFEED,
@@ -374,15 +388,3 @@ export function getHashFeedList() {
   };
 }
 
-export function startSound(url) {
-  return {
-    type: START_SOUND,
-    url: url
-  };
-}
-
-export function endSound() {
-  return {
-    type: END_SOUND
-  };
-}
