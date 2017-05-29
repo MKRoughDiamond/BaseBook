@@ -12,6 +12,7 @@ import Timeline from './components/Timeline';
 import HashFeed from './components/HashFeed';
 import NotFound from './components/NotFound';
 import reducers from './reducers';
+import SoundManager from './components/SoundManager';
 import './index.css';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -21,17 +22,17 @@ const rootElement = document.getElementById('root');
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={Feed}/>
-        <Route path="/timeline/:username" component={Timeline}/>
-        <Route path="/hashtag/:tagname" component={HashFeed}/>
-        <Route path="/login" component={Login}/>
-        <Route path="/chat" component={Chat}/>
-        <Route component={NotFound}/>
-      </Switch>
-    </BrowserRouter>
+<Provider store={store}>
+  <BrowserRouter>
+  <Switch>
+  <Route exact path="/" component={Feed}/>
+  <Route path="/timeline/:username" component={Timeline}/>
+  <Route path="/hashtag/:tagname" component={HashFeed}/>
+  <Route path="/login" component={Login}/>
+  <Route path="/chat" component={Chat}/>
+  <Route component={NotFound}/>
+  </Switch>
+  </BrowserRouter>
   </Provider>,
   rootElement
 );
