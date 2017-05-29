@@ -10,6 +10,7 @@ class Main extends React.Component {
     this.handleUpdatePW = this.handleUpdatePW.bind(this);
     this.handleToSignUp = this.handleToSignUp.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   handleUpdateID(e) {
@@ -28,6 +29,11 @@ class Main extends React.Component {
     this.props.login();
   }
 
+  handleKeyPress(e) {
+    if(e.key === 'Enter')
+      this.handleLogin();
+  }
+
   render() {
     return (<div id="login">
       <div className="line-thick">Welcome to BaseBook!</div>
@@ -37,7 +43,10 @@ class Main extends React.Component {
         </div>
         <div className="line-thick">
           <div id="password">password</div>
-          <input type="password" id="input-password" onChange={this.handleUpdatePW}/>
+          <input type="password" id="input-password"
+            onChange={this.handleUpdatePW}
+            onKeyPress={this.handleKeyPress}
+          />
         </div>
         <div>
           <button id="SignUp" className="loginButtons" onClick={this.handleToSignUp}>Sign Up</button>
