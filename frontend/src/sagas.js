@@ -8,11 +8,11 @@ import {
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
-  setUserList, GET_USER_LIST
+  setUserList, GET_USER_LIST, getTimelineList
 } from './actions';
 
-const url = 'http://localhost:8000';
-//const url = 'http://13.124.80.116:8001';
+//const url = 'http://localhost:8000';
+const url = 'http://13.124.80.116:8001';
 
 export function* postSignUp() {
   const state = yield select();
@@ -168,7 +168,10 @@ export function* deleteFeed(id) {
     return;
   }
   
-  yield put(getFeedList());
+  if (state.server.onTimeline)
+    yield put(getTimelineList());
+  else
+    yield put(getFeedList());
 }
 
 
