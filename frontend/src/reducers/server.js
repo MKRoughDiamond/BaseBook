@@ -39,15 +39,15 @@ const server = (state = serverInitialState, action) => {
         PW : '',
         onTimeline: false});
   case TOSIGNUP:
-    return Object.assign({}, state, 
+    return Object.assign({}, state,
       { isLogin : false,
         newID : '',
         newPW : '',
         retypePW : '',
         onTimeline: false});
   case TOTIMELINE:
-    return Object.assign({}, state, 
-      { onTimeline : true, 
+    return Object.assign({}, state,
+      { onTimeline : true,
         timelineUser : action.username });
   case LOGIN_SUCCESS:
     return Object.assign({}, state, { loggedIn : true, hash: action.hash, onTimeline: false});
@@ -61,7 +61,7 @@ const server = (state = serverInitialState, action) => {
     return Object.assign({}, state, { soundStart : false });
   default:
     return state;
-  }	
+  }
 };
 
 export default server;

@@ -12,6 +12,12 @@ class Feed extends React.Component {
           <Redirect to={timelineUrl}/>
         );
       }
+      if (this.props.onHashFeed) {
+        const hashtagUrl = '/hashtag/' + this.props.tagname + '/';
+        return (
+          <Redirect to={hashtagUrl}/>
+        );
+      }
       return (this.props.isChatOn) ? (
         <Redirect to="/chat/"/>
       ):(
@@ -30,7 +36,9 @@ let mapStateToProps = (state) => {
     isLoggedIn : state.server.loggedIn,
     isChatOn : state.chat.chatOn,
     onTimeline : state.server.onTimeline,
-    timelineUser : state.server.timelineUser
+    timelineUser : state.server.timelineUser,
+    onHashFeed : state.server.onHashFeed,
+    tagname: state.server.tagname
   };
 };
 
