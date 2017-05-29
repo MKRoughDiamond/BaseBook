@@ -11,6 +11,7 @@ import Chat from './components/Chat';
 import Timeline from './components/Timeline';
 import NotFound from './components/NotFound';
 import reducers from './reducers';
+import SoundManager from './components/SoundManager';
 import './index.css';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -21,15 +22,18 @@ sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={Feed}/>
-        <Route path="/timeline/:username" component={Timeline}/>
-        <Route path="/login" component={Login}/>
-        <Route path="/chat" component={Chat}/>
-        <Route component={NotFound}/>
-      </Switch>
-    </BrowserRouter>
+    <div>
+      <SoundManager/>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={Feed}/>
+          <Route path="/timeline/:username" component={Timeline}/>
+          <Route path="/login" component={Login}/>
+          <Route path="/chat" component={Chat}/>
+          <Route component={NotFound}/>
+        </Switch>
+      </BrowserRouter>
+    </div>
   </Provider>,
   rootElement
 );

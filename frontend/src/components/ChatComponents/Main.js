@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getChatList, startChat, postChat, toFeed} from '../../actions';
+import {getChatList, startChat, postChat, toFeed, startSound} from '../../actions';
 import Entry from './Entry';
 import TopBar from '../TopBar';
 
@@ -15,6 +15,7 @@ class ChatMain extends React.Component {
 
   handleStartChat() {
     const username = document.getElementById('username-textbox').value;
+    this.props.startSound('../startchat');
     this.props.startChat(username);
   }
 
@@ -85,7 +86,8 @@ let mapDispatchToProps = (dispatch) => {
     getChatList: (chatRoomID) => dispatch(getChatList(chatRoomID)),
     startChat: (username) => dispatch(startChat(username)),
     postChat: (chatRoomID, contents) => dispatch(postChat(chatRoomID, contents)),
-    toFeed: () => dispatch(toFeed())
+    toFeed: () => dispatch(toFeed()),
+    startSound: (url) => dispatch(startSound(url))
   };
 };
 
