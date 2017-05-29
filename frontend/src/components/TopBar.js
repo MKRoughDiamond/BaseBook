@@ -19,7 +19,7 @@ class TopBar extends React.Component {
 
   handleToFeed() {
     this.props.toFeed();
-    this.props.startSound('feedpost');
+    this.props.startSound('tomain');
   }
 
   handleToTimeline(username) {
@@ -33,6 +33,7 @@ class TopBar extends React.Component {
   }
 
   handleLogout() {
+    this.props.startSound('logout');
     this.props.logout();
   }
 

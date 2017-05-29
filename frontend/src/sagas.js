@@ -11,8 +11,8 @@ import {
   setUserList, GET_USER_LIST
 } from './actions';
 
-const url = 'http://localhost:8000';
-//const url = 'http://13.124.80.116:8001';
+//const url = 'http://localhost:8000';
+const url = 'http://13.124.80.116:8000';
 
 export function* postSignUp() {
   const state = yield select();
@@ -586,10 +586,12 @@ export function* watchGetChatList() {
 export function* watchGetChat() {
   const t = true;
   while(t) {
-    const action = yield take(GET_CHAT);
-    //console.log('watchGetChatSaga-id: ',action.id);
-    // Use fork to send multiple request at the same time
-    yield fork(fetchChat, action.chatRoomID);
+    const state = yield select();
+    if(state.chat.chatOn){
+      const action = yield take(GET_CHAT);
+      // Use fork to send multiple request at the same time
+      yield fork(fetchChat, action.chatRoomID);
+    }
   }
 }
 
