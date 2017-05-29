@@ -29,7 +29,6 @@ const chat = (state = initState, action) => {
     return Object.assign({}, state, { chatRoomID : action.chatRoomID });
   case SET_CHAT:
   case SET_CHAT_LIST: {
-    console.log('chatList: ', state.chatList);
     let newChatList = state.chatList.slice(0);
     let count = newChatList.length;
     const regex = /T([^.]+)./;
@@ -37,7 +36,6 @@ const chat = (state = initState, action) => {
     newChatList[state.desiredChatCount] = action.list[0];*/
     action.list.map((chat) => {
       const match = regex.exec(chat.timestamp);
-      console.log('set_chat_list id: ',chat);
       newChatList.push({
         id: count,
         timestamp: match[1],
@@ -46,7 +44,6 @@ const chat = (state = initState, action) => {
       });
       count = count + 1;
     });
-    console.log('newChatList: ', newChatList);
     return Object.assign({}, state, {
       chatList : newChatList,
       desiredChatCount: count
