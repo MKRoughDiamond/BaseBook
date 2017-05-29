@@ -11,7 +11,7 @@ from django.utils import timezone
 
 from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, ChatRoomSerializer, ChatSerializer, FriendListSerializer, HashTagListSerializer
 from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions
-from core.models import Feed, Reply, Chat, ChatRoom, Friend
+from core.models import Feed, Reply, Chat, ChatRoom, Friend, Hashtag
 from mafia.interface import mafia_tick, user_chat_team
 #from core.models import BaseUser, Friend, Feed, Reply, Picture
 
