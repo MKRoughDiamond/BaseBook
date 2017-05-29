@@ -9,7 +9,7 @@ from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 
-from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, ChatRoomSerializer, ChatSerializer, FriendListSerializer
+from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, ChatRoomSerializer, ChatSerializer, FriendListSerializer, HashTagListSerializer
 from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions
 from core.models import Feed, Reply, Chat, ChatRoom, Friend, HashTag
 from mafia.interface import mafia_tick
@@ -118,7 +118,7 @@ class FeedList(APIView):
     def options(self, request, username=None):
         return options_cors()
 
-class HashTagList(APIView):
+class HashTagFeedList(APIView):
     def get(self, request, hashtag=None):
         if hashtag is None:
             return Response('', status=200)
@@ -135,6 +135,13 @@ class HashTagList(APIView):
     def options(self, request, hashtag=None):
         return options_cors()
         
+
+class HashTagList(APIView):
+    def get(self, request):
+        hashtags = HashTag.objects.all()
+        serializer = HashTagListSerializer(hashtags)
+        return Response(serializer.data)
+
 
 class FeedDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthNotOptions, IsCurrUser,)

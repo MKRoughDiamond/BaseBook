@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from core.models import BaseUser, Friend, Feed, Reply, Picture, ChatRoom, Chat
+from core.models import BaseUser, Friend, Feed, Reply, Picture, ChatRoom, Chat, HashTag
 from django.db import models
 
 
@@ -33,6 +33,16 @@ class FeedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feed
         fields = ('id', 'contents', 'scope', 'author','hashtags')
+
+class HashTagListSerializer(serializers.BaseSerializer):
+    def to_representation(self,obj):
+        hashtags = []
+        for e in obj:
+            hashtags += [ e.hashtagName ]
+
+        return {
+            'hashtags': hashtags
+        }
 
 class LikeSerializer(serializers.BaseSerializer):
     def to_representation(self,obj):
