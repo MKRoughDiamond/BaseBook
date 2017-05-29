@@ -314,6 +314,7 @@ class ChatDetail(APIView):
         except ObjectDoesNotExist:
             return Response('', status=404)
         chat = Chat(room=room, user=request.user, contents=request.data.get('contents', ''))
+        chat = user_chat_team(room, request.user, chat)
         chat.save()
         return Response('')
     

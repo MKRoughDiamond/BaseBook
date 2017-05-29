@@ -11,6 +11,7 @@ class SignUp extends React.Component {
     this.handleUpdateRetypePW = this.handleUpdateRetypePW.bind(this);
     this.handleToMain = this.handleToMain.bind(this);
     this.passwordCheck = this.passwordCheck.bind(this);
+    this.handleKeyPress = this.handleKeyPress(this);
   }
 
   handleUpdateID(e) {
@@ -33,6 +34,11 @@ class SignUp extends React.Component {
     if (this.props.newPW === '' || this.props.retypePW === '')
       return '-';
     return ((this.props.newPW === this.props.retypePW)? 'O':'X');
+  }
+
+  handleKeyPress(e) {
+    if(e.key === 'Enter')
+      this.handleToMain();
   }
 
   render() {
