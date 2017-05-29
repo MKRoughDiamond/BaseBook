@@ -1,5 +1,5 @@
 import { SETID, SETPW, NEWID, NEWPW, RETYPEPW,
-  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED, LOGOUT
+  TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED, LOGOUT, TOHASHFEED
 } from '../actions';
 
 const serverInitialState = {
@@ -13,7 +13,9 @@ const serverInitialState = {
   loggedIn: false,
   errorMsg: null,
   onTimeline: false,
-  timelineUser: null
+  timelineUser: null,
+  onHashFeed: false,
+  tagname: '',
 };
 
 const server = (state = serverInitialState, action) => {
@@ -47,6 +49,10 @@ const server = (state = serverInitialState, action) => {
     return Object.assign({}, state, 
       { onTimeline : true, 
         timelineUser : action.username });
+  case TOHASHFEED:
+    return Object.assign({}, state,
+      { onHashFeed : true,
+        tagname : action.tagname});
   case LOGIN_SUCCESS:
     return Object.assign({}, state, { loggedIn : true, hash: action.hash, onTimeline: false});
   case LOGIN_PAGE_ERROR:
