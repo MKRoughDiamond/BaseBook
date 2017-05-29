@@ -584,10 +584,12 @@ export function* watchGetChatList() {
 export function* watchGetChat() {
   const t = true;
   while(t) {
-    const action = yield take(GET_CHAT);
-    //console.log('watchGetChatSaga-id: ',action.id);
-    // Use fork to send multiple request at the same time
-    yield fork(fetchChat, action.chatRoomID);
+    const state = yield select();
+    if(state.chat.chatOn){
+      const action = yield take(GET_CHAT);
+      // Use fork to send multiple request at the same time
+      yield fork(fetchChat, action.chatRoomID);
+    }
   }
 }
 
