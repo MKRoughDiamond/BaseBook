@@ -3,8 +3,8 @@ import testlibrary as TL
 from random import randint
 
 
-#localhost = 'http://13.124.80.116:8000/' 
-localhost = 'http://localhost:8000/'
+localhost = 'http://13.124.80.116:8001/' 
+#localhost = 'http://localhost:8000/'
 
 TL.test_start('BackEnd')
 
@@ -257,6 +257,19 @@ for i in range(1, (N+1)//2):
     link = localhost + 'chat/{0}/all/'.format(i)
     TL.chat_get_all_chat_test(link, uname, upwd)    
         
+#####################################################
+print('18. hashtag post and get hashtag/<tagname>')
+
+for i in range(1, N+1):
+    print('18-{0}, user test{1}'.format(i, i))
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
+    feedlink = localhost + 'feed/'
+    hashtaglink = localhost + 'hashtag/hashtag{0}'.format(i)
+    contents = 'asdf #hashtag{0} asdf'.format(i)
+    scope = 'Public'
+    TL.post_feed_get_hashtag_test(feedlink, hashtaglink, contents, scope, uname, upwd)
+
 #####################################################
 #print('8. profile')
 
