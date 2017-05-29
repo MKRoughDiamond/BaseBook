@@ -1,6 +1,23 @@
 from mafia.logic import mafia_rooms, MafiaRoom
 import time
 
+
+# If game already started, make user ghost
+def user_entered(room, user):
+    mafia = mafia_rooms.get(str(room.id))
+    if mafia is None or mafia.status == 'chat':
+        return
+    mafia.register(user)
+    mafia.make_ghost(user)
+
+
+def user_chat_team(room, user, chat):
+    mafia = mafia_rooms.get(str(room.id))
+    if mafia is None or mafia.status == 'chat':
+        return chat
+    return mafia.set_chat_team(user, chat)
+
+
 def test_start_game(room, user):
     mafia = mafia_rooms.get(str(room.id))
     if mafia is None:
@@ -25,13 +42,21 @@ def start_game(room, user):
         mafia.start()
 
 
-# If game already started, make user ghost
-def user_entered(room, user):
+def make_vote(room, user):
     mafia = mafia_rooms.get(str(room.id))
     if mafia is None or mafia.status == 'chat':
         return
-    mafia.register(user)
-    mafia.make_ghost(user)
+    
+    mafia.use_ability(user, None)
+    if mafia.ability_used_count() > mafia.survivor_count() / 2:
+        mafia.early_vote()
+        
+
+def target(room, user, target):
+    mafia = mafia_rooms.get(str(room.id))
+    if mafia is None or mafia.status == 'chat':
+        return
+    mafia.use_ability(user, target)
 
 
 def test_mafia_tick(room):
@@ -43,6 +68,6 @@ def test_mafia_tick(room):
 # Periodically update room status
 def mafia_tick(room):
     mafia = mafia_rooms.get(str(room.id))
-    if mafia is None:
+    if mafia is None or mafia.status == 'chat':
         return
     mafia.tick()
