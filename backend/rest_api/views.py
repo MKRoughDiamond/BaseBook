@@ -95,6 +95,7 @@ class FeedList(APIView):
         return Response(serializer.data)
 
     def post(self, request, username=None):
+        hashtagBanList = [ '#', '\n', '\t', '\0']
         contents = request.data.get('contents', None)
         scope = request.data.get('scope', None)
         if contents is None or (scope,scope) not in Feed.SCOPE_CHOICES:
@@ -104,7 +105,7 @@ class FeedList(APIView):
         feed.save()
         words = contents.split(' ')
         for word in words:
-            if word[0]=='#':
+            if len(word) > 1 and word[0]=='#' and word[1] not in hashtagBanList:
                 if HashTag.objects.filter(hashtagName=word[1:]).exists():
                     hashtag=HashTag.objects.get(hashtagName=word[1:])
                     feed.hashtag.add(hashtag)
