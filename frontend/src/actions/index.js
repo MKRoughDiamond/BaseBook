@@ -363,9 +363,3 @@ export function startSound(url) {
     url: url
   };
 }
-
-export function endSound() {
-  return {
-    type: END_SOUND
-  };
-}
