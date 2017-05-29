@@ -8,7 +8,7 @@ import {
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
-  setUserList, GET_USER_LIST
+  setUserList, GET_USER_LIST, getTimelineList
 } from './actions';
 
 //const url = 'http://localhost:8000';
@@ -65,7 +65,6 @@ export function* postLogin() {
 
 export function* fetchTimelineList() {
   const state = yield select();
-  console.log('fetchtimelinlist');
   const response = yield call(fetch, url + '/feed/user/' + state.server.timelineUser + '/', {
     method: 'GET',
     headers: {
@@ -108,7 +107,6 @@ export function* fetchFeedList() {
     window.location.href = '/notfound/';
     return;
   }
-  //console.log('Feed res: ',res);
   yield put(setFeedList(res.id));
 }
 
@@ -168,7 +166,10 @@ export function* deleteFeed(id) {
     return;
   }
   
-  yield put(getFeedList());
+  if (state.server.onTimeline)
+    yield put(getTimelineList());
+  else
+    yield put(getFeedList());
 }
 
 
@@ -335,6 +336,8 @@ export function* deleteReply(feedId, replyId) {
 
 export function* startChat(username) {
   const state = yield select();
+  if(username === '')
+    return;
   const response = yield call(fetch, url + '/chat/user/' + username + '/', {
     method: 'POST',
     headers: {
@@ -343,8 +346,6 @@ export function* startChat(username) {
     }
   });
   const res = yield response.json();
-  //console.log(res);
-  //console.log('res.id: ', res.id);
   if(response.ok === true) {
     yield put(getChatRoomID(res.id));
     const st = yield select();
@@ -358,20 +359,17 @@ export function* startChat(username) {
     catch (e) {
       res.message = 'POST /chat/user/username error.';
     }
-    console.log(res.message);
   }
 }
 
 export function* fetchChatList(chatRoomID) {
   const state = yield select();
-  //console.log('fetchChatListSaga-chatRoomID: ',chatRoomID);
   const response = yield call(fetch, url + '/chat/' + chatRoomID + '/all/', {
     method: 'GET',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
     }
   });
-  //console.log('fetchChatListSaga-status: ', response.status);
   if(response.ok === false) {
     //window.location.href = '/notfound/';
     return;
