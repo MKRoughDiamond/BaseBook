@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from core.models import BaseUser, Friend, Feed, Reply, Picture, ChatRoom, Chat, HashTag
+from core.models import BaseUser, Friend, Feed, Reply, Picture, ChatRoom, Chat
 from django.db import models
 
 

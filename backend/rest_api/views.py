@@ -128,6 +128,7 @@ class HashTagList(APIView):
             for hashtags in feed.hashtag.all():
                 if hashtag == hashtags.hashtagName:
                     feeds = feeds | Feed.objects.filter(id=feed.id)
+        feeds = feeds.order_by('-timestamp')
         serializer = FeedListSerializer(feeds)
         return Response(serializer.data)
 
