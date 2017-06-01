@@ -10,5 +10,5 @@ pipelines:
     - step:
         script: # Modify the commands below to build your repository.
           - cd frontend && npm install
-          - cd frontend && npm test
-          - cd frontend && npm test -- --coverage
+          - npm test
+          - npm test -- --coverage
