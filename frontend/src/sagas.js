@@ -134,6 +134,9 @@ export function* fetchFeed(id) {
 }
 
 export function* postFeed(contents, scope) {
+  if (contents === '')
+    return;
+
   const state = yield select();
   const response = yield call(fetch, url + '/feed/', {
     method: 'POST',
@@ -300,6 +303,9 @@ export function* fetchReply(feedId, replyId) {
 }
 
 export function* postReply(feedId, contents) {
+  if (contents === '')
+    return;
+
   const state = yield select();
   const response = yield call(fetch, url + '/feed/' + feedId.toString() + '/reply/', {
     method: 'POST',
@@ -410,6 +416,9 @@ export function* fetchChat(chatRoomID) {
 }
 
 export function* postChat(chatRoomID, contents) {
+  if (contents === '')
+    return;
+
   const state = yield select();
   //console.log('postChatSaga-chatRoomID: ', chatRoomID,' contents: ',contents);
   const response = yield call(fetch, url + '/chat/' + chatRoomID + '/', {
