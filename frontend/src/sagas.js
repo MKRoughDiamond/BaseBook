@@ -11,8 +11,8 @@ import {
   setUserList, GET_USER_LIST, getTimelineList
 } from './actions';
 
-const url = 'http://localhost:8000';
-//const url = 'http://13.124.80.116:8000';
+//const url = 'http://localhost:8000';
+const url = 'http://13.124.80.116:8000';
 
 export function* postSignUp() {
   const state = yield select();
@@ -468,23 +468,19 @@ export function* fetchUserList() {
 
 
 export function* watchSignUp() {
-  let state;
-  do {
-    state = yield select();
+  const t = true;
+  while (t) {
     yield take(TOMAIN);
     yield call(postSignUp);
   }
-  while(state.server.loggedIn === false);
 }
 
 export function* watchLogin() {
-  let state;
-  do {
-    state = yield select();
+  const t = true;
+  while (t) {
     yield take(LOGIN);
     yield call(postLogin);
   }
-  while(state.server.loggedIn === false);
 }
 
 
