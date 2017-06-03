@@ -16,7 +16,9 @@ describe('server reducer', () => {
       loggedIn: false,
       errorMsg: null,
       onTimeline: false,
-      timelineUser: null
+      timelineUser: null,
+      soundStart: false,
+      soundUrl: null
     })
   })
 
@@ -154,7 +156,9 @@ describe('server reducer', () => {
       loggedIn: false,
       errorMsg: 'asdf',
       onTimeline: false,
-      timelineUser: null
+      timelineUser: null,
+      soundStart: false,
+      soundUrl: null
     })
   })
 
@@ -174,7 +178,9 @@ describe('server reducer', () => {
       loggedIn: false,
       errorMsg: null,
       onTimeline: false,
-      timelineUser: null
+      timelineUser: null,
+      soundStart: false,
+      soundUrl: null
     })
   })
 })
