@@ -52,6 +52,8 @@ export const DELETE_REPLY = 'DELETE_REPLY';
 export const START_SOUND = 'START_SOUND';
 export const END_SOUND = 'END_SOUND';
 
+export const POST_FRIEND = 'POST_FRIEND';
+
 export function setID(value) {
   return {
     type : SETID,
@@ -367,5 +369,12 @@ export function startSound(url) {
 export function endSound() {
   return {
     type: END_SOUND
+  };
+}
+
+export function postFriend(username) {
+  return {
+    type: POST_FRIEND,
+    username: username
   };
 }
