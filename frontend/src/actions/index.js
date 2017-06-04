@@ -379,3 +379,17 @@ export function postFriend(username) {
     username: username
   };
 }
+
+export function toHashFeed(tagname) {
+  return {
+    type : TOHASHFEED,
+    tagname : tagname
+  };
+}
+
+export function getHashFeedList() {
+  return {
+    type: GET_HASHFEED_LIST
+  };
+}
+
