@@ -382,9 +382,15 @@ export function toHashFeed(tagname) {
     tagname : tagname
   };
 }
-
 export function getHashFeedList() {
   return {
     type: GET_HASHFEED_LIST
+  };
+}
+
+export function postFriend(username) {
+  return {
+    type: POST_FRIEND,
+    username: username
   };
 }
