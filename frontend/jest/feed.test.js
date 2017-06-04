@@ -12,6 +12,16 @@ describe('feed reducer', ()=> {
       })
   })
 
+  it('should handle LOGOUT', () => {
+    expect (
+      feed({}, { type: types.LOGOUT })
+    ).toEqual({
+      desiredFeedCount: 0,
+      feedList: {},
+      orderedFeedIdList: []
+    })
+  })
+
   it('should handle SET_FEED_LIST', () => {
     expect (
       feed(undefined, {
