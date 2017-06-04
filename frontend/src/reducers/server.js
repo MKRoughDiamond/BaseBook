@@ -33,20 +33,25 @@ const server = (state = serverInitialState, action) => {
   case RETYPEPW:
     return Object.assign({}, state, { retypePW : action.retypePW });
   case TOFEED:
-    return Object.assign({}, state, { onTimeline: false });
+    return Object.assign({}, state, {
+      onTimeline: false,
+      onHashFeed: false,
+    });
   case TOMAIN:
     return Object.assign({}, state,
       { isLogin : true,
         ID : '',
         PW : '',
-        onTimeline: false});
+        onTimeline: false,
+        onHashFeed: false,});
   case TOSIGNUP:
     return Object.assign({}, state,
       { isLogin : false,
         newID : '',
         newPW : '',
         retypePW : '',
-        onTimeline: false});
+        onTimeline: false,
+        onHashFeed: false,});
   case TOTIMELINE:
     return Object.assign({}, state,
       { onTimeline : true,
@@ -56,7 +61,7 @@ const server = (state = serverInitialState, action) => {
       { onHashFeed : true,
         tagname : action.tagname});
   case LOGIN_SUCCESS:
-    return Object.assign({}, state, { loggedIn : true, hash: action.hash, onTimeline: false});
+    return Object.assign({}, state, { loggedIn : true, hash: action.hash, onTimeline: false, onHashFeed: false, });
   case LOGIN_PAGE_ERROR:
     return Object.assign({}, serverInitialState, { errorMsg : action.msg });
   case LOGOUT:

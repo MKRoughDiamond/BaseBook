@@ -5,6 +5,8 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import Select
 import sys
 ################################################################
+#(sleep factor)
+S = 1
 #(number of users)
 N = 2
 #(number of feed per scope) * (number of scope)
@@ -43,7 +45,7 @@ def send_keys(_element, _key):
         _element.send_keys(_key + Keys.RETURN)
     except Exception as e:
         end_test('Cannot send %s' % _key ,e)
-    sleep(0.5)
+    sleep(S)
 
 def send(driver, name, _key):
     try:
@@ -58,9 +60,9 @@ def click(driver, name):
         _element.click()
     except Exception as e:
         end_test('Cannot click %s' % name, e)
-    sleep(0.5)
+    sleep(S)
 
-def signup_test(driver, uname, upwd, duplication):
+def signup_test(driver, uname, upwd, duplication, master):
     try:
         click(driver, 'SignUp')
         send(driver, 'input-username', uname)
@@ -71,7 +73,7 @@ def signup_test(driver, uname, upwd, duplication):
             exist = find_or_error(driver, 'login-error-box') and \
                     find_or_error(driver, 'login-error-msg') and \
                     find_or_error(driver, 'login-error-confirm')
-            if(not exist):
+            if(not master and not exist):
                 print('Duplicated SignUp('+uname+') test failed')
                 sys.exit(1)
             click(driver, 'login-error-confirm')
@@ -80,9 +82,11 @@ def signup_test(driver, uname, upwd, duplication):
             exist = find_or_error(driver, 'login-error-box') or \
                     find_or_error(driver, 'login-error-msg') or \
                     find_or_error(driver, 'login-error-confirm')
-            if exist:
+            if not master and exist:
                 print('SignUp(' + uname + ') test failed')
                 sys.exit(1)
+            if exist:
+                click(driver, 'login-error-confirm')
             print(uname + ' SignUp success')
     except Exception as e:
         end_test('\nSignUp test failed', e)
@@ -112,7 +116,7 @@ def like_dislike_feed_test(driver, like_dislike):
         for i in range(0, 3):
             button = buttons[i]
             button.click()
-            sleep(0.25)
+            sleep(S)
     except Exception as e:
         end_test('\n{0} POST like/dislike test failed'.format(likes[like_dislike]), e)
     print('POST ' + likes[like_dislike] + ' success')
@@ -127,7 +131,7 @@ def reply_test(driver, contents):
             send_keys(textarea, contents)
             button = buttons[i]
             button.click()
-            sleep(0.25)
+            sleep(S)
             print(' {0} '.format(i), end=' ')
     except Exception as e:
         end_test('\nPOST Reply test failed', e)
@@ -135,7 +139,7 @@ def reply_test(driver, contents):
 def start_chat_test(driver, other_username):
     try:
         click(driver, 'chat-button')
-        sleep(0.5)
+        sleep(S)
         send(driver, 'username-textbox', other_username)
         click(driver, 'chatting-start-button')
     except Exception as e:
@@ -161,11 +165,14 @@ print('################################################################')
 print('FrontEnd Test')
 print('################################################################')
 
+if sys.argv.length == 1:
+    S *= 2
+
 for i in range(0, N):
     print('drivers[{0}] open'.format(i))
     drivers.append(webdriver.Chrome('/usr/local/bin/chromedriver'))
-    #drivers[i].get('http://localhost:3000')
-    drivers[i].get('http://13.124.80.116:3000')
+    drivers[i].get('http://localhost:3000')
+    #drivers[i].get('http://13.124.80.116:3000')
     print('drivers[{0}] open successful'.format(i))
 
 ################################################################
@@ -174,8 +181,8 @@ print('\nSignUp test:')
 for i in range(0, N):
     uname = 'user{0}'.format(i)
     upwd = 'user{0}'.format(i)
-#    signup_test(drivers[i], uname, upwd, False)
-    signup_test(drivers[i], uname, upwd, True)
+#    signup_test(drivers[i], uname, upwd, False, True)
+    signup_test(drivers[i], uname, upwd, True, True)
 
 ################################################################
 print('\nSignIn test:')
@@ -238,7 +245,7 @@ for j in range(0, C * 5):
     chat_test(drivers[i], 'Hey user{0} {1}{1}!(one side)'.format(i2, j), other_username)
 
 ################################################################
-sleep(4)
+sleep(S * 4)
 for i in range(0, N):
     drivers[i].quit()
 print('FrontEnd Test terminated')
