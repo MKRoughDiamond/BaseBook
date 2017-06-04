@@ -603,6 +603,7 @@ export function* watchGetChatList() {
 export function* watchGetChat() {
   const t = true;
   while(t) {
+    yield delay(100);
     const state = yield select();
     if(state.chat.chatOn){
       const action = yield take(GET_CHAT);
