@@ -32,6 +32,19 @@ describe('chat reducer', ()=> {
     })
   })
 
+  it('should handle LOGOUT', () => {
+    expect (
+      chat({}, { type: types.LOGOUT })
+    ).toEqual({
+      desiredChatCount: 0,
+      chatOn: false,
+      otherUsername: null,
+      chatRoomID: null,
+      chatList: []
+    }
+  )
+  })
+
   it('should handle START_CHAT', () => {
     expect (
         chat({}, {
