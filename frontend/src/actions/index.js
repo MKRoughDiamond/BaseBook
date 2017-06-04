@@ -38,6 +38,7 @@ export const GET_CHAT = 'GET_CHAT';
 export const SET_CHAT = 'SET_CHAT';
 export const POST_CHAT = 'POST_CHAT';
 export const TOFEED = 'TOFEED';
+
 export const TOTIMELINE = 'TOTIMELINE';
 export const GET_TIMELINE_LIST = 'GET_TIMELINE_LIST';
 
@@ -378,3 +379,17 @@ export function postFriend(username) {
     username: username
   };
 }
+
+export function toHashFeed(tagname) {
+  return {
+    type : TOHASHFEED,
+    tagname : tagname
+  };
+}
+
+export function getHashFeedList() {
+  return {
+    type: GET_HASHFEED_LIST
+  };
+}
+

@@ -4,7 +4,7 @@ import {
   TOMAIN, LOGIN, GET_FEED_LIST, GET_FEED, POST_FEED,
   GET_REPLY_LIST, GET_REPLY, POST_REPLY,
   POST_LIKES, POST_DISLIKES, GET_LIKES, GET_DISLIKES,
-  START_CHAT, GET_CHAT_LIST, GET_CHAT, POST_CHAT, SET_CHAT_LIST, GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND,
+  START_CHAT, GET_CHAT_LIST, GET_CHAT, POST_CHAT, SET_CHAT_LIST, GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND, GET_HASHFEED_LIST, 
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
@@ -81,6 +81,31 @@ export function* fetchTimelineList() {
   }
   catch(e) {
     window.location.href = '/notfound/';
+    return;
+  }
+  yield put(setFeedList(res.id));
+}
+
+
+export function* fetchHashFeedList() {
+  const state = yield select();
+  console.log('fetchHashFeedlist');
+  const response = yield call(fetch, url + '/hashtag/' + state.server.tagname + '/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  if(response.ok === false) {
+    //window.location.href = '/notfound/';
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
+    //window.location.href = '/notfound/';
     return;
   }
   yield put(setFeedList(res.id));
@@ -629,6 +654,14 @@ export function* watchGetTimelineList() {
   }
 }
 
+export function* watchGetHashFeedList() {
+  const t = true;
+  while(t) {
+    yield take(GET_HASHFEED_LIST);
+    yield call(fetchHashFeedList);
+  }
+}
+
 export function* createChatReciever() {
   const t = true;
   yield take(SET_CHAT_LIST);
@@ -687,6 +720,7 @@ export function* rootSaga() {
   yield fork(watchGetChat);
   yield fork(watchPostChat);
   yield fork(watchGetTimelineList);
+  yield fork(watchGetHashFeedList);
   yield fork(createChatReciever);
   yield fork(watchGetUserList);
   yield fork(watchDeleteFeed);
