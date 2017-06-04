@@ -6,6 +6,7 @@ import {
   POST_LIKES, POST_DISLIKES, GET_LIKES, GET_DISLIKES,
   START_CHAT, GET_CHAT_LIST, GET_CHAT, POST_CHAT, SET_CHAT_LIST, GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY,
   GET_HASHFEED_LIST,
+  START_CHAT, GET_CHAT_LIST, GET_CHAT, POST_CHAT, SET_CHAT_LIST, GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,

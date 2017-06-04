@@ -56,6 +56,7 @@ export const END_SOUND = 'END_SOUND';
 export const TOHASHFEED = 'TOHASHFEED';
 export const GET_HASHFEED_LIST = 'GET_HASHFEED_LIST';
 
+export const POST_FRIEND = 'POST_FRIEND';
 
 export function setID(value) {
   return {
@@ -387,5 +388,3 @@ export function getHashFeedList() {
     type: GET_HASHFEED_LIST
   };
 }
-
-
