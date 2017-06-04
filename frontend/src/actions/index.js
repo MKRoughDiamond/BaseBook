@@ -373,6 +373,13 @@ export function endSound() {
   };
 }
 
+export function postFriend(username) {
+  return {
+    type: POST_FRIEND,
+    username: username
+  };
+}
+
 export function toHashFeed(tagname) {
   return {
     type : TOHASHFEED,
@@ -383,12 +390,5 @@ export function toHashFeed(tagname) {
 export function getHashFeedList() {
   return {
     type: GET_HASHFEED_LIST
-  };
-}
-
-export function postFriend(username) {
-  return {
-    type: POST_FRIEND,
-    username: username
   };
 }
