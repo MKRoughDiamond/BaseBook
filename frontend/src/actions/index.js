@@ -382,6 +382,7 @@ export function toHashFeed(tagname) {
     tagname : tagname
   };
 }
+
 export function getHashFeedList() {
   return {
     type: GET_HASHFEED_LIST
