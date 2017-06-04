@@ -4,15 +4,15 @@ import {
   TOMAIN, LOGIN, GET_FEED_LIST, GET_FEED, POST_FEED,
   GET_REPLY_LIST, GET_REPLY, POST_REPLY,
   POST_LIKES, POST_DISLIKES, GET_LIKES, GET_DISLIKES,
-  START_CHAT, GET_CHAT_LIST, GET_CHAT, POST_CHAT, SET_CHAT_LIST, GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY,
+  START_CHAT, GET_CHAT_LIST, GET_CHAT, POST_CHAT, SET_CHAT_LIST, GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
   setUserList, GET_USER_LIST, getTimelineList
 } from './actions';
 
-const url = 'http://localhost:8000';
-//const url = 'http://13.124.80.116:8000';
+//const url = 'http://localhost:8000';
+const url = 'http://13.124.80.116:8000';
 
 export function* postSignUp() {
   const state = yield select();
@@ -134,6 +134,9 @@ export function* fetchFeed(id) {
 }
 
 export function* postFeed(contents, scope) {
+  if (contents === '')
+    return;
+
   const state = yield select();
   const response = yield call(fetch, url + '/feed/', {
     method: 'POST',
@@ -300,6 +303,9 @@ export function* fetchReply(feedId, replyId) {
 }
 
 export function* postReply(feedId, contents) {
+  if (contents === '')
+    return;
+
   const state = yield select();
   const response = yield call(fetch, url + '/feed/' + feedId.toString() + '/reply/', {
     method: 'POST',
@@ -410,6 +416,9 @@ export function* fetchChat(chatRoomID) {
 }
 
 export function* postChat(chatRoomID, contents) {
+  if (contents === '')
+    return;
+
   const state = yield select();
   //console.log('postChatSaga-chatRoomID: ', chatRoomID,' contents: ',contents);
   const response = yield call(fetch, url + '/chat/' + chatRoomID + '/', {
@@ -457,25 +466,35 @@ export function* fetchUserList() {
   yield put(setUserList(userList));
 }
 
+export function* postFriend(username) {
+  const state = yield select();
+  const response = yield call(fetch, url + '/friend/' + username + '/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  if (response.ok === false) {
+    //errorbox 띄워주면 좋겠음
+  }
+  return;  
+}
+
 
 export function* watchSignUp() {
-  let state;
-  do {
-    state = yield select();
+  const t = true;
+  while (t) {
     yield take(TOMAIN);
     yield call(postSignUp);
   }
-  while(state.server.loggedIn === false);
 }
 
 export function* watchLogin() {
-  let state;
-  do {
-    state = yield select();
+  const t = true;
+  while (t) {
     yield take(LOGIN);
     yield call(postLogin);
   }
-  while(state.server.loggedIn === false);
 }
 
 
@@ -584,6 +603,7 @@ export function* watchGetChatList() {
 export function* watchGetChat() {
   const t = true;
   while(t) {
+    yield delay(100);
     const state = yield select();
     if(state.chat.chatOn){
       const action = yield take(GET_CHAT);
@@ -641,6 +661,14 @@ export function* watchDeleteReply() {
   }
 }
 
+export function* watchPostFriend() {
+  const t = true;
+  while(t) {
+    const action = yield take(POST_FRIEND);
+    yield call(postFriend, action.username);
+  }
+}
+
 export function* rootSaga() {
   yield fork(watchSignUp);
   yield fork(watchLogin);
@@ -663,4 +691,5 @@ export function* rootSaga() {
   yield fork(watchGetUserList);
   yield fork(watchDeleteFeed);
   yield fork(watchDeleteReply);
+  yield fork(watchPostFriend);
 }

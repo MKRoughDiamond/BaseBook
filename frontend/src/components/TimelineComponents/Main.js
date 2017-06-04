@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getTimelineList, toChat, toFeed} from '../../actions';
+import {getTimelineList, toChat, toFeed, postFriend} from '../../actions';
 import Entry from '../FeedComponents/Entry';
 import TopBar from '../TopBar';
 
@@ -9,6 +9,7 @@ class TimelineMain extends React.Component {
     super(props);
     this.handleToChat = this.handleToChat.bind(this);
     this.handleToFeed = this.handleToFeed.bind(this);
+    this.handlePostFriend = this.handlePostFriend.bind(this);
     this.prevUser = this.props.timelineUser;
   }
   componentDidMount() {
@@ -20,6 +21,10 @@ class TimelineMain extends React.Component {
 
   handleToFeed() {
     this.props.toFeed();
+  }
+
+  handlePostFriend() {
+    this.props.postFriend(this.props.timelineUser);
   }
 
   render() {
@@ -36,7 +41,7 @@ class TimelineMain extends React.Component {
             {(this.props.timelineUser===this.props.username)?
               (<div/>
             ):(
-              <button id="friend-button">friend</button>)}
+              <button id="friend-button" onClick={this.handlePostFriend}>friend</button>)}
           </div>
           <div id="feed-entries">
             {this.props.feedIdList.map( (id) => {
@@ -61,8 +66,8 @@ let mapDispatchToProps = (dispatch) => {
   return {
     getTimelineList: () => dispatch(getTimelineList()),
     toChat: () => dispatch(toChat()),
-    toFeed: () => dispatch(toFeed())
-
+    toFeed: () => dispatch(toFeed()),
+    postFriend: (username) => dispatch(postFriend(username))
   };
 };
 

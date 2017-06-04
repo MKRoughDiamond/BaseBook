@@ -1,4 +1,4 @@
-import { SET_FEED_LIST, SET_FEED , SET_LIKES, SET_DISLIKES, SET_REPLY_LIST, SET_REPLY } from '../actions';
+import { SET_FEED_LIST, SET_FEED , SET_LIKES, SET_DISLIKES, SET_REPLY_LIST, SET_REPLY, LOGOUT } from '../actions';
 
 const initState = {
   desiredFeedCount: 0,
@@ -25,6 +25,8 @@ const replyInitState = {
 
 const feed = (state = initState, action) => {
   switch(action.type) {
+  case LOGOUT:
+    return initState;
   case SET_FEED_LIST: {
     // copy existing feed to prevent redundant GET requests 
     let newFeedList = {};
