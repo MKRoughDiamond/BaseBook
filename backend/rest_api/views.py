@@ -9,10 +9,11 @@ from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 
-from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, ChatRoomSerializer, ChatSerializer, FriendListSerializer, HashTagListSerializer
+from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, \
+ChatRoomSerializer, ChatSerializer, FriendListSerializer, HashTagListSerializer, MultiChatRoomSerializer
 from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions
-from core.models import Feed, Reply, Chat, ChatRoom, Friend, HashTag
-from mafia.interface import mafia_tick, user_chat_team
+from core.models import Feed, Reply, Chat, ChatRoom, Friend, HashTag, MultiChatRoom, MultiChatUser
+from mafia.interface import mafia_tick, user_chat_team, user_entered
 #from core.models import BaseUser, Friend, Feed, Reply, Picture
 
 
@@ -260,7 +261,6 @@ class ReplyDetail(generics.RetrieveUpdateDestroyAPIView):
     def options(self, request, pk):
         return options_cors()
 
-# TODO: add call to user_entered() in mafia interface
 class ChatRoomID(APIView):
     def post(self, request, username):
         user1 = request.user
@@ -292,8 +292,6 @@ class ChatDetail(APIView):
             room = ChatRoom.objects.get(pk=pk)
         except ObjectDoesNotExist:
             return Response('', status=404)
-        # Update mafia room status
-        mafia_tick(room)
         chats = Chat.objects.filter(room=room)
         if request.user == room.user1:
             chats = chats.filter(timestamp__gt=room.updated1)
@@ -314,7 +312,6 @@ class ChatDetail(APIView):
         except ObjectDoesNotExist:
             return Response('', status=404)
         chat = Chat(room=room, user=request.user, contents=request.data.get('contents', ''))
-        chat = user_chat_team(room, request.user, chat)
         chat.save()
         return Response('')
     
@@ -328,6 +325,7 @@ class ChatAll(APIView):
         except ObjectDoesNotExist:
             return Response('', status=404)
         chats = Chat.objects.filter(room=room)
+        chats = chats.exclude(invisible=request.user)
         if request.user == room.user1:
             room.updated1 = timezone.now()
         elif request.user == room.user2:
@@ -340,6 +338,92 @@ class ChatAll(APIView):
     
     def options(self, request, pk):
         return options_cors()
+
+
+class MultiChatRoomID(APIView):
+    def get(self, request, pk=None):
+        room = MultiChatRoom.objects.all()
+        serializer = MultiChatRoomSerializer(room, many=True)
+        return Response(serializer.data)
+        
+    def post(self, request, pk=None):
+        if pk is None:
+            room = MultiChatRoom()
+        else:
+            try:
+                room = MultiChatRoom.objects.get(pk=pk)
+            except ObjectDoesNotExist: 
+                room = MultiChatRoom()
+        room.save()
+        current_users = [x[0] for x in room.users.values_list('user')]
+        if request.user.id not in current_users:
+            time = timezone.now()
+            roomuser = MultiChatUser(user=request.user)
+            roomuser.updated = time
+            roomuser.save()
+            room.users.add(roomuser)
+            room.save()
+            user_entered(room, request.user)
+        serializer = MultiChatRoomSerializer(room)
+        return Response(serializer.data)
+    
+    def options(self, request, pk=None):
+        return options_cors()
+
+class MultiChatDetail(APIView):
+    def get(self, request, pk):
+        try:
+            room = MultiChatRoom.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
+        try:
+            roomuser = room.users.get(user=request.user)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
+        
+        # Update mafia room status
+        mafia_tick(room)
+        chats = Chat.objects.filter(multiroom=room, timestamp__gt=roomuser.updated)
+        roomuser.updated = timezone.now()
+        roomuser.save()
+        
+        chats = chats.exclude(invisible=request.user)
+        serializer = ChatSerializer(chats)
+        return Response(serializer.data)
+    
+    def post(self, request, pk):
+        try:
+            room = MultiChatRoom.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
+        chat = Chat(multiroom=room, user=request.user, contents=request.data.get('contents', ''))
+        chat = user_chat_team(room, request.user, chat)
+        chat.save()
+        return Response('')
+    
+    def options(self, request, pk):
+        return options_cors()
+
+class MultiChatAll(APIView):
+    def get(self, request, pk):
+        try:
+            room = MultiChatRoom.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
+        try:
+            roomuser = room.users.get(user=request.user)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
+        chats = Chat.objects.filter(multiroom=room)
+        chats = chats.exclude(invisible=request.user)
+        roomuser.updated = timezone.now()
+        roomuser.save()
+        serializer = ChatSerializer(chats)
+        return Response(serializer.data)
+    
+    def options(self, request, pk):
+        return options_cors()
+
 
 class FriendList(APIView):
     def post(self, request, username):

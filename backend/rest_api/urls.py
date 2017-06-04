@@ -19,5 +19,9 @@ urlpatterns = [
     url(r'^chat/user/(?P<username>\w+)/$', views.ChatRoomID.as_view()),
     url(r'^chat/(?P<pk>[0-9]+)/$', views.ChatDetail.as_view()),
     url(r'^chat/(?P<pk>[0-9]+)/all/$', views.ChatAll.as_view()),
+    url(r'^multichat/$', views.MultiChatRoomID.as_view()),
+    url(r'^multichat/enter/(?P<pk>[0-9]+)/$', views.MultiChatRoomID.as_view()),
+    url(r'^multichat/(?P<pk>[0-9]+)/$', views.MultiChatDetail.as_view()),
+    url(r'^multichat/(?P<pk>[0-9]+)/all/$', views.MultiChatAll.as_view()),
     url(r'^friend/(?P<username>\w+)/$', views.FriendList.as_view()),
 ]

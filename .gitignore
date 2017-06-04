@@ -6,5 +6,6 @@ pip-log.txt
 *.sqlite3
 .venv
 .idea
+node_modules
 
 uploads
