@@ -53,6 +53,9 @@ export const DELETE_REPLY = 'DELETE_REPLY';
 export const START_SOUND = 'START_SOUND';
 export const END_SOUND = 'END_SOUND';
 
+export const TOHASHFEED = 'TOHASHFEED';
+export const GET_HASHFEED_LIST = 'GET_HASHFEED_LIST';
+
 export const POST_FRIEND = 'POST_FRIEND';
 
 export function setID(value) {
