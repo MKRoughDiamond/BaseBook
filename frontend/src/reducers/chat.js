@@ -1,6 +1,6 @@
 import {
   TOCHAT, START_CHAT, GET_CHAT_ROOM_ID,
-  SET_CHAT_LIST, SET_CHAT, TOFEED
+  SET_CHAT_LIST, SET_CHAT, TOFEED, LOGOUT
 } from '../actions';
 
 const initState = {
@@ -23,6 +23,8 @@ const chat = (state = initState, action) => {
     return Object.assign({}, state, { chatOn : true });
   case TOFEED:
     return Object.assign({}, state, { chatOn : false});
+  case LOGOUT:
+    return initState;
   case START_CHAT:
     return Object.assign({}, state, { otherUsername : action.username });
   case GET_CHAT_ROOM_ID:

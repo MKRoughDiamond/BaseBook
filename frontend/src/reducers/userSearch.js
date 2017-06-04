@@ -1,4 +1,4 @@
-import { SET_USER_LIST, USER_QUERY } from '../actions';
+import { SET_USER_LIST, USER_QUERY, LOGOUT } from '../actions';
 
 const initState = {
   userList: null,
@@ -7,6 +7,8 @@ const initState = {
 
 const userSearch = (state = initState, action) => {
   switch(action.type) {
+  case LOGOUT:
+    return initState;
   case SET_USER_LIST: {
     return Object.assign({}, state, {
       userList: action.list.sort()
