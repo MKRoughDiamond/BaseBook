@@ -55,10 +55,12 @@ const server = (state = serverInitialState, action) => {
   case TOTIMELINE:
     return Object.assign({}, state,
       { onTimeline : true,
+        onHashFeed : false,
         timelineUser : action.username });
   case TOHASHFEED:
     return Object.assign({}, state,
-      { onHashFeed : true,
+      { onTimeline : false,
+        onHashFeed : true,
         tagname : action.tagname});
   case LOGIN_SUCCESS:
     return Object.assign({}, state, { loggedIn : true, hash: action.hash, onTimeline: false, onHashFeed: false, });
