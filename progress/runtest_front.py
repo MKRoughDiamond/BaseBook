@@ -174,12 +174,9 @@ print('################################################################')
 test_url = 'http://localhost:3000'
 
 if len(sys.argv) == 1:
-    S *= 4
+    S *= 3
     test_url = 'http://13.124.80.116:9000'
 
-
-
-#print(len(sys.argv))
 
 for i in range(0, N):
     print('drivers[{0}] open'.format(i))
