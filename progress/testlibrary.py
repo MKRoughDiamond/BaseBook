@@ -57,7 +57,7 @@ def login_post_test(url, uname, upwd):
 def feed_post_test(url, contents, scope, uname, upwd):
     sleep(0.05)
     try:
-        data = {'contents': contents, 'scope': scope}
+        data = {'contents': contents, 'scope': scope, 'feedtype': 'Text'}
         headers = {
             'Content-Type': 'application/json',
         }
@@ -242,7 +242,7 @@ def chat_get_all_chat_test(url, uname, upwd):
 def post_feed_get_hashtag_test(feedurl, hashtagurl, contents, scope, uname, upwd):
     sleep(0.05)
     try:
-        data = {'contents': contents, 'scope': scope}
+        data = {'contents': contents, 'scope': scope, 'feedtype': 'Text'}
         headers = {'Content-Type': 'application/json'}
         res = requests.post(feedurl, data=json.dumps(data), headers=headers, auth=(uname,upwd))
         if res.status_code != 200:
