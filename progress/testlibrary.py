@@ -289,7 +289,73 @@ def get_hashtag_test(url, uhashtag, uname, upwd):
         sys.exit(1)
 
     print('success')
+
+def post_multichat_test(url, contents, uname, upwd):
+    sleep(0.05)
+    try:
+        data = {'contents' : contents}
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(url, data=json.dumps(data), headers=headers, auth=(uname, upwd))
+        if res.status_code != 200:
+            wrong_status_code('post multichat', url, res.status_code)
+    except Exception as e:
+        unexpected_exception('post multichat', url, e)
+    print('success')
     
+def enter_multichat_test(url, uname, upwd):
+    sleep(0.05)
+    try:
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(url, headers=headers, auth=(uname, upwd))
+        if res.status_code != 200:
+            wrong_status_code('enter multichat', url, res.status_code)
+    except Exception as e:
+        unexpected_exception('enter multichat', url, e)
+    print('success')
+
+def get_prev_multichat_test(url, uname, upwd):
+    sleep(0.05)
+    try:
+        headers = {'Content-Type': 'application/json'}
+        res = requests.get(url, headers=headers, auth=(uname, upwd))
+        if res.status_code != 200:
+            wrong_status_code('get prev multichat', url, res.status_code)
+    except Exception as e:
+        unexpected_exception('get prev multichat', url, e)
+    print('success')
+
+def get_all_multichat_test(url, uname, upwd):        
+    sleep(0.05)
+    try:
+        headers = {'Content-Type': 'application/json'}
+        res = requests.get(url, headers=headers, auth=(uname, upwd))
+        if res.status_code != 200:
+            wrong_status_code('get all multichat', url, res.status_code)
+    except Exception as e:
+        unexpected_exception('get all multichat', url, e)
+    print('success')
+
+def get_all_multichat_test(url, uname, upwd):        
+    sleep(0.05)
+    try:
+        headers = {'Content-Type': 'application/json'}
+        res = requests.get(url, headers=headers, auth=(uname, upwd))
+        if res.status_code != 200:
+            wrong_status_code('get all multichat', url, res.status_code)
+    except Exception as e:
+        unexpected_exception('get all multichat', url, e)
+    print('success')
+
+def get_all_multichat_room_test(url, uname, upwd):        
+    sleep(0.05)
+    try:
+        headers = {'Content-Type': 'application/json'}
+        res = requests.get(url, headers=headers, auth=(uname, upwd))
+        if res.status_code != 200:
+            wrong_status_code('get all multichat room', url, res.status_code)
+    except Exception as e:
+        unexpected_exception('get all multichat room', url, e)
+    print('success')
 #def profile_test(url, ):
 #    sleep(0.05)
 #    try:
