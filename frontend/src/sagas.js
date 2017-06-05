@@ -158,7 +158,7 @@ export function* fetchFeed(id) {
   yield put(setFeed(res.id, res));
 }
 
-export function* postFeed(contents, scope) {
+export function* postFeed(contents, scope, feedtype) {
   if (contents === '')
     return;
 
@@ -171,7 +171,8 @@ export function* postFeed(contents, scope) {
     },
     body: JSON.stringify({
       contents: contents,
-      scope: scope
+      scope: scope,
+      feedtype: feedtype
     })
   });
   if(response.ok === false) {

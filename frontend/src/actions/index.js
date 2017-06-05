@@ -166,11 +166,12 @@ export function setFeed(id, feed) {
   };
 }
 
-export function postFeed(contents, scope) {
+export function postFeed(contents, scope, feedtype) {
   return {
     type: POST_FEED,
     contents: contents,
-    scope: scope
+    scope: scope,
+    feedtype: feedtype
   };
 }
 

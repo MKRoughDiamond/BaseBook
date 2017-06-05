@@ -12,7 +12,8 @@ class Post extends React.Component {
   handlePostFeed() {
     let contents = document.getElementById('newFeed-text');
     const scope = document.getElementById('newFeed-scope').value;
-    this.props.postFeed(contents.value, scope);
+    const feedtype = document.getElementById('newFeed-feedtype').value;
+    this.props.postFeed(contents.value, scope, feedtype);
     this.props.startSound('feedpost');
     contents.value = '';
   }
@@ -24,6 +25,10 @@ class Post extends React.Component {
           <div id="newFeed-name">
             New Feed
           </div>
+          <select name="feedtype" id="newFeed-feedtype">
+            <option value="Text">Text</option>
+            <option value="Markdown">Markdown</option>
+          </select>
           <select name="scope" id="newFeed-scope">
             <option value="Public">Public</option>
             <option value="Friends Only">Friends Only</option>
@@ -45,7 +50,7 @@ class Post extends React.Component {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    postFeed: (contents, scope) => dispatch(postFeed(contents, scope)),
+    postFeed: (contents, scope, feedtype) => dispatch(postFeed(contents, scope, feedtype)),
     startSound: (url) => dispatch(startSound(url)),
   };
 };
