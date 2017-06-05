@@ -32,7 +32,7 @@ class FeedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Feed
-        fields = ('id', 'contents', 'scope', 'author','hashtags')
+        fields = ('id','feedtype', 'contents', 'scope', 'author','hashtags')
 
 class HashTagListSerializer(serializers.BaseSerializer):
     def to_representation(self,obj):

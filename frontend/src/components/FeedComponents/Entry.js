@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import Markdown from 'react-markdown';
 import {getFeed, postLikes, postDislikes, getLikes, getDislikes, toTimeline, getReplyList, deleteFeed, toHashFeed} from '../../actions';
 import ReplyPost from './ReplyPost';
 import ReplyEntry from './ReplyEntry';
@@ -80,7 +81,7 @@ class Entry extends React.Component {
           </button>
         </div>
         <div className="feed-content" id={'feed'+this.props.feedID+'-content'}>
-          {words.map( (word) => {
+          {(feed.feedtype==='Text')? (words.map( (word) => {
             if(word[0] === '\n') {
               return (
                 <br/>
@@ -101,7 +102,10 @@ class Entry extends React.Component {
                 </span>
               );
             }
-          })}
+          }))
+          :
+          (<Markdown source={feed.contents} id={'feed'+this.props.feedID+'-content'} />)
+          }
         </div>
         <div id="reply-wrapper">
           {feed.orderedReplyIdList.map( (id) => {

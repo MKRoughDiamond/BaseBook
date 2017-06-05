@@ -14,6 +14,7 @@ const feedInitState = {
   scope: null,
   didLike: null,
   didDislike: null,
+  feedtype: null,
   replyList: {},
   orderedReplyIdList: []
 };
@@ -52,7 +53,8 @@ const feed = (state = initState, action) => {
         {
           author: action.feed.author,
           contents: action.feed.contents,
-          scope: action.feed.scope
+          scope: action.feed.scope,
+          feedtype: action.feed.feedtype
         });
     }
     else {
@@ -61,7 +63,8 @@ const feed = (state = initState, action) => {
         contents: action.feed.contents,
         scope: action.feed.scope,
         like: 0,
-        dislike: 0
+        dislike: 0,
+        feedtype: action.feed.feedtype
       });
     }
     let newFeedList = Object.assign({}, state.feedList);
