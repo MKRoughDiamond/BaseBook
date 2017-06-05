@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import Select
 import sys
 ################################################################
 #(sleep factor)
-S = 1
+S = 0.5
 #(number of users)
 N = 2
 #(number of feed per scope) * (number of scope)
@@ -166,7 +166,9 @@ print('FrontEnd Test')
 print('################################################################')
 
 if len(sys.argv) == 1:
-    S *= 2
+    S *= 4
+
+#print(len(sys.argv))
 
 for i in range(0, N):
     print('drivers[{0}] open'.format(i))
@@ -198,7 +200,7 @@ print('\nPOST Feed test:')
 for i in range(0, N):
     for j in range(0, F):
         print('{0} Feed {1}'.format(scopes[int(j / 2)], (j % 2) + 1), end=' ')
-        contents = 'Frontend - contents of POST user{0}-{1} feed: 종강하고싶다{1}{1}'.format(i, j + 1)
+        contents = 'Frontend POST user{0}-{1} feed: #hash{0} 종강하고싶다{1}{1} #hash_{0} # ##'.format(i, j + 1)
         feed_test(drivers[i], contents, int(j/2))
 
 ################################################################
@@ -245,7 +247,41 @@ for j in range(0, C * 5):
     chat_test(drivers[i], 'Hey user{0} {1}{1}!(one side)'.format(i2, j), other_username)
 
 ################################################################
-sleep(S * 4)
+print('\nTo other page test:')
+
+click(drivers[0], 'main-title-name')
+sleep(2 * S)
+print('To Main Page success')
+
+hash = drivers[0].find_element_by_xpath("//button[@class='feed-hashtag']")
+hash.click()
+sleep(2 * S)
+print('To HashFeed Page success')
+
+send(drivers[0], 'find-people-search', 'user')
+sleep(S)
+click(drivers[0], 'totimelineuser1')
+sleep(2 * S)
+print('To user\'s Timeline Page success')
+
+feed_writer = drivers[0].find_element_by_xpath("//div[@class='feed-writer']")
+feed_writer.click()
+sleep(2 * S)
+print('To user\'s Timeline Page success')
+
+click(drivers[0], 'main-title-name')
+sleep(2 * S)
+print('To Main Page success')
+
+click(drivers[0], 'logout')
+sleep(2 * S)
+print('logout success')
+
+################################################################
+#print('\nTo Feed / Chat / Timeline / HashFeed test:')
+
+################################################################
+sleep(4 * S)
 for i in range(0, N):
     drivers[i].quit()
 print('FrontEnd Test terminated')
