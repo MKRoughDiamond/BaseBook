@@ -8,3 +8,4 @@ pip-log.txt
 .idea
 node_modules
 uploads
+progress/__pycache__/
