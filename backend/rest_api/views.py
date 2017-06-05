@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
+import re
 
 from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, \
 ChatRoomSerializer, ChatSerializer, FriendListSerializer, HashTagListSerializer, MultiChatRoomSerializer
@@ -61,6 +62,11 @@ class user_signup(APIView):
             return Response({'detail':'Please put valid ID.'}, status=400)
         if password is None:
             return Response({'detail':'Please put password.'}, status=400)
+        username_regex = re.compile(r'^[a-zA-Z]\w+$')
+        if username_regex.match(username) is None:
+            return Response({'detail':'ID should consist of alphabets and numbers.'}, status=400)
+        if len(password) < 4:
+            return Response({'detail':'Password should be longer than 4 digits.'}, status=400)
         
         try:
             user = User.objects.create_user(username, username+'@email.com', password)
