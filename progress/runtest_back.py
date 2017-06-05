@@ -1,8 +1,11 @@
 from testlibrary import N
 import testlibrary as TL
 from random import randint
+import sys
 
-
+localhost1 = 'http://13.124.80.116:8000/'
+localhost2 = 'http://13.124.80.116:8001/'
+localhost3 = 'http://localhost:8000/'
 
 if len(sys.argv) is 1:
     localhost = localhost1
