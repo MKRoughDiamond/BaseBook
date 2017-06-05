@@ -13,7 +13,7 @@ from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSeriali
 ChatRoomSerializer, ChatSerializer, FriendListSerializer, HashTagListSerializer, MultiChatRoomSerializer
 from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions
 from core.models import Feed, Reply, Chat, ChatRoom, Friend, HashTag, MultiChatRoom, MultiChatUser
-from mafia.interface import mafia_tick, user_chat_team, user_entered
+from mafia.interface import mafia_tick, user_chat_team, user_entered, use_ability
 #from core.models import BaseUser, Friend, Feed, Reply, Picture
 
 
@@ -448,3 +448,23 @@ class FriendList(APIView):
         return options_cors()
 
 
+class MafiaGame(APIView):
+    def post(self, request, func, pk):
+        try:
+            room = MultiChatRoom.objects.get(pk=pk)
+        except ObjectDoesNotExist: 
+            return Response('', status=404)
+        func(room, request.user)
+    
+    def options(self, request, pk):
+        return options_cors()
+
+
+class MafiaGameAbility(APIView):
+    def post(self, request, pk, username):
+        try:
+            room = MultiChatRoom.objects.get(pk=pk)
+            target = User.objects.get(username=username)
+        except ObjectDoesNotExist: 
+            return Response('', status=404)
+        use_ability(room, request.user, target)

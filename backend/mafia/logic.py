@@ -24,6 +24,7 @@ class Player:
     def __init__(self, user):
         self.user = user
         self.job = None
+        self.quit_voted = False
         self.ability_used = False
         self.vote_count = 0
         
@@ -71,6 +72,13 @@ class MafiaRoom:
                 count += 1
         return count
     
+    def quit_voted_count(self):
+        count = 0
+        for player in self._survivors:
+            if player.quit_voted:
+                count += 1
+        return count
+    
     def start(self):
         if self.player_count() < MIN_START_PLAYER:
             return
@@ -80,6 +88,10 @@ class MafiaRoom:
         self._print('15초간 같은 팀끼리 대화할 수 있습니다.')
         self._scheduler.enter(15, 1, self._make_day)
         self._scheduler.run(False)
+        
+    def end(self):
+        self._print('과반수가 게임 종료에 합의하였으므로 게임을 종료합니다.')
+        self._end_game()
     
     def early_vote(self):
         self._print('과반수가 조기투표에 찬성했으므로 5초 후 투표가 시작됩니다.')
@@ -124,6 +136,11 @@ class MafiaRoom:
                     else:
                         self._print('{}(이)가 {}(을)를 치유 목표로 지정했습니다.'
                                     .format(p_caster.user.username, p_target.user.username), self._doctors)
+    
+    def quit_vote(self, user):
+        player = self._player(user)
+        if player is not None:
+            player.quit_voted = True
     
     def make_ghost(self, user):
         player = self._player(user)
@@ -304,6 +321,10 @@ class MafiaRoom:
         self._print('마피아: {}'.format(self._jobs_textline[0]))
         self._print('경찰: {}  의사: {}'.format(self._jobs_textline[1], self._jobs_textline[2]))
         self._print('시민: {}'.format(self._jobs_textline[3]))
+    
+    def _end_game(self):
+        mafia_rooms.remove(self)    # delete this MafiaRoom
+        map(self._scheduler.cancel, self._scheduler.queue)
         
     def _make_day(self):
         self.status = 'day'
@@ -316,8 +337,7 @@ class MafiaRoom:
             else:
                 self._print('{}(이)가 사망한 채로 발견되었습니다.'.format(self._corpse.user.username))
         if self._win_condition():
-            mafia_rooms.remove(self)    # delete this MafiaRoom
-            map(self._scheduler.cancel, self._scheduler.queue)
+            self._end_game()
         else:
             self._print('3분간 자유롭게 토론해주시기 바랍니다.')
             self._scheduler.enter(150, 1, self._make_vote_30)
