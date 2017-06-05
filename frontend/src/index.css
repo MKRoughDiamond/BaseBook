@@ -281,6 +281,17 @@ button:hover {
 	white-space: pre;
 }
 
+.feed-hashtag {
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 6px;
+	padding-right: 6px;
+	margin-right: 5px;
+	font-size: 14px;
+	color: blue;
+	border-radius: 5px;
+}
+
 #friend-button {
     margin-top : 5px;
     display : inline-block;

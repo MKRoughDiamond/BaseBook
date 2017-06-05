@@ -1,19 +1,18 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getTimelineList, toChat, toFeed, postFriend} from '../../actions';
+import {getHashFeedList, toChat, toFeed} from '../../actions';
 import Entry from '../FeedComponents/Entry';
 import TopBar from '../TopBar';
 
-class TimelineMain extends React.Component {
+class HashFeedMain extends React.Component {
   constructor(props) {
     super(props);
     this.handleToChat = this.handleToChat.bind(this);
     this.handleToFeed = this.handleToFeed.bind(this);
-    this.handlePostFriend = this.handlePostFriend.bind(this);
-    this.prevUser = this.props.timelineUser;
+    this.prevTagname = this.props.tagname;
   }
   componentDidMount() {
-    this.props.getTimelineList();
+    this.props.getHashFeedList();
   }
   handleToChat() {
     this.props.toChat();
@@ -23,25 +22,17 @@ class TimelineMain extends React.Component {
     this.props.toFeed();
   }
 
-  handlePostFriend() {
-    this.props.postFriend(this.props.timelineUser);
-  }
-
   render() {
-    if(this.prevUser !== this.props.timelineUser)
-      this.props.getTimelineList();
-    this.prevUser = this.props.timelineUser;
+    if(this.prevTagname !== this.props.tagname)
+      this.props.getHashFeedList();
+    this.prevTagname = this.props.tagname;
     return (
       <div id="main-wrapper">
         <TopBar/>
         <div id="main-content">
           <div id="Pagename">
-            {this.props.timelineUser + '\'s Timeline'}
+            {'HashTag search: ' + this.props.tagname}
             <button id="chat-button" onClick={this.handleToChat}>Chat</button>
-            {(this.props.timelineUser===this.props.username)?
-              (<div/>
-            ):(
-              <button id="friend-button" onClick={this.handlePostFriend}>friend</button>)}
           </div>
           <div id="feed-entries">
             {this.props.feedIdList.map( (id) => {
@@ -57,19 +48,19 @@ class TimelineMain extends React.Component {
 let mapStateToProps = (state) => {
   return {
     feedIdList: state.feed.orderedFeedIdList,
-    timelineUser: state.server.timelineUser,
-    username: state.server.ID
+    tagname: state.server.tagname,
+//    username: state.server.ID
   };
 };
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    getTimelineList: () => dispatch(getTimelineList()),
+    getHashFeedList: () => dispatch(getHashFeedList()),
     toChat: () => dispatch(toChat()),
-    toFeed: () => dispatch(toFeed()),
-    postFriend: (username) => dispatch(postFriend(username))
+    toFeed: () => dispatch(toFeed())
+
   };
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(TimelineMain);
+export default connect(mapStateToProps, mapDispatchToProps)(HashFeedMain);

@@ -16,7 +16,11 @@ describe('server reducer', () => {
       loggedIn: false,
       errorMsg: null,
       onTimeline: false,
-      timelineUser: null
+      timelineUser: null,
+      soundStart: false,
+      soundUrl: null,
+      onHashFeed: false,
+      tagname: ''
     })
   })
 
@@ -81,7 +85,8 @@ describe('server reducer', () => {
         type : types.TOFEED
       })
     ).toEqual({
-      onTimeline: false
+      onTimeline: false,
+      onHashFeed: false
     })
   })
 
@@ -94,7 +99,8 @@ describe('server reducer', () => {
       isLogin : true,
       ID : '',
       PW : '',
-      onTimeline : false
+      onTimeline : false,
+      onHashFeed : false
     })
   })
 
@@ -108,7 +114,8 @@ describe('server reducer', () => {
       newID : '',
       newPW : '',
       retypePW : '',
-      onTimeline: false
+      onTimeline: false,
+      onHashFeed: false
     })
   })
 
@@ -120,7 +127,21 @@ describe('server reducer', () => {
       })
     ).toEqual({
       onTimeline: true,
-      timelineUser : 'asdf'
+      timelineUser : 'asdf',
+      onHashFeed: false
+    })
+  })
+
+  it('should handle TOHASHFEED', () => {
+    expect (
+      server({}, {
+        type : types.TOHASHFEED,
+        tagname : 'asdf'
+      })
+    ).toEqual({
+      onTimeline : false,
+      onHashFeed : true,
+      tagname : 'asdf'
     })
   })
 
@@ -133,7 +154,8 @@ describe('server reducer', () => {
     ).toEqual({
       loggedIn : true,
       hash : 'asdf',
-      onTimeline : false
+      onTimeline : false,
+      onHashFeed : false
     })
   })
 
@@ -154,7 +176,11 @@ describe('server reducer', () => {
       loggedIn: false,
       errorMsg: 'asdf',
       onTimeline: false,
-      timelineUser: null
+      timelineUser: null,
+      soundStart: false,
+      soundUrl: null,
+      onHashFeed: false,
+      tagname: ''
     })
   })
 
@@ -174,7 +200,11 @@ describe('server reducer', () => {
       loggedIn: false,
       errorMsg: null,
       onTimeline: false,
-      timelineUser: null
+      timelineUser: null,
+      soundStart: false,
+      soundUrl: null,
+      onHashFeed: false,
+      tagname : ''
     })
   })
 })
