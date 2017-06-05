@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getFeed, postLikes, postDislikes, getLikes, getDislikes, toTimeline, getReplyList, deleteFeed} from '../../actions';
+import {getFeed, postLikes, postDislikes, getLikes, getDislikes, toTimeline, getReplyList, deleteFeed, toHashFeed} from '../../actions';
 import ReplyPost from './ReplyPost';
 import ReplyEntry from './ReplyEntry';
 class Entry extends React.Component {
@@ -11,6 +11,7 @@ class Entry extends React.Component {
     this.handlePostDislikes = this.handlePostDislikes.bind(this);
     this.handleToTimeline = this.handleToTimeline.bind(this);
     this.handleDeleteFeed = this.handleDeleteFeed.bind(this);
+    this.handleToHashFeed = this.handleToHashFeed.bind(this);
   }
 
   componentDidMount() {
@@ -42,10 +43,23 @@ class Entry extends React.Component {
     this.props.deleteFeed(this.props.feedID);
   }
 
+  handleToHashFeed(tagname) {
+    this.props.toHashFeed(tagname);
+  }
+
   render() {
     const feed = this.props.feedList[this.props.feedID];
     if(feed.contents === null)
       return <div/>;
+    let words = [];
+    let lines = feed.contents.split('\n');
+    for(let i in lines){
+      let line = lines[i].split(' ');
+      for(let j in line){
+        words.push(line[j]);
+      }
+      words.push('\n');
+    }
     return (
       <div className="feed-wrapper">
         <div className="feed-title">
@@ -66,7 +80,28 @@ class Entry extends React.Component {
           </button>
         </div>
         <div className="feed-content" id={'feed'+this.props.feedID+'-content'}>
-          {feed.contents}
+          {words.map( (word) => {
+            if(word[0] === '\n') {
+              return (
+                <br/>
+              );
+            }else if(1 < word.length && word.length <= 30 && word[0] === '#' && word[1] !== '#') {
+              return (
+                <span>
+                  <button className="feed-hashtag" onClick={() => {this.handleToHashFeed(word.substring(1));}}>
+                    {word}
+                  </button>
+                  <span>{' '}</span>
+                </span>
+              );
+            }else {
+              return (
+                <span>
+                  {word + ' '}
+                </span>
+              );
+            }
+          })}
         </div>
         <div id="reply-wrapper">
           {feed.orderedReplyIdList.map( (id) => {
@@ -88,7 +123,7 @@ class Entry extends React.Component {
 
 let mapStateToProps = (state) => {
   return {
-    feedList: state.feed.feedList
+    feedList: state.feed.feedList,
   };
 };
 
@@ -101,7 +136,8 @@ let mapDispatchToProps = (dispatch) => {
     getDislikes: (id) => dispatch(getDislikes(id)),
     getReplyList: (id) => dispatch(getReplyList(id)),
     toTimeline: (username) => dispatch(toTimeline(username)),
-    deleteFeed: (id) => dispatch(deleteFeed(id))
+    deleteFeed: (id) => dispatch(deleteFeed(id)),
+    toHashFeed: (tagname) => dispatch(toHashFeed(tagname)),
   };
 };
 

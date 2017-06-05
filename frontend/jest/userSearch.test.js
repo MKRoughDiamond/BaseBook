@@ -12,6 +12,15 @@ describe('userSearch reducer', () => {
       })
   })
 
+  it('should handle LOGOUT', () => {
+    expect (
+      userSearch({}, { type: types.LOGOUT })
+    ).toEqual({
+        userList: null,
+        queriedUser: []
+    })
+  })
+
   it('should handle SET_USER_LIST', () => {
     expect (
       userSearch({}, {
