@@ -4,6 +4,13 @@ from random import randint
 
 
 
+if len(sys.argv) is 1:
+    localhost = localhost1
+elif len(sys.argv) is 2:
+    localhost = localhost3
+else:
+    localhost = localhost2
+
 TL.test_start('BackEnd')
 
 #####################################################
