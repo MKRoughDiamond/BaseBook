@@ -78,6 +78,7 @@ def feed_get_test(url, uname, upwd):
     except Exception as e:
         unexpected_exception('get feed', url, e)
     print('success')
+    return res.json()['id']
 
 def feed_id_get_test(url, uname, upwd, seen):
     sleep(0.05)
@@ -104,6 +105,18 @@ def feed_reply_post_test(url, contents, uname, upwd):
     print('success')
 
 def feed_reply_get_test(url, uname, upwd):
+    sleep(0.05)
+    try:
+        headers = {'Content-Type': 'application/json'}
+        res = requests.get(url, headers=headers, auth=(uname, upwd))
+        if res.status_code != 200:
+            wrong_status_code('get feed', url, res.status_code)
+    except Exception as e:
+        unexpected_exception('get feed', url, e)
+    print('success')
+    return res.json()['id']
+
+def reply_get_test(url, uname, upwd):
     sleep(0.05)
     try:
         headers = {'Content-Type': 'application/json'}
@@ -190,6 +203,7 @@ def chat_new_chat_test(url, uname, upwd):
     except Exception as e:
         unexpected_exception('new chat', url, e)
     print('success')    
+    return res.json()['id']
  
 def chat_post_chat_test(url, contents, uname, upwd):
     sleep(0.05)
@@ -201,7 +215,7 @@ def chat_post_chat_test(url, contents, uname, upwd):
             wrong_status_code('post chat', url, res.status_code)
     except Exception as e:
         unexpected_exception('post chat', url, e)
-    print('success') 
+    print('success')
     
 def chat_get_prev_chat_test(url, uname, upwd):
     sleep(0.05)
