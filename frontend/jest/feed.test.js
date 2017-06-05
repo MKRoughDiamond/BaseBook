@@ -39,7 +39,8 @@ describe('feed reducer', ()=> {
         didLike: null,
         didDislike: null,
         replyList: {},
-        orderedReplyIdList : []
+        orderedReplyIdList : [],
+        feedtype: null
       }},
       orderedFeedIdList : [3]
     })
@@ -67,7 +68,8 @@ describe('feed reducer', ()=> {
         didLike : null,
         didDislike : null,
         replyList: {},
-        orderedReplyIdList : []
+        orderedReplyIdList : [],
+        feedtype: undefined
       }},
       orderedFeedIdList : []
     })
@@ -92,7 +94,8 @@ describe('feed reducer', ()=> {
         didLike: false,
         didDislike: null,
         replyList: {},
-        orderedReplyIdList : []
+        orderedReplyIdList : [],
+        feedtype: null
       }},
       orderedFeedIdList : []
     })
@@ -117,7 +120,8 @@ describe('feed reducer', ()=> {
         didLike: null,
         didDislike: false,
         replyList: {},
-        orderedReplyIdList : []
+        orderedReplyIdList : [],
+        feedtype: null
       }},
       orderedFeedIdList : []
     })
