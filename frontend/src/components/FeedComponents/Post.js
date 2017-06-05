@@ -36,7 +36,7 @@ class Post extends React.Component {
           </select>
         </div>
         <div id="newFeed-text-wrapper">
-          <textarea id="newFeed-text">CONTEXT</textarea>
+          <textarea id="newFeed-text" placeholder="How do you feel today?"></textarea>
         </div>
         <div id="newFeed-functions">
           <button id="newFeed-post" onClick={this.handlePostFeed}>

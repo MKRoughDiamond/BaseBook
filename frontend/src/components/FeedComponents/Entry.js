@@ -104,7 +104,7 @@ class Entry extends React.Component {
             }
           }))
           :
-          (<Markdown source={feed.contents}/>)
+          (<Markdown source={feed.contents} id={'feed'+this.props.feedID+'-content'} />)
           }
         </div>
         <div id="reply-wrapper">
