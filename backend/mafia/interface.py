@@ -42,6 +42,16 @@ def start_game(room, user):
         mafia.start()
 
 
+def end_game(room, user):
+    mafia = mafia_rooms.get(str(room.id))
+    if mafia is None or mafia.status == 'chat':
+        return
+    
+    mafia.quit_vote(user)
+    if mafia.quit_voted_count() > mafia.survivor_count() / 2:
+        mafia.end()
+        
+
 def make_vote(room, user):
     mafia = mafia_rooms.get(str(room.id))
     if mafia is None or mafia.status == 'chat':
@@ -52,7 +62,7 @@ def make_vote(room, user):
         mafia.early_vote()
         
 
-def target(room, user, target):
+def use_ability(room, user, target):
     mafia = mafia_rooms.get(str(room.id))
     if mafia is None or mafia.status == 'chat':
         return

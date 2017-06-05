@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from rest_api import views
 from django.contrib.auth.models import User
+from mafia.interface import start_game, make_vote, end_game
 
 urlpatterns = [
     url(r'^users/$', views.UserList.as_view()),
@@ -19,5 +20,14 @@ urlpatterns = [
     url(r'^chat/user/(?P<username>\w+)/$', views.ChatRoomID.as_view()),
     url(r'^chat/(?P<pk>[0-9]+)/$', views.ChatDetail.as_view()),
     url(r'^chat/(?P<pk>[0-9]+)/all/$', views.ChatAll.as_view()),
+    url(r'^multichat/$', views.MultiChatRoomID.as_view()),
+    url(r'^multichat/enter/(?P<pk>[0-9]+)/$', views.MultiChatRoomID.as_view()),
+    url(r'^multichat/(?P<pk>[0-9]+)/$', views.MultiChatDetail.as_view()),
+    url(r'^multichat/(?P<pk>[0-9]+)/all/$', views.MultiChatAll.as_view()),
     url(r'^friend/(?P<username>\w+)/$', views.FriendList.as_view()),
+    
+    url(r'^mafia/(?P<pk>[0-9]+)/start/$', views.MafiaGame.as_view(), {'func': start_game}),
+    url(r'^mafia/(?P<pk>[0-9]+)/earlyvote/$', views.MafiaGame.as_view(), {'func': make_vote}),
+    url(r'^mafia/(?P<pk>[0-9]+)/end/$', views.MafiaGame.as_view(), {'func': end_game}),
+    url(r'^mafia/(?P<pk>[0-9]+)/target/(?P<username>\w+)/$', views.MafiaGameAbility.as_view())
 ]
