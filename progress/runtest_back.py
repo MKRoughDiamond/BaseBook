@@ -3,7 +3,7 @@ import testlibrary as TL
 from random import randint
 
 
-localhost = 'http://13.124.80.116:8000/' 
+localhost = 'http://13.124.80.116:8001/' 
 #localhost = 'http://localhost:8000/'
 
 TL.test_start('BackEnd')
@@ -282,6 +282,68 @@ for i in range(1, N+1):
     TL.get_hashtag_test(link, uhashtag, uname, upwd)
 
 #####################################################
+print('20. make multichat')
+
+for i in range(1, N+1):
+    print('20-{0}, user test{0} will make multichat room'.format(i))
+    uname = 'test{0}'.format(i)
+    upwd = 'test{0}passwd'.format(i)
+    link = localhost + 'multichat/'
+    TL.enter_multichat_test(link, uname, upwd)
+
+######################################################
+print('21. enter multichat')
+
+for i in range(1, N+1):
+    print('21-{0}, user test{0} will enter multichat room'.format(i))
+    uname = 'test{0}'.format(i)
+    upwd = 'test{0}passwd'.format(i)
+    link = localhost + 'multichat/enter/1/'
+    TL.enter_multichat_test(link, uname, upwd)
+
+######################################################
+print('22. post chat multichat')
+
+for i in range(1, N+1):
+    print('22-{0}, user test{0} will enter multichat room'.format(i))
+    uname = 'test{0}'.format(i)
+    upwd = 'test{0}passwd'.format(i)
+    link = localhost + 'multichat/1/'
+    contents = 'asdf'
+    TL.post_multichat_test(link, contents, uname, upwd)
+
+#####################################################
+print('23. get prev chat multichat')
+
+for i in range(1, N+1):
+    print('23-{0}. user test{1} get prev chat from multichat'.format(i,i))
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
+    link = localhost + 'multichat/1/'
+    TL.get_prev_multichat_test(link, uname, upwd)
+
+####################################################
+print('24. get all multichat')
+
+for i in range(1, N+1):
+    print('24-{0}. user test{1} get all chat from multichat'.format(i,i))
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
+    link = localhost + 'multichat/1/all/'
+    TL.get_all_multichat_test(link, uname, upwd)    
+        
+#####################################################
+print('25. get all multichat room')
+
+for i in range(1, N+1):
+    print('25-{0}. user test{1} get all chat from multichat'.format(i,i))
+    uname = "test{0}".format(i)
+    upwd = "test{0}passwd".format(i)
+    link = localhost + 'multichat/'
+    TL.get_all_multichat_room_test(link, uname, upwd)    
+        
+#####################################################
+
 #print('8. profile')
 
 #for i in range(1, N+1):
