@@ -42,7 +42,7 @@ def find_or_error(driver, name):
 
 def send_keys(_element, _key):
     try:
-        _element.send_keys(_key + Keys.RETURN)
+        _element.send_keys(_key)# + Keys.RETURN)
     except Exception as e:
         end_test('Cannot send %s' % _key ,e)
     sleep(S)
@@ -68,7 +68,10 @@ def signup_test(driver, uname, upwd, duplication, master):
         send(driver, 'input-username', uname)
         send(driver, 'input-password', upwd)
         send(driver, 'input-retypepassword', upwd)
-        click(driver, 'SignUp')
+        sleep(0.5 * S)
+        #if find_or_error(driver, 'SignUp') == True:
+        #    click(driver, 'SignUp')
+        sleep(0.5 * S)
         if master==True:
             exist = find_or_error(driver, 'login-error-box') and \
                     find_or_error(driver, 'login-error-msg') and \
@@ -100,7 +103,7 @@ def signin_test(driver, uname, upwd):
     try:
         send(driver, 'input-username', uname)
         send(driver, 'input-password', upwd)
-        click(driver, 'SignIn')
+    #    click(driver, 'SignIn')
     except Exception as e:
         end_test('\nSignIn test failed', e)
     print(uname + ' SignIn success')
