@@ -21,10 +21,16 @@ class Feed(models.Model):
         ('Private', 'Private'),
         ('Hidden', 'Hidden'),   # Same as 'private', but user can't change scope
     )
+    FEED_TYPE_CHOICES = (
+        ('Text', 'Text'),
+        ('Markdown', 'Markdown'),
+    )
+
     timestamp = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User,on_delete=models.CASCADE)
     contents = models.TextField()
     scope = models.CharField(max_length=13, choices=SCOPE_CHOICES)
+    feedtype = models.CharField(max_length=10, choices=FEED_TYPE_CHOICES)
     
     # Store who liked/disliked
     like = models.ManyToManyField(User, related_name='liked', default=None)

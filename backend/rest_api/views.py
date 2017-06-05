@@ -95,24 +95,29 @@ class FeedList(APIView):
         return Response(serializer.data)
 
     def post(self, request, username=None):
-        hashtagBanList = [ '#', '\n', '\t', '\0']
+        parseStringList=['\n','\t','\0']
         contents = request.data.get('contents', None)
         scope = request.data.get('scope', None)
-        if contents is None or (scope,scope) not in Feed.SCOPE_CHOICES:
+        feedtype = request.data.get('feedtype',None)
+        if contents is None or (scope,scope) not in Feed.SCOPE_CHOICES or (feedtype,feedtype) not in Feed.FEED_TYPE_CHOICES:
             return Response('No Contents', status=400)
 
-        feed = Feed(author_id=request.user.id, contents=contents, scope=scope)
+        feed = Feed(author_id=request.user.id, contents=contents, scope=scope, feedtype=feedtype)
         feed.save()
-        words = contents.split(' ')
-        for word in words:
-            if len(word) > 1 and word[0]=='#' and word[1] not in hashtagBanList:
-                if HashTag.objects.filter(hashtagName=word[1:]).exists():
-                    hashtag=HashTag.objects.get(hashtagName=word[1:])
-                    feed.hashtag.add(hashtag)
-                else:
-                    hashtag = HashTag(hashtagName = word[1:])
-                    hashtag.save()
-                    feed.hashtag.add(hashtag)
+        if feedtype == 'Text':
+            contentsParse = contents
+            for p in parseStringList:
+              contentsParse = contentsParse.replace(p,' ')
+            words = contentsParse.split(' ')
+            for word in words:
+                if len(word) > 1 and word[0]=='#' and '#' not in word[1:]:
+                    if HashTag.objects.filter(hashtagName=word[1:]).exists():
+                        hashtag=HashTag.objects.get(hashtagName=word[1:])
+                        feed.hashtag.add(hashtag)
+                    else:
+                        hashtag = HashTag(hashtagName = word[1:])
+                        hashtag.save()
+                        feed.hashtag.add(hashtag)
                     
         return Response('', status=200)
 

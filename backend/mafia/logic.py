@@ -14,7 +14,7 @@ def _create_system_user():
     user.save()
     return User.objects.get(username='system')
 
-_system_user = None
+#_system_user = None
 
 
 MIN_START_PLAYER = 5

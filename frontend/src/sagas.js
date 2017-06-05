@@ -11,8 +11,8 @@ import {
   setUserList, GET_USER_LIST, getTimelineList
 } from './actions';
 
-//const url = 'http://localhost:8000';
-const url = 'http://13.124.80.116:8001';
+const url = 'http://localhost:8000';
+//const url = 'http://13.124.80.116:8001';
 
 export function* postSignUp() {
   const state = yield select();
@@ -155,10 +155,11 @@ export function* fetchFeed(id) {
     window.location.href = '/notfound/';
     return;
   }
+
   yield put(setFeed(res.id, res));
 }
 
-export function* postFeed(contents, scope) {
+export function* postFeed(contents, scope, feedtype) {
   if (contents === '')
     return;
 
@@ -171,7 +172,8 @@ export function* postFeed(contents, scope) {
     },
     body: JSON.stringify({
       contents: contents,
-      scope: scope
+      scope: scope,
+      feedtype: feedtype,
     })
   });
   if(response.ok === false) {
@@ -544,7 +546,7 @@ export function* watchPostFeed() {
   const t = true;
   while(t) {
     const action = yield take(POST_FEED);
-    yield call(postFeed, action.contents, action.scope);
+    yield call(postFeed, action.contents, action.scope, action.feedtype);
   }
 }
 
