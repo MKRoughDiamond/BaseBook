@@ -63,7 +63,12 @@ const server = (state = serverInitialState, action) => {
         onHashFeed : true,
         tagname : action.tagname});
   case LOGIN_SUCCESS:
-    return Object.assign({}, state, { loggedIn : true, hash: action.hash, onTimeline: false, onHashFeed: false, });
+    return Object.assign({}, state, { 
+      loggedIn : true, 
+      hash: action.hash, 
+      onTimeline: false, 
+      onHashFeed: false 
+    });
   case LOGIN_PAGE_ERROR:
     return Object.assign({}, serverInitialState, { errorMsg : action.msg });
   case LOGOUT:
