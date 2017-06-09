@@ -10,11 +10,15 @@ class MultiChatMain extends React.Component {
     this.handlePostMultiChat = this.handlePostMultiChat.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
+  componentDidMount() {
+    this.props.getMultiChatList(this.props.multichatRoomID);
+  }
 
   handlePostMultiChat() {
     const contents = document.getElementById('new-chat-text').value;
     document.getElementById('new-chat-text').value = '';
-    this.props.postChat(this.props.multichatRoomID, contents);
+    console.log('handle post multichat: ',this.props.multichatRoomID,':', contents);
+    this.props.postMultiChat(this.props.multichatRoomID, contents);
   }
 
   handleKeyPress(e) {
@@ -23,16 +27,18 @@ class MultiChatMain extends React.Component {
   }
 
   render() {
-    console.log('MultichatMain Render');
+    //console.log('MultichatMain Render');
+    //console.log('multichatList: ',this.props.multichatList);
     const multichatList = this.props.multichatList;
-    const multichatRoom = this.props.multichatRoomList[this.props.multichatRoomID];
+    //const multichatRoom = this.props.multichatRoomList[this.props.multichatRoomID];
+    //console.log('multichatRoom:' ,multichatRoom);
     return (
       <div id="main-wrapper">
         <TopBar/>
         <div id="main-content">
           <div id="multichat-title">
             <div id="multichat-room-user-list">
-              { multichatRoom.users }
+              { this.props.multichatRoomID }
             </div>
           </div>
           <div id="chatting-main">

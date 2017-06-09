@@ -463,7 +463,7 @@ export function getMultiChatRoomID(multichatRoomID) {
 export function getMultiChatList(multichatRoomID) {
   return {
     type: GET_MULTICHAT_LIST,
-    chatRoomID: multichatRoomID
+    multichatRoomID: multichatRoomID
   };
 }
 
@@ -491,7 +491,7 @@ export function setMultiChat(list) {
 export function postMultiChat(multichatRoomID, contents) {
   return {
     type: POST_MULTICHAT,
-    chatRoomID: multichatRoomID,
+    multichatRoomID: multichatRoomID,
     contents: contents
   };
 }

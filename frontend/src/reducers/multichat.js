@@ -1,6 +1,6 @@
 import {
   TOMULTICHAT, START_MULTICHAT, GET_MULTICHAT_ROOM_ID,
-  SET_MULTICHATROOM_LIST, SET_MULTICHATROOM,
+  SET_MULTICHATROOM_LIST,// SET_MULTICHATROOM,
   SET_MULTICHAT_LIST, SET_MULTICHAT, TOFEED, LOGOUT
 } from '../actions';
 
@@ -8,17 +8,17 @@ const initState = {
   desiredMultiChatCount: 0,
   multichatOn: false,
   multichatRoomIDList: [],
-  multichatRoomList: [],
+//  multichatRoomList: [],
   multichatRoomID: null,
   multichatList: []
 };
-
+/*
 const multichatRoomInitState = {
   roomID: null,
   users: [],
   isMafiaRoom: false,
 };
-
+*/
 const multichat = (state = initState, action) => {
   switch(action.type) {
   case TOMULTICHAT:
@@ -35,7 +35,12 @@ const multichat = (state = initState, action) => {
   case GET_MULTICHAT_ROOM_ID:
     console.log('GET_MULTICHAT_ROOM_ID!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     return Object.assign({}, state, { multichatRoomID : action.multichatRoomID });
-
+  case SET_MULTICHATROOM_LIST: {
+    return Object.assign({}, state, {
+      multichatRoomIDList: action.list,
+    });
+  }
+/*
   case SET_MULTICHATROOM_LIST: {
     console.log('multichat.js 1');
     console.log('action.list: ',action.list);
@@ -76,7 +81,7 @@ const multichat = (state = initState, action) => {
     newMultiChatRoomList[action.id] = newRoom;
     return Object.assign({}, state, { multichatRoomList : newMultiChatRoomList });
   }
-
+*/
 
   case SET_MULTICHAT:
   case SET_MULTICHAT_LIST: {
