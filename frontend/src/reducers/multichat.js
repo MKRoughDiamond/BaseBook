@@ -24,7 +24,7 @@ const multichat = (state = initState, action) => {
   case TOMULTICHAT:
     //console.log('TOMULTICHAT Click!');
     //console.log('multichatOn: ', state.multichatOn);
-    return Object.assign({}, state, { multichatOn : true });
+    return Object.assign({}, state, { multichatOn : true , multichatRoomID : null});
   case TOFEED:
     return Object.assign({}, state, { multichatOn : false, multichatRoomID : null });
   case LOGOUT:

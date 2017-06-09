@@ -9,16 +9,15 @@ class MultiChat extends React.Component {
     console.log('MultiChat What?');
     console.log('multichatOn: ',this.props.multichatOn);
     console.log('multichatRoomID: ',this.props.multichatRoomID);
-    return (this.props.isLoggedIn)?(
-      (this.props.multichatRoomID !== null)?(
-        <MultiChatMain />
-      ):(this.props.multichatOn)?(
-        <BeforeMultiChatMain/>
-      ):(
-        <Redirect to="/" />)
-    ):(
-      <Redirect to="/login/"/>
-    );
+    if(this.props.isLoggedIn){
+      if(this.props.multichatOn){
+        if(this.props.multichatRoomID === null)
+          return <BeforeMultiChatMain/>;
+        return <MultiChatMain/>;
+      }
+      return <Redirect to="/"/>;
+    }
+    return <Redirect to="/login/"/>;
   }
 }
 

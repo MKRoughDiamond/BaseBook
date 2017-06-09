@@ -32,7 +32,7 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    getMultiChat: (chatRoomID) => dispatch(getMultiChat(chatRoomID))
+    getMultiChat: (multichatRoomID) => dispatch(getMultiChat(multichatRoomID))
   };
 };
 

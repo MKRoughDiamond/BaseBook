@@ -17,9 +17,9 @@ class BeforeMultiChatMain extends React.Component {
   }
 
   render() {
-    console.log('BeforeMultiChatMain Render');
+    //console.log('BeforeMultiChatMain Render');
     //const multichatRoomIDList = this.props.multichatRoomIDList;
-    console.log('multichatRoomIDList: ', this.props.multichatRoomIDList);
+    //console.log('multichatRoomIDList: ', this.props.multichatRoomIDList);
     return (
       <div id="main-wrapper">
         <TopBar/>

@@ -427,7 +427,8 @@ export function* fetchMultiChatRoomList() {
     list.push(res[i].id);
   }
 
-  console.log('fetchMultiChatRoomList Saga');
+  //console.log('fetchMultiChatRoomList Saga');
+  //console.log(list);
   yield put(setMultiChatRoomList(list));
 }
 /*
@@ -925,6 +926,20 @@ export function* createChatReciever() {
   }
 }
 
+export function* createMultiChatRoomReciever() {
+//  yield take(SET_MULTICHAT_LIST);
+  const t = true;
+  let state;
+  while(t){
+    yield delay(1000);
+    state = yield select();
+    //console.log('ABCABC: ', state.multichat.multichatOn, ':' , state.multichat.multichatRoomID);
+    if(state.multichat.multichatOn === true &&
+      state.multichat.multichatRoomID === null)
+      yield put(getMultiChatRoomList());
+  }
+}
+
 export function* createMultiChatReciever() {
   const t = true;
   yield take(SET_MULTICHAT_LIST);
@@ -997,6 +1012,7 @@ export function* rootSaga() {
 
   yield fork(watchCreateMultiChat);
   yield fork(watchGetMultiChatRoomList);
+  yield fork(createMultiChatRoomReciever);
   yield fork(watchStartMultiChat);
   yield fork(watchGetMultiChatList);
   yield fork(watchGetMultiChat);

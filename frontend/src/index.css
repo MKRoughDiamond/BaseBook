@@ -317,7 +317,7 @@ button:hover {
 }
 
 #chat-button {
-    margin-top : 5px;
+	margin : 5px 5px 5px 5px;
     display : inline-block;
     float : right;
     padding: 0;
@@ -332,10 +332,10 @@ button:hover {
 }
 
 #multichat-button{
-	margin-top : 5px;
+	margin : 5px 5px 5px 5px;
 	display : inline-block;
 	float : right;
-	padding: 0;
+	padding : 0;
 	width : 15%;
 	height : 20px;
 	border : none;
