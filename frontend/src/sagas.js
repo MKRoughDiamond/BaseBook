@@ -16,8 +16,8 @@ import {
   setUserList, GET_USER_LIST, getTimelineList
 } from './actions';
 
-const url = 'http://localhost:8000';
-//const url = 'http://13.124.80.116:8000';
+//const url = 'http://localhost:8000';
+const url = 'http://13.124.80.116:8001';
 
 export function* postSignUp() {
   const state = yield select();
@@ -420,16 +420,20 @@ export function* fetchMultiChatRoomList() {
     return;
   }
   let list = [];
+  let enterList = [];
 //  console.log('res: ',res);
 //  console.log('res[0]: ',res[0]);
   for(let i in res){
     //console.log('room_id: ',res[i].id);
     list.push(res[i].id);
+    if (res[i].users.indexOf(state.server.ID) !== -1) {
+      enterList.push(res[i].id);
+    }
   }
 
   //console.log('fetchMultiChatRoomList Saga');
   //console.log(list);
-  yield put(setMultiChatRoomList(list));
+  yield put(setMultiChatRoomList(list, enterList));
 }
 /*
 export function* fetchMultiChatRoom(id) {
@@ -801,15 +805,12 @@ export function* watchPostReply() {
 }
 
 export function* watchCreateMultiChat() {
-  let state;
-  do {
-    state = yield select();
+  const t = true;
+  while(t) {
     yield take(CREATE_MULTICHAT);
     console.log('take CREATE_MULTICHAT!');
     yield call(createMultiChat);
   }
-  while(state.multichat.multichatOn === true &&
-  state.multichat.multichatRoomID === null);
 }
 
 export function* watchGetChatList() {
@@ -821,14 +822,12 @@ export function* watchGetChatList() {
 }
 
 export function* watchStartMultiChat() {
-  let state;
-  do {
-    state = yield select();
+  const t = true;
+  while(t) {
     const action = yield take(START_MULTICHAT);
     console.log('action.multichatRoomID: ', action.multichatRoomID);
     yield call(startMultiChat, action.multichatRoomID);
   }
-  while(state.multichat.multichatRoomID === null);
 }
 
 export function* watchGetMultiChatList() {
@@ -862,13 +861,11 @@ export function* watchPostMultiChat() {
 }
 
 export function* watchStartChat() {
-  let state;
-  do {
-    state = yield select();
+  const t = true;
+  while(t) {
     const action = yield take(START_CHAT);
     yield call(startChat, action.username);
   }
-  while(state.chat.otherUsername === null);
 }
 
 export function* watchGetMultiChatRoomList() {
@@ -922,7 +919,8 @@ export function* createChatReciever() {
   while(t) {
     yield delay(1000);
     const state = yield select();
-    yield put(getChat(state.chat.chatRoomID));
+    if (state.chat.chatOn)
+      yield put(getChat(state.chat.chatRoomID));
   }
 }
 
@@ -934,8 +932,7 @@ export function* createMultiChatRoomReciever() {
     yield delay(1000);
     state = yield select();
     //console.log('ABCABC: ', state.multichat.multichatOn, ':' , state.multichat.multichatRoomID);
-    if(state.multichat.multichatOn === true &&
-      state.multichat.multichatRoomID === null)
+    if(state.multichat.multichatOn === true && state.multichat.multichatRoomID === null)
       yield put(getMultiChatRoomList());
   }
 }
@@ -946,7 +943,8 @@ export function* createMultiChatReciever() {
   while(t) {
     yield delay(1000);
     const state = yield select();
-    yield put(getMultiChat(state.multichat.multichatRoomID));
+    if (state.multichat.multichatOn === true && state.multichat.multichatRoomID !== null)
+      yield put(getMultiChat(state.multichat.multichatRoomID));
   }
 }
 

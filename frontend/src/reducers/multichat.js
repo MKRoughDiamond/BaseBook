@@ -10,7 +10,8 @@ const initState = {
   multichatRoomIDList: [],
 //  multichatRoomList: [],
   multichatRoomID: null,
-  multichatList: []
+  multichatList: [],
+  multichatEnterList: []
 };
 /*
 const multichatRoomInitState = {
@@ -26,7 +27,7 @@ const multichat = (state = initState, action) => {
     //console.log('multichatOn: ', state.multichatOn);
     return Object.assign({}, state, { multichatOn : true , multichatRoomID : null});
   case TOFEED:
-    return Object.assign({}, state, { multichatOn : false, multichatRoomID : null });
+    return initState;
   case LOGOUT:
     return initState;
   case START_MULTICHAT:
@@ -38,6 +39,7 @@ const multichat = (state = initState, action) => {
   case SET_MULTICHATROOM_LIST: {
     return Object.assign({}, state, {
       multichatRoomIDList: action.list,
+      multichatEnterList: action.enterList
     });
   }
 /*
