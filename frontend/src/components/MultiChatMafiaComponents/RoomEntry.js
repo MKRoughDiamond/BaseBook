@@ -8,6 +8,12 @@ class MultiChatRoomEntry extends React.Component {
     this.handleStartMultiChat = this.handleStartMultiChat.bind(this);
   }
 
+  componentDidMount() {
+    this.enterTag = null;
+    if (this.props.multichatEnterList.indexOf(this.props.id) !== -1)
+      this.enterTag = '참석중!';
+  }
+
   handleStartMultiChat() {
     this.props.startMultiChat(this.props.id);
   }
@@ -22,6 +28,9 @@ class MultiChatRoomEntry extends React.Component {
       <div id="multichat-room" onClick={this.handleStartMultiChat}>
         <div id="multichat-room-id">
           { this.props.id }
+        </div>
+        <div id="multichat-room-enter">
+          { this.enterTag }
         </div>
       </div>
     );
@@ -45,7 +54,8 @@ return (
 let mapStateToProps = (state) => {
   return {
     multichatRoomIDList: state.multichat.multichatRoomIDList,
-    multichatRoomList: state.multichat.multichatRoomList
+    multichatRoomList: state.multichat.multichatRoomList,
+    multichatEnterList: state.multichat.multichatEnterList
   };
 };
 

@@ -420,16 +420,20 @@ export function* fetchMultiChatRoomList() {
     return;
   }
   let list = [];
+  let enterList = [];
 //  console.log('res: ',res);
 //  console.log('res[0]: ',res[0]);
   for(let i in res){
     //console.log('room_id: ',res[i].id);
     list.push(res[i].id);
+    if (res[i].users.indexOf(state.server.ID) !== -1) {
+      enterList.push(res[i].id);
+    }
   }
 
   //console.log('fetchMultiChatRoomList Saga');
   //console.log(list);
-  yield put(setMultiChatRoomList(list));
+  yield put(setMultiChatRoomList(list, enterList));
 }
 /*
 export function* fetchMultiChatRoom(id) {
