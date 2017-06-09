@@ -331,6 +331,21 @@ button:hover {
     background-color : rgba(255,255,255,0.8);
 }
 
+#multichat-button{
+	margin-top : 5px;
+	display : inline-block;
+	float : right;
+	padding: 0;
+	width : 15%;
+	height : 20px;
+	border : none;
+	border-radius : 10px;
+	font-size : 15px;
+	font-weight : bold;
+	resize: none;
+	background-color : rgba(255,255,255,0.8);
+}
+
 #reply-wrapper {
 }
 
@@ -419,6 +434,10 @@ button:hover {
 	margin-bottom : 10px;
 }
 
+#multichat-title {
+	display: inline-block;
+}
+
 #username-title{
 	display: inline-block;
 }
@@ -442,6 +461,20 @@ button:hover {
 }
 
 #chatting-start-button{
+	width: 100%;
+	font-size: 20px;
+	vertical-align: middle;
+	background-color: rgba(255,255,255,0.6);
+	border-radius: 10px;
+}
+
+#multichat-create-button-wrapper{
+	display : inline-block;
+	width : 20%;
+	float : right;
+}
+
+#multichat-create-button{
 	width: 100%;
 	font-size: 20px;
 	vertical-align: middle;

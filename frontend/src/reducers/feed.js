@@ -31,6 +31,7 @@ const feed = (state = initState, action) => {
   case SET_FEED_LIST: {
     // copy existing feed to prevent redundant GET requests 
     let newFeedList = {};
+    //console.log('feed action.list: ',action.list);
     action.list.map((id) => {
       const sid = id.toString();
       if(sid in state.feedList)

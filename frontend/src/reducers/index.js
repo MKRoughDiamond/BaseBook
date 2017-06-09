@@ -3,6 +3,7 @@ import server from './server';
 import feed from './feed';
 import chat from './chat';
 import userSearch from './userSearch';
+import multichat from './multichat';
 
 const extra = (state = { value : 'WIP' }, action) => {
   switch(action.type) {
@@ -16,6 +17,7 @@ const reducers = combineReducers({
   feed,
   chat,
   userSearch,
+  multichat,
   extra
 });
 

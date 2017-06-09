@@ -58,6 +58,22 @@ export const GET_HASHFEED_LIST = 'GET_HASHFEED_LIST';
 
 export const POST_FRIEND = 'POST_FRIEND';
 
+export const TOMULTICHAT = 'TOMULTICHAT';
+export const CREATE_MULTICHAT = 'CREATE_MULTICHAT';
+export const START_MULTICHAT = 'START_MULTICHAT';
+
+export const GET_MULTICHATROOM_LIST = 'GET_MULTICHATROOM_LIST';
+export const SET_MULTICHATROOM_LIST = 'SET_MULTICHATROOM_LIST';
+export const SET_MULTICHATROOM = 'SET_MULTICHATROOM';
+
+export const GET_MULTICHAT_ROOM_ID = 'GET_MULTICHAT_ROOM_ID';
+export const GET_MULTICHAT_LIST = 'GET_MULTICHAT_LIST';
+
+export const SET_MULTICHAT_LIST = 'SET_MULTICHAT_LIST';
+export const GET_MULTICHAT = 'GET_MULTICHAT';
+export const SET_MULTICHAT = 'SET_MULTICHAT';
+export const POST_MULTICHAT = 'POST_MULTICHAT';
+
 export function setID(value) {
   return {
     type : SETID,
@@ -397,3 +413,85 @@ export function getHashFeedList() {
   };
 }
 
+export function toMultiChat() {
+  return {
+    type: TOMULTICHAT
+  };
+}
+
+export function createMultiChat() {
+  return {
+    type: CREATE_MULTICHAT
+  };
+}
+
+export function startMultiChat(multichatRoomID) {
+  return {
+    type: START_MULTICHAT,
+    multichatRoomID: multichatRoomID
+  };
+}
+
+export function getMultiChatRoomList() {
+  return {
+    type: GET_MULTICHATROOM_LIST
+  };
+}
+
+export function setMultiChatRoomList(list) {
+  return {
+    type: SET_MULTICHATROOM_LIST,
+    list: list
+  };
+}
+
+export function setMultiChatRoom(id, room) {
+  return {
+    type: SET_MULTICHATROOM,
+    id: id,
+    room: room
+  };
+}
+
+export function getMultiChatRoomID(multichatRoomID) {
+  return {
+    type: GET_MULTICHAT_ROOM_ID,
+    multichatRoomID: multichatRoomID
+  };
+}
+
+export function getMultiChatList(multichatRoomID) {
+  return {
+    type: GET_MULTICHAT_LIST,
+    chatRoomID: multichatRoomID
+  };
+}
+
+export function setMultiChatList(list) {
+  return {
+    type: SET_MULTICHAT_LIST,
+    list: list
+  };
+}
+
+export function getMultiChat(multichatRoomID) {
+  return {
+    type: GET_MULTICHAT,
+    multichatRoomID: multichatRoomID
+  };
+}
+
+export function setMultiChat(list) {
+  return {
+    type: SET_MULTICHAT,
+    list: list
+  };
+}
+
+export function postMultiChat(multichatRoomID, contents) {
+  return {
+    type: POST_MULTICHAT,
+    chatRoomID: multichatRoomID,
+    contents: contents
+  };
+}
