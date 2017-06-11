@@ -10,6 +10,7 @@ import Feed from './components/Feed';
 import Chat from './components/Chat';
 import Timeline from './components/Timeline';
 import HashFeed from './components/HashFeed';
+import MultiChat from './components/MultiChat';
 import NotFound from './components/NotFound';
 import reducers from './reducers';
 import SoundManager from './components/SoundManager';
@@ -32,6 +33,7 @@ ReactDOM.render(
           <Route path="/hashtag/:tagname" component={HashFeed}/>
           <Route path="/login" component={Login}/>
           <Route path="/chat" component={Chat}/>
+          <Route path="/multichat" component={MultiChat}/>
           <Route component={NotFound}/>
         </Switch>
       </BrowserRouter>

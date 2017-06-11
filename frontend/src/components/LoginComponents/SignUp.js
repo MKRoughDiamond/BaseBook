@@ -11,7 +11,7 @@ class SignUp extends React.Component {
     this.handleUpdateRetypePW = this.handleUpdateRetypePW.bind(this);
     this.handleToMain = this.handleToMain.bind(this);
     this.passwordCheck = this.passwordCheck.bind(this);
-    this.handleKeyPress = this.handleKeyPress(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   handleUpdateID(e) {
@@ -54,7 +54,10 @@ class SignUp extends React.Component {
       </div>
       <div className="line-thick">
         <div id="retypepassword">retype PW</div>
-        <input type="password" id="input-retypepassword" onChange={this.handleUpdateRetypePW}/>
+        <input type="password" id="input-retypepassword"
+          onChange={this.handleUpdateRetypePW}
+          onKeyPress={this.handleKeyPress}
+        />
 				<div id="password-check">{this.passwordCheck()}</div>
       </div>
       <div>

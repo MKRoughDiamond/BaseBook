@@ -20,6 +20,8 @@ class Feed extends React.Component {
       }
       return (this.props.isChatOn) ? (
         <Redirect to="/chat/"/>
+      ):(this.props.isMultiChatOn)?(
+        <Redirect to="/multichat/"/>
       ):(
         <FeedMain/>
       );
@@ -35,6 +37,7 @@ let mapStateToProps = (state) => {
   return {
     isLoggedIn : state.server.loggedIn,
     isChatOn : state.chat.chatOn,
+    isMultiChatOn : state.multichat.multichatOn,
     onTimeline : state.server.onTimeline,
     timelineUser : state.server.timelineUser,
     onHashFeed : state.server.onHashFeed,

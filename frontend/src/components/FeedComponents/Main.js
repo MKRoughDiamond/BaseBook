@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getFeedList, toChat} from '../../actions';
+import {getFeedList, toChat, toMultiChat} from '../../actions';
 import Entry from './Entry';
 import Post from './Post';
 import TopBar from '../TopBar';
@@ -9,6 +9,7 @@ class FeedMain extends React.Component {
   constructor(props) {
     super(props);
     this.handleToChat = this.handleToChat.bind(this);
+    this.handleToMultiChat = this.handleToMultiChat.bind(this);
   }
   componentDidMount() {
     this.props.getFeedList();
@@ -16,15 +17,24 @@ class FeedMain extends React.Component {
   handleToChat() {
     this.props.toChat();
   }
+  handleToMultiChat() {
+    this.props.toMultiChat();
+  }
 
   render() {
+    console.log('feedIdList: ', this.props.feedIdList);
     return (
       <div id="main-wrapper">
         <TopBar/>
         <div id="main-content">
           <div id="Pagename">
             {this.props.username + '\'s Page'}
-            <button id="chat-button" onClick={this.handleToChat}>Chat</button>
+            <button id="multichat-button" onClick={this.handleToMultiChat}>
+              MultiChat
+            </button>
+            <button id="chat-button" onClick={this.handleToChat}>
+              Chat
+            </button>
           </div>
           <Post/>
           <div id="feed-entries">
@@ -48,7 +58,8 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     getFeedList: () => dispatch(getFeedList()),
-    toChat: () => dispatch(toChat())
+    toChat: () => dispatch(toChat()),
+    toMultiChat: () => dispatch(toMultiChat()),
   };
 };
 

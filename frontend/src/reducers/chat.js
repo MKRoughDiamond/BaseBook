@@ -22,11 +22,11 @@ const chat = (state = initState, action) => {
   case TOCHAT:
     return Object.assign({}, state, { chatOn : true });
   case TOFEED:
-    return Object.assign({}, state, { chatOn : false});
+    return initState;
   case LOGOUT:
     return initState;
   case START_CHAT:
-    return Object.assign({}, state, { otherUsername : action.username });
+    return Object.assign({}, state, { otherUsername : action.username, chatList : [], desiredChatCount: 0});
   case GET_CHAT_ROOM_ID:
     return Object.assign({}, state, { chatRoomID : action.chatRoomID });
   case SET_CHAT:
