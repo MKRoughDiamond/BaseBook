@@ -4,15 +4,20 @@ import {
   TOMAIN, LOGIN, GET_FEED_LIST, GET_FEED, POST_FEED,
   GET_REPLY_LIST, GET_REPLY, POST_REPLY,
   POST_LIKES, POST_DISLIKES, GET_LIKES, GET_DISLIKES,
-  START_CHAT, GET_CHAT_LIST, GET_CHAT, POST_CHAT, SET_CHAT_LIST, GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND, GET_HASHFEED_LIST,
+  START_CHAT, GET_CHAT_LIST, GET_CHAT, POST_CHAT, SET_CHAT_LIST,
+  GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND, GET_HASHFEED_LIST,
+  GET_MULTICHATROOM_LIST, CREATE_MULTICHAT, START_MULTICHAT,
+  GET_MULTICHAT_LIST, GET_MULTICHAT, POST_MULTICHAT, SET_MULTICHAT_LIST,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
+  getMultiChatRoomList, setMultiChatRoomList,// getMultiChatRoomID,
+  getMultiChatList, setMultiChatList, setMultiChat, getMultiChat,
   setUserList, GET_USER_LIST, getTimelineList
 } from './actions';
 
 //const url = 'http://localhost:8000';
-const url = 'http://13.124.80.116:8000';
+const url = 'http://13.124.80.116:8001';
 
 export function* postSignUp() {
   const state = yield select();
@@ -97,7 +102,7 @@ export function* fetchHashFeedList() {
     }
   });
   if(response.ok === false) {
-    //window.location.href = '/notfound/';
+    window.location.href = '/notfound/';
     return;
   }
   let res;
@@ -105,7 +110,7 @@ export function* fetchHashFeedList() {
     res = yield response.json();
   }
   catch(e) {
-    //window.location.href = '/notfound/';
+    window.location.href = '/notfound/';
     return;
   }
   yield put(setFeedList(res.id));
@@ -223,7 +228,7 @@ export function* fetchLikes(id) {
     window.location.href = '/notfound/';
     return;
   }
-  const didLike = (res.likes.indexOf(state.server.ID) !== -1) ? true : false;
+  const didLike = (res.likes.indexOf(state.server.ID) !== -1);
   yield put(setLikes(id, res.likes, didLike));
 }
 
@@ -247,7 +252,7 @@ export function* fetchDislikes(id) {
     window.location.href = '/notfound/';
     return;
   }
-  const didDislike = (res.dislikes.indexOf(state.server.ID) !== -1) ? true : false;
+  const didDislike = (res.dislikes.indexOf(state.server.ID) !== -1);
   yield put(setDislikes(id, res.dislikes, didDislike));
 }
 
@@ -365,6 +370,197 @@ export function* deleteReply(feedId, replyId) {
   }
 
   yield put(getReplyList(feedId));
+}
+
+export function* createMultiChat() {
+  const state = yield select();
+  const response = yield call(fetch, url + '/multichat/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  //const res = yield response.json();
+  if(response.ok === true) {
+    //yield put(getChatRoomID(res.id));
+    //const st = yield select();
+    console.log('ready to put getMultiChatRoomList!');
+    yield put(getMultiChatRoomList());
+  }
+  else {
+    let res = {};
+    try {
+      res = yield response.json();
+    }
+    catch (e) {
+      res.message = 'POST /multichat/ error.';
+    }
+  }
+}
+
+export function* fetchMultiChatRoomList() {
+  const state = yield select();
+  const response = yield call(fetch, url + '/multichat/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  if(response.ok === false) {
+    //window.location.href = '/notfound/';
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
+    //window.location.href = '/notfound/';
+    return;
+  }
+  let list = [];
+  let enterList = [];
+//  console.log('res: ',res);
+//  console.log('res[0]: ',res[0]);
+  for(let i in res){
+    //console.log('room_id: ',res[i].id);
+    list.push(res[i].id);
+    if (res[i].users.indexOf(state.server.ID) !== -1) {
+      enterList.push(res[i].id);
+    }
+  }
+
+  //console.log('fetchMultiChatRoomList Saga');
+  //console.log(list);
+  yield put(setMultiChatRoomList(list, enterList));
+}
+/*
+export function* fetchMultiChatRoom(id) {
+  const state = yield select();
+  const response = yield call(fetch, url + '/feed/' + id.toString() + '/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
+    window.location.href = '/notfound/';
+    return;
+  }
+
+  yield put(setFeed(res.id, res));
+}*/
+
+export function* startMultiChat(multichatRoomID) {
+  const state = yield select();
+  if(multichatRoomID === null)
+    return;
+  const response = yield call(fetch, url + '/multichat/enter/' + multichatRoomID + '/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  //const res = yield response.json();
+  if(response.ok === true) {
+    //yield put(getChatRoomID(res.id));
+    const st = yield select();
+    console.log('st.multichat.multichatRoomID: ',st.multichat.multichatRoomID);
+    yield put(getMultiChatList(st.multichat.multichatRoomID));
+  }
+  else {
+    let res = {};
+    try {
+      res = yield response.json();
+    }
+    catch (e) {
+      res.message = 'POST /multichat/enter/<id> error.';
+    }
+  }
+}
+
+export function* fetchMultiChatList(multichatRoomID) {
+  console.log('fetchMultiChatList Saga start');
+  console.log('multichatRoomID: ', multichatRoomID);
+  const state = yield select();
+  const response = yield call(fetch, url + '/multichat/' + multichatRoomID + '/all/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  console.log('response.ok : ', response.ok);
+  if(response.ok === false) {
+    //window.location.href = '/notfound/';
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
+    //window.location.href = '/notfound/';
+    return;
+  }
+  console.log('fetchMultiChatList Saga res: ',res);
+  yield put(setMultiChatList(res.chat));
+}
+
+export function* fetchMultiChat(multichatRoomID) {
+  const state = yield select();
+  const response = yield call(fetch, url + '/multichat/' + multichatRoomID + '/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  if(response.ok === false) {
+    //window.location.href = '/notfound/';
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
+    //window.location.href = '/notfound/';
+    return;
+  }
+  yield put(setMultiChat(res.chat));
+}
+
+export function* postMultiChat(multichatRoomID, contents) {
+  if (contents === '')
+    return;
+
+  const state = yield select();
+  //console.log('postMultiChatSaga-multichatRoomID: ', multichatRoomID,' contents: ',contents);
+  const response = yield call(fetch, url + '/multichat/' + multichatRoomID + '/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      contents: contents
+    })
+  });
+  //console.log('postMultiChatSaga-response.code: ', response.status);
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  yield put(getMultiChat(multichatRoomID)); // refresh chat log
 }
 
 export function* startChat(username) {
@@ -504,7 +700,6 @@ export function* postFriend(username) {
   if (response.ok === false) {
     //errorbox 띄워주면 좋겠음
   }
-  return;  
 }
 
 
@@ -609,14 +804,13 @@ export function* watchPostReply() {
   }
 }
 
-export function* watchStartChat() {
-  let state;
-  do {
-    state = yield select();
-    const action = yield take(START_CHAT);
-    yield call(startChat, action.username);
+export function* watchCreateMultiChat() {
+  const t = true;
+  while(t) {
+    yield take(CREATE_MULTICHAT);
+    console.log('take CREATE_MULTICHAT!');
+    yield call(createMultiChat);
   }
-  while(state.chat.otherUsername === null);
 }
 
 export function* watchGetChatList() {
@@ -624,6 +818,61 @@ export function* watchGetChatList() {
   while(t) {
     const action = yield take(GET_CHAT_LIST);
     yield call(fetchChatList, action.chatRoomID);
+  }
+}
+
+export function* watchStartMultiChat() {
+  const t = true;
+  while(t) {
+    const action = yield take(START_MULTICHAT);
+    console.log('action.multichatRoomID: ', action.multichatRoomID);
+    yield call(startMultiChat, action.multichatRoomID);
+  }
+}
+
+export function* watchGetMultiChatList() {
+  const t = true;
+  while(t) {
+    const action = yield take(GET_MULTICHAT_LIST);
+    console.log('take GET_MULTICHAT_LIST: action.multichatRoomID: ',action.multichatRoomID);
+    yield call(fetchMultiChatList, action.multichatRoomID);
+  }
+}
+
+export function* watchGetMultiChat() {
+  const t = true;
+  while(t) {
+    yield delay(100);
+    const state = yield select();
+    if(state.multichat.multichatOn){
+      const action = yield take(GET_MULTICHAT);
+      // Use fork to send multiple request at the same time
+      yield fork(fetchMultiChat, action.multichatRoomID);
+    }
+  }
+}
+
+export function* watchPostMultiChat() {
+  const t = true;
+  while(t) {
+    const action = yield take(POST_MULTICHAT);
+    yield call(postMultiChat, action.multichatRoomID, action.contents);
+  }
+}
+
+export function* watchStartChat() {
+  const t = true;
+  while(t) {
+    const action = yield take(START_CHAT);
+    yield call(startChat, action.username);
+  }
+}
+
+export function* watchGetMultiChatRoomList() {
+  const t = true;
+  while(t) {
+    yield take(GET_MULTICHATROOM_LIST);
+    yield call(fetchMultiChatRoomList);
   }
 }
 
@@ -670,7 +919,32 @@ export function* createChatReciever() {
   while(t) {
     yield delay(1000);
     const state = yield select();
-    yield put(getChat(state.chat.chatRoomID));
+    if (state.chat.chatOn)
+      yield put(getChat(state.chat.chatRoomID));
+  }
+}
+
+export function* createMultiChatRoomReciever() {
+//  yield take(SET_MULTICHAT_LIST);
+  const t = true;
+  let state;
+  while(t){
+    yield delay(1000);
+    state = yield select();
+    //console.log('ABCABC: ', state.multichat.multichatOn, ':' , state.multichat.multichatRoomID);
+    if(state.multichat.multichatOn === true && state.multichat.multichatRoomID === null)
+      yield put(getMultiChatRoomList());
+  }
+}
+
+export function* createMultiChatReciever() {
+  const t = true;
+  yield take(SET_MULTICHAT_LIST);
+  while(t) {
+    yield delay(1000);
+    const state = yield select();
+    if (state.multichat.multichatOn === true && state.multichat.multichatRoomID !== null)
+      yield put(getMultiChat(state.multichat.multichatRoomID));
   }
 }
 
@@ -707,25 +981,39 @@ export function* watchPostFriend() {
 export function* rootSaga() {
   yield fork(watchSignUp);
   yield fork(watchLogin);
+
   yield fork(watchGetFeedList);
   yield fork(watchGetFeed);
   yield fork(watchPostFeed);
+  yield fork(watchDeleteFeed);
+
   yield fork(watchPostLikes);
   yield fork(watchPostDislikes);
   yield fork(watchGetLikes);
   yield fork(watchGetDislikes);
+
   yield fork(watchGetReplyList);
   yield fork(watchGetReply);
   yield fork(watchPostReply);
+  yield fork(watchDeleteReply);
+
   yield fork(watchStartChat);
   yield fork(watchGetChatList);
   yield fork(watchGetChat);
   yield fork(watchPostChat);
+  yield fork(createChatReciever);
+
   yield fork(watchGetTimelineList);
   yield fork(watchGetHashFeedList);
-  yield fork(createChatReciever);
   yield fork(watchGetUserList);
-  yield fork(watchDeleteFeed);
-  yield fork(watchDeleteReply);
   yield fork(watchPostFriend);
+
+  yield fork(watchCreateMultiChat);
+  yield fork(watchGetMultiChatRoomList);
+  yield fork(createMultiChatRoomReciever);
+  yield fork(watchStartMultiChat);
+  yield fork(watchGetMultiChatList);
+  yield fork(watchGetMultiChat);
+  yield fork(watchPostMultiChat);
+  yield fork(createMultiChatReciever);
 }

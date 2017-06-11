@@ -101,7 +101,7 @@ class MultiChatRoomSerializer(serializers.ModelSerializer):
     users = serializers.StringRelatedField(many=True)
     class Meta:
         model = MultiChatRoom
-        fields = ('id', 'users')
+        fields = ('id', 'isMafiaRoom', 'users')
 
     
 class FriendListSerializer(serializers.BaseSerializer):
