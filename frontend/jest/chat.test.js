@@ -28,7 +28,11 @@ describe('chat reducer', ()=> {
     expect (
       chat({}, {type : types.TOFEED })
     ).toEqual({
-      chatOn : false
+      chatOn : false,
+      desiredChatCount:0,
+      otherUsername: null,
+      chatRoomID: null,
+      chatList: []
     })
   })
 
@@ -52,7 +56,9 @@ describe('chat reducer', ()=> {
           username : 'asdf'
         })
         ).toEqual({
-          otherUsername : 'asdf'
+          otherUsername : 'asdf',
+          chatList: [],
+          desiredChatCount: 0
     })
   })
 
