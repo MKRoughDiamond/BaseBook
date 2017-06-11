@@ -343,6 +343,18 @@ for i in range(1, N+1):
     TL.get_all_multichat_room_test(link, uname, upwd)    
         
 #####################################################
+print('26. post markdownfeed')
+
+for i in range(1, N+1):
+    print('26-{0}, uset test{0} post markdown feed'.format(i))
+    uname = 'test{0}'.format(i)
+    upwd = 'test{0}passwd'.format(i)
+    link = localhost + 'feed/'
+    contents = 'asdf'
+    scope = scopes[0]
+    TL.markdown_feed_post_test(link, contents, scope, uname, upwd)
+
+#####################################################
 
 #print('8. profile')
 
