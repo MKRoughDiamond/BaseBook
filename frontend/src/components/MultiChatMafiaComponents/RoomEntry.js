@@ -19,17 +19,12 @@ class MultiChatRoomEntry extends React.Component {
   }
 
   render() {
-    /*console.log('RoomEntry Render');
-    console.log('multichatRoomIDList: ', this.props.multichatRoomIDList);
-    console.log('this.props.id: ' ,this.props.id);
-    const multichatRoom = this.props.multichatRoomList[this.props.id - 1];
-    console.log('multichatRoom: ', multichatRoom);*/
     return (
-      <div id="multichat-room" onClick={this.handleStartMultiChat}>
-        <div id="multichat-room-id">
+      <div className="multichat-room" onClick={this.handleStartMultiChat}>
+        <div className="multichat-room-id" id={ 'multichat-room-id-'+this.props.id}>
           { this.props.id }
         </div>
-        <div id="multichat-room-enter">
+        <div className="multichat-room-enter">
           { this.enterTag }
         </div>
       </div>
