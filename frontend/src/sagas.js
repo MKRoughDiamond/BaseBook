@@ -421,19 +421,16 @@ export function* fetchMultiChatRoomList() {
   }
   let list = [];
   let enterList = [];
-//  console.log('res: ',res);
-//  console.log('res[0]: ',res[0]);
+  let countList = [];
   for(let i in res){
-    //console.log('room_id: ',res[i].id);
     list.push(res[i].id);
+    countList.push(res[i].users.length);
     if (res[i].users.indexOf(state.server.ID) !== -1) {
       enterList.push(res[i].id);
     }
   }
 
-  //console.log('fetchMultiChatRoomList Saga');
-  //console.log(list);
-  yield put(setMultiChatRoomList(list, enterList));
+  yield put(setMultiChatRoomList(list, enterList, countList));
 }
 /*
 export function* fetchMultiChatRoom(id) {

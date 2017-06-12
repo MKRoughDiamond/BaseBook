@@ -438,11 +438,12 @@ export function getMultiChatRoomList() {
   };
 }
 
-export function setMultiChatRoomList(list, enterList) {
+export function setMultiChatRoomList(list, enterList, countList) {
   return {
     type: SET_MULTICHATROOM_LIST,
     list: list,
-    enterList: enterList
+    enterList: enterList,
+    countList: countList
   };
 }
 

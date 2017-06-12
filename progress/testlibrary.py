@@ -356,6 +356,19 @@ def get_all_multichat_room_test(url, uname, upwd):
     except Exception as e:
         unexpected_exception('get all multichat room', url, e)
     print('success')
+
+def markdown_feed_post_test(url, contents, scope, uname, upwd):
+    sleep(0.05)
+    try:
+        headers = {'Content-Type': 'application/json'}
+        data = {'contents': contents, 'scope': scope, 'feedtype': 'Markdown' }
+        res = requests.post(url, data=json.dumps(data), headers=headers, auth=(uname,upwd))
+        if res.status_code != 200:
+            wrong_status_code('post markdownfeed', url, res.status_code)
+    except Exception as e:
+        unexpected_exception('post markdownfeed', url, e)
+    print('success')
+
 #def profile_test(url, ):
 #    sleep(0.05)
 #    try:
