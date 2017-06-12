@@ -334,7 +334,7 @@ button:hover {
 #multichat-button{
 	margin : 5px 5px 5px 5px;
 	display : inline-block;
-	float : right;
+  float : right;
 	padding : 0;
 	width : 15%;
 	height : 20px;
@@ -346,7 +346,7 @@ button:hover {
 	background-color : rgba(255,255,255,0.8);
 }
 
-#multichat-room {
+.multichat-room {
 	width : 100%;
 	margin: 5px 0 5px 0;
 	padding: 5px 0 5px 0;
@@ -355,19 +355,41 @@ button:hover {
 	white-space: pre;
 }
 
-#multichat-room-id{
-	width: 15%;
+.multichat-room:hover {
+  cursor: pointer;
+  background-color: rgba(255,255,255,0.3);
+}
+
+.multichat-room-enter {
+  display: inline-block;
+  float : right;
+  margin-right: 5px;
+  font-size: 20px;
+}
+
+.multichat-room-id{
+	width: 10%;
+  display: inline-block;
 	font-size: 20px;
 	vertical-align: middle;
-	text-align: center;
-	background-color: rgba(255,255,255,0.6);
+	text-align: left;
+  margin-left: 20px;
 	border-radius: 10px;
 }
 
-#multichat-room-id:hover {
-	text-decoration : underline;
-	cursor : pointer;
+.multichat-room-count{
+ 	width: 70%;
+  display: inline-block;
+	font-size: 20px;
+	vertical-align: middle;
+	text-align: center;
+	border-radius: 10px;
 }
+
+#multichat-list-title {
+  display : inline-block;
+}
+
 #reply-wrapper {
 }
 
@@ -457,7 +479,12 @@ button:hover {
 }
 
 #multichat-title {
-	display: inline-block;
+  width: 100%;
+	font-size : 20px;
+  display: inline-block;
+  padding-bottom : 10px;
+  border-bottom : 1px solid black;
+  margin-bottom : 10px;
 }
 
 #username-title{

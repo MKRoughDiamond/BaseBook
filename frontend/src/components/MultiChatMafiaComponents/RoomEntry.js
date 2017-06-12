@@ -19,17 +19,15 @@ class MultiChatRoomEntry extends React.Component {
   }
 
   render() {
-    /*console.log('RoomEntry Render');
-    console.log('multichatRoomIDList: ', this.props.multichatRoomIDList);
-    console.log('this.props.id: ' ,this.props.id);
-    const multichatRoom = this.props.multichatRoomList[this.props.id - 1];
-    console.log('multichatRoom: ', multichatRoom);*/
     return (
-      <div id="multichat-room" onClick={this.handleStartMultiChat}>
-        <div id="multichat-room-id">
+      <div className="multichat-room" id={ 'multichat-room-id-'+this.props.id} onClick={this.handleStartMultiChat}>
+        <div className="multichat-room-id">
           { this.props.id }
         </div>
-        <div id="multichat-room-enter">
+        <div className="multichat-room-count">
+          { (this.props.multichatCountList[this.props.id-1]) +'명 참가' }
+        </div>
+        <div className="multichat-room-enter">
           { this.enterTag }
         </div>
       </div>
@@ -55,7 +53,8 @@ let mapStateToProps = (state) => {
   return {
     multichatRoomIDList: state.multichat.multichatRoomIDList,
     multichatRoomList: state.multichat.multichatRoomList,
-    multichatEnterList: state.multichat.multichatEnterList
+    multichatEnterList: state.multichat.multichatEnterList,
+    multichatCountList: state.multichat.multichatCountList
   };
 };
 

@@ -27,18 +27,14 @@ class MultiChatMain extends React.Component {
   }
 
   render() {
-    //console.log('MultichatMain Render');
-    //console.log('multichatList: ',this.props.multichatList);
     const multichatList = this.props.multichatList;
-    //const multichatRoom = this.props.multichatRoomList[this.props.multichatRoomID];
-    //console.log('multichatRoom:' ,multichatRoom);
     return (
       <div id="main-wrapper">
         <TopBar/>
         <div id="main-content">
           <div id="multichat-title">
             <div id="multichat-room-user-list">
-              { this.props.multichatRoomID }
+              { 'Chatting Room '+this.props.multichatRoomID }
             </div>
           </div>
           <div id="chatting-main">

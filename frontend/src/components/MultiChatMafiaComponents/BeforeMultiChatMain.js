@@ -17,15 +17,12 @@ class BeforeMultiChatMain extends React.Component {
   }
 
   render() {
-    //console.log('BeforeMultiChatMain Render');
-    //const multichatRoomIDList = this.props.multichatRoomIDList;
-    //console.log('multichatRoomIDList: ', this.props.multichatRoomIDList);
     return (
       <div id="main-wrapper">
         <TopBar/>
         <div id="main-content">
           <div id="chatting-title">
-            <div id="multichat-title"> Multi-Chatting Room List </div>
+            <div id="multichat-list-title"> Multi-Chatting Room List </div>
             <div id="multichat-create-button-wrapper">
               <button id="multichat-create-button" onClick={this.handleCreateMultiChat}>
                 CREATE
