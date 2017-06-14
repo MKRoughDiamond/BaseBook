@@ -62,7 +62,10 @@ class user_signup(APIView):
             return Response({'detail':'Please put valid ID.'}, status=400)
         if password is None:
             return Response({'detail':'Please put password.'}, status=400)
-        username_regex = re.compile(r'^[a-zA-Z]\w+$')
+        username = username.lower()
+        if username == 'admin' or username == 'system':     # reserved username
+            return Response({'detail':'User already exists!'}, status=400)
+        username_regex = re.compile(r'^[a-z]\w+$')
         if username_regex.match(username) is None:
             return Response({'detail':'ID should consist of alphabets and numbers.'}, status=400)
         if len(password) < 4:
