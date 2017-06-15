@@ -42,7 +42,7 @@ def find_or_error(driver, name):
 
 def send_keys(_element, _key):
     try:
-        _element.send_keys(_key + Keys.RETURN)
+        _element.send_keys(_key)# + Keys.RETURN)
     except Exception as e:
         end_test('Cannot send %s' % _key ,e)
     sleep(S)
@@ -68,26 +68,34 @@ def signup_test(driver, uname, upwd, duplication, master):
         send(driver, 'input-username', uname)
         send(driver, 'input-password', upwd)
         send(driver, 'input-retypepassword', upwd)
-        click(driver, 'SignUp')
-        if duplication==True:
+        sleep(0.5 * S)
+        #if find_or_error(driver, 'SignUp') == True:
+        #    click(driver, 'SignUp')
+        sleep(0.5 * S)
+        if master==True:
             exist = find_or_error(driver, 'login-error-box') and \
                     find_or_error(driver, 'login-error-msg') and \
                     find_or_error(driver, 'login-error-confirm')
-            if(not master and not exist):
-                print('Duplicated SignUp('+uname+') test failed')
-                sys.exit(1)
-            click(driver, 'login-error-confirm')
-            print('Duplicated SignUp('+uname+') test success')
-        else:
-            exist = find_or_error(driver, 'login-error-box') or \
-                    find_or_error(driver, 'login-error-msg') or \
-                    find_or_error(driver, 'login-error-confirm')
-            if not master and exist:
-                print('SignUp(' + uname + ') test failed')
-                sys.exit(1)
             if exist:
                 click(driver, 'login-error-confirm')
-            print(uname + ' SignUp success')
+        else:
+            if duplication==True:
+                exist = find_or_error(driver, 'login-error-box') and \
+                        find_or_error(driver, 'login-error-msg') and \
+                        find_or_error(driver, 'login-error-confirm')
+                if(not exist):
+                    print('Duplicated SignUp('+uname+') test failed')
+                    sys.exit(1)
+                click(driver, 'login-error-confirm')
+                print('Duplicated SignUp('+uname+') test success')
+            else:
+                exist = find_or_error(driver, 'login-error-box') or \
+                        find_or_error(driver, 'login-error-msg') or \
+                        find_or_error(driver, 'login-error-confirm')
+                if exist:
+                    print('SignUp(' + uname + ') test failed')
+                    sys.exit(1)
+        print(uname + ' SignUp success')
     except Exception as e:
         end_test('\nSignUp test failed', e)
 
@@ -95,7 +103,7 @@ def signin_test(driver, uname, upwd):
     try:
         send(driver, 'input-username', uname)
         send(driver, 'input-password', upwd)
-        click(driver, 'SignIn')
+    #    click(driver, 'SignIn')
     except Exception as e:
         end_test('\nSignIn test failed', e)
     print(uname + ' SignIn success')
@@ -133,6 +141,7 @@ def reply_test(driver, contents):
             button.click()
             sleep(S)
             print(' {0} '.format(i), end=' ')
+        print('success')
     except Exception as e:
         end_test('\nPOST Reply test failed', e)
 
@@ -165,16 +174,17 @@ print('################################################################')
 print('FrontEnd Test')
 print('################################################################')
 
-if len(sys.argv) == 1:
-    S *= 4
+test_url = 'http://localhost:3000'
 
-#print(len(sys.argv))
+if len(sys.argv) == 1:
+    S *= 3
+    test_url = 'http://13.124.80.116:9000'
+
 
 for i in range(0, N):
     print('drivers[{0}] open'.format(i))
     drivers.append(webdriver.Chrome('/usr/local/bin/chromedriver'))
-    drivers[i].get('http://localhost:3000')
-    #drivers[i].get('http://13.124.80.116:3000')
+    drivers[i].get(test_url)
     print('drivers[{0}] open successful'.format(i))
 
 ################################################################
@@ -247,7 +257,7 @@ for j in range(0, C * 5):
     chat_test(drivers[i], 'Hey user{0} {1}{1}!(one side)'.format(i2, j), other_username)
 
 ################################################################
-print('\nTo other page test:')
+print('\nTo Feed / Chat / Timeline / HashFeed test:')
 
 click(drivers[0], 'main-title-name')
 sleep(2 * S)

@@ -11,7 +11,7 @@ class Friend(models.Model):
 
 
 class HashTag(models.Model):
-    hashtagName = models.CharField(max_length=50)
+    hashtagName = models.CharField(max_length=30)
 
 
 class Feed(models.Model):
@@ -75,6 +75,7 @@ class MultiChatUser(models.Model):
 class MultiChatRoom(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     users = models.ManyToManyField(MultiChatUser, related_name='users', default=None)
+    isMafiaRoom = models.BooleanField(default=False)
     
 
 class Chat(models.Model):
