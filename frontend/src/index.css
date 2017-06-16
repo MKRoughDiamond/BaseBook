@@ -587,6 +587,9 @@ button:hover {
   display: inline-block;
 }
 
+.chat-wrapper-system{
+  color: maroon;
+}
 
 #new-chat{
 	margin-top: 5px;

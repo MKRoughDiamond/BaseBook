@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {getMultiChatList, postMultiChat, startSound} from '../../actions';
+import {getMultiChatList, postMultiChat, startSound, mafiaGeneral, mafiaTarget} from '../../actions';
 import Entry from './Entry';
 import TopBar from '../TopBar';
 
@@ -29,8 +29,24 @@ class MultiChatMain extends React.Component {
   handlePostMultiChat() {
     const contents = document.getElementById('new-chat-text').value;
     document.getElementById('new-chat-text').value = '';
-    console.log('handle post multichat: ',this.props.multichatRoomID,':', contents);
-    this.props.postMultiChat(this.props.multichatRoomID, contents);
+    if(contents.startsWith('/게임시작')) {
+      this.props.mafiaGeneral(this.props.multichatRoomID, 'start');
+    }
+    else if(contents.startsWith('/조기투표')) {
+      this.props.mafiaGeneral(this.props.multichatRoomID, 'earlyvote');
+    }
+    else if(contents.startsWith('/끝내기')) {
+      this.props.mafiaGeneral(this.props.multichatRoomID, 'end');
+    }
+    else {
+      const matches = contents.match(/^\/([^\s]+)/i);
+      if(matches !== null) {
+        this.props.mafiaTarget(this.props.multichatRoomID, matches[1]);
+      }
+      else {
+        this.props.postMultiChat(this.props.multichatRoomID, contents);
+      }
+    }
   }
 
   handleKeyPress(e) {
@@ -92,7 +108,9 @@ let mapDispatchToProps = (dispatch) => {
   return {
     getMultiChatList: (multichatRoomID) => dispatch(getMultiChatList(multichatRoomID)),
     postMultiChat: (multichatRoomID, contents) => dispatch(postMultiChat(multichatRoomID, contents)),
-    startSound: (url) => dispatch(startSound(url))
+    startSound: (url) => dispatch(startSound(url)),
+    mafiaGeneral: (multichatRoomID, suburl) => dispatch(mafiaGeneral(multichatRoomID, suburl)),
+    mafiaTarget: (multichatRoomID, target) => dispatch(mafiaTarget(multichatRoomID, target))
   };
 };
 

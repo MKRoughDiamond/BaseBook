@@ -560,6 +560,26 @@ export function* postMultiChat(multichatRoomID, contents) {
   yield put(getMultiChat(multichatRoomID)); // refresh chat log
 }
 
+export function* postMafiaGeneral(multichatRoomID, suburl) {
+  yield call(fetch, url + '/mafia/' + multichatRoomID + '/' + suburl + '/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    },
+  });
+}
+
+export function* postMafiaTarget(multichatRoomID, target) {
+  yield call(fetch, url + '/mafia/' + multichatRoomID + '/target/' + target + '/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    },
+  });
+}
+
 export function* startChat(username) {
   const state = yield select();
   if(username === '')
@@ -945,6 +965,22 @@ export function* createMultiChatReciever() {
   }
 }
 
+export function* watchMafiaGeneral() {
+  const t = true;
+  while(t) {
+    const action = yield take(MAFIA_GENERAL);
+    yield put(postMafiaGeneral(action.roomID, action.suburl));
+  }
+}
+
+export function* watchMafiaTarget() {
+  const t = true;
+  while(t) {
+    const action = yield take(MAFIA_TARGET);
+    yield put(postMafiaGeneral(action.roomID, action.target));
+  }
+}
+
 // calls the function only once
 export function* watchGetUserList() {
   yield take(GET_USER_LIST);
@@ -1013,4 +1049,7 @@ export function* rootSaga() {
   yield fork(watchGetMultiChat);
   yield fork(watchPostMultiChat);
   yield fork(createMultiChatReciever);
+
+  yield fork(watchMafiaGeneral);
+  yield fork(watchMafiaTarget);
 }
