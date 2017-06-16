@@ -11,9 +11,9 @@ from django.utils import timezone
 import re
 
 from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, \
-ChatRoomSerializer, ChatSerializer, FriendListSerializer, HashTagListSerializer, MultiChatRoomSerializer
+ChatRoomSerializer, ChatSerializer, FriendListSerializer, HashTagListSerializer, MultiChatRoomSerializer, BaseUserSerializer
 from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions
-from core.models import Feed, Reply, Chat, ChatRoom, Friend, HashTag, MultiChatRoom, MultiChatUser
+from core.models import Feed, Reply, Chat, ChatRoom, Friend, HashTag, MultiChatRoom, MultiChatUser, BaseUser
 from mafia.interface import mafia_tick, user_chat_team, user_entered, use_ability
 #from core.models import BaseUser, Friend, Feed, Reply, Picture
 
@@ -30,15 +30,15 @@ def options_cors():
 
 # may only admin can access
 class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    queryset = BaseUser.objects.all()
+    serializer_class = BaseUserSerializer
 
     def options(self, request):
         return options_cors()
 
 class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    queryset = BaseUser.objects.all()
+    serializer_class = BaseUserSerializer
 
 class user_login(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -73,6 +73,8 @@ class user_signup(APIView):
         except IntegrityError:
             return Response({'detail':'User already exists!'}, status=400)
         user.save()
+        baseuser = BaseUser(user=user, nickname=username);
+        baseuser.save()
         return Response('',status=200)
     
     def options(self, request):
@@ -479,3 +481,45 @@ class MafiaGameAbility(APIView):
         except ObjectDoesNotExist: 
             return Response('', status=404)
         use_ability(room, request.user, target)
+
+class Password(APIView):
+    def post(self, request):
+        try:
+            user = request.user
+        except ObjectDoesNotExist:
+            return Response('', status=404)
+        password = request.data.get('password', None)
+        if password is None:
+            return Response({'detail':'Please put password.'}, status=400)
+        if len(password) < 4:
+            return Response({'detail': 'Password should be longer than 4 digits.'}, status=400)
+
+        user.set_password(password)
+        user.save()
+        return Response('', status=200)
+
+    def options(self, request):
+        return options_cors()
+
+class Profile(APIView):
+    def post(self, request):
+        try:
+            baseuser = BaseUser.objects.get(user=request.user)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
+        nickname = request.data.get('nickname', None)
+        if nickname is '':
+            return Response({'detail':'Please put nickname.'}, status=400)
+        baseuser.nickname = nickname
+        baseuser.save()
+        return Response('', status=200)
+    def get(self, request):
+        try:
+            baseuser = BaseUser.objects.get(user=request.user)
+        except ObjectDoesNotExist:
+            return Response('', status=404)
+        serializer = BaseUserSerializer(baseuser)
+        return Response(serializer.data)
+
+    def options(self, request):
+        return options_cors()

@@ -346,7 +346,7 @@ for i in range(1, N+1):
 print('26. post markdownfeed')
 
 for i in range(1, N+1):
-    print('26-{0}, uset test{0} post markdown feed'.format(i))
+    print('26-{0}, user test{0} post markdown feed'.format(i))
     uname = 'test{0}'.format(i)
     upwd = 'test{0}passwd'.format(i)
     link = localhost + 'feed/'
@@ -355,6 +355,37 @@ for i in range(1, N+1):
     TL.markdown_feed_post_test(link, contents, scope, uname, upwd)
 
 #####################################################
+print('27. change password')
+
+for i in range(1, N+1):
+    print('27-{0}, user test{0} change password'.format(i))
+    uname = 'test{0}'.format(i)
+    upwd = 'test{0}passwd'.format(i)
+    npwd = 'test{0}'.format(i)
+    link = localhost + 'users/password/'
+    TL.change_password_test(link, npwd, uname, upwd)
+
+#####################################################
+print('28. change nickname')
+
+for i in range(1, N+1):
+    print('28-{0}, user test{0} change nickname'.format(i))
+    uname = 'test{0}'.format(i)
+    upwd = 'test{0}'.format(i)
+    link = localhost+'users/profile/'
+    nickname = 'test{0}nickname'.format(i)
+    TL.change_nickname_test(link, nickname, uname, upwd)
+
+#####################################################
+print('29. get nickname')
+
+for i in range(1, N+1):
+    print('29-{0}, user test{0} get nickname'.format(i))
+    uname = 'test{0}'.format(i)
+    upwd = 'test{0}'.format(i)
+    link = localhost+'users/profile/'.format(i)
+    nickname = 'test{0}nickname'.format(i)
+    TL.get_nickname_test(link, nickname, uname, upwd)
 
 #print('8. profile')
 
