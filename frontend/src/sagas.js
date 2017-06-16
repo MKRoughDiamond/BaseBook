@@ -23,6 +23,7 @@ export function* postSignUp() {
   const state = yield select();
   const signUpInfo = {
     'id': state.server.newID,
+    'nickname': state.server.newNick,
     'password': state.server.newPW
   };
   const response = yield call(fetch, url + '/signup/', {

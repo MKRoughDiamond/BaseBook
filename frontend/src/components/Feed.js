@@ -18,6 +18,11 @@ class Feed extends React.Component {
           <Redirect to={hashtagUrl}/>
         );
       }
+      if (this.props.onProfile) {
+        return (
+          <Redirect to="/users/profile/"/>
+        );
+      }
       return (this.props.isChatOn) ? (
         <Redirect to="/chat/"/>
       ):(this.props.isMultiChatOn)?(
@@ -41,7 +46,8 @@ let mapStateToProps = (state) => {
     onTimeline : state.server.onTimeline,
     timelineUser : state.server.timelineUser,
     onHashFeed : state.server.onHashFeed,
-    tagname: state.server.tagname
+    tagname: state.server.tagname,
+    onProfile : state.server.onProfile,
   };
 };
 

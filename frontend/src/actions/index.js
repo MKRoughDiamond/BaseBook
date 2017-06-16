@@ -1,6 +1,8 @@
 export const SETID = 'SETID';
+export const SETNICK = 'SETNICK';
 export const SETPW = 'SETPW';
 export const NEWID = 'NEWID';
+export const NEWNICK = 'NEWNICK';
 export const NEWPW = 'NEWPW';
 export const RETYPEPW = 'RETYPEPW';
 export const TOMAIN = 'TOMAIN';
@@ -38,6 +40,7 @@ export const GET_CHAT = 'GET_CHAT';
 export const SET_CHAT = 'SET_CHAT';
 export const POST_CHAT = 'POST_CHAT';
 export const TOFEED = 'TOFEED';
+export const GET_PROFILE = 'GET_PROFILE';
 
 export const TOTIMELINE = 'TOTIMELINE';
 export const GET_TIMELINE_LIST = 'GET_TIMELINE_LIST';
@@ -46,6 +49,7 @@ export const GET_USER_LIST = 'GET_USER_LIST';
 export const SET_USER_LIST = 'SET_USER_LIST';
 export const USER_QUERY = 'USER_QUERY';
 export const LOGOUT = 'LOGOUT';
+export const TOPROFILE = 'TOPROFILE';
 
 export const DELETE_FEED = 'DELETE_FEED';
 export const DELETE_REPLY = 'DELETE_REPLY';
@@ -81,6 +85,13 @@ export function setID(value) {
   };
 }
 
+export function setNick(value) {
+  return {
+    type : SETNICK,
+    Nick : value
+  };
+}
+
 export function setPW(value) {
   return {
     type : SETPW,
@@ -94,6 +105,14 @@ export function newID(value) {
     newID : value
   };
 }
+
+export function newNick(value) {
+  return {
+    type : NEWNICK,
+    newNick : value
+  };
+}
+
 
 export function newPW(value) {
   return {
@@ -171,6 +190,13 @@ export function getFeed(id) {
   return {
     type: GET_FEED,
     id: id
+  };
+}
+
+export function getProfile() {
+  return {
+    type: GET_PROFILE,
+    //id: id
   };
 }
 
@@ -362,6 +388,12 @@ export function userQuery(keyword) {
 export function logout() {
   return {
     type: LOGOUT
+  };
+}
+
+export function toProfile() {
+  return {
+    type: TOPROFILE
   };
 }
 

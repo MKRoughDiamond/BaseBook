@@ -39,6 +39,11 @@ body::-webkit-scrollbar {
 	display: inline-block;
 }
 
+#nickname {
+	width : 30%;
+	display: inline-block;
+}
+
 #password {
 	width : 30%;
 	display: inline-block;
@@ -52,6 +57,13 @@ body::-webkit-scrollbar {
 }
 
 #input-username {
+	min-width : 10px;
+	width : 60%;
+	display: inline-block;
+	font-size : 20pt;
+}
+
+#input-nickname {
 	min-width : 10px;
 	width : 60%;
 	display: inline-block;
@@ -144,6 +156,18 @@ button:hover {
 #logout:hover {
   text-decoration : underline;
   cursor : pointer;
+}
+
+#profile {
+	display : inline-block;
+	float : right;
+	margin-right: 25px;
+	font-size : 15px;
+}
+
+#profile:hover {
+	text-decoration : underline;
+	cursor : pointer;
 }
 
 #main-content {

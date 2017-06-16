@@ -1,12 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {newID, newPW, retypePW,toMain} from '../../actions';
+import {newID, newNick, newPW, retypePW,toMain} from '../../actions';
 
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
 
     this.handleUpdateID = this.handleUpdateID.bind(this);
+    this.handleUpdateNick = this.handleUpdateNick.bind(this);
     this.handleUpdatePW = this.handleUpdatePW.bind(this);
     this.handleUpdateRetypePW = this.handleUpdateRetypePW.bind(this);
     this.handleToMain = this.handleToMain.bind(this);
@@ -16,6 +17,10 @@ class SignUp extends React.Component {
 
   handleUpdateID(e) {
     this.props.onUpdateID(e.target.value);
+  }
+
+  handleUpdateNick(e) {
+    this.props.onUpdateNick(e.target.value);
   }
 
   handleUpdatePW(e) {
@@ -49,7 +54,11 @@ class SignUp extends React.Component {
         <input type="text" id="input-username" onChange={this.handleUpdateID}/>
       </div>
       <div className="line">
-        <div id="password">password</div>
+        <div id="nickname">Nickname</div>
+        <input type="text" id="input-nickname" onChange={this.handleUpdateNick}/>
+      </div>
+      <div className="line">
+        <div id="password">Password</div>
         <input type="password" id="input-password" onChange={this.handleUpdatePW}/>
       </div>
       <div className="line-thick">
@@ -77,6 +86,7 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     onUpdateID: (value) => dispatch(newID(value)),
+    onUpdateNick: (value) => dispatch(newNick(value)),
     onUpdatePW: (value) => dispatch(newPW(value)),
     onUpdateRetypePW: (value) => dispatch(retypePW(value)),
     toMain: () => dispatch(toMain())
