@@ -516,3 +516,4 @@ export function mafiaTarget(roomID, target) {
     target: target
   };
 }
+

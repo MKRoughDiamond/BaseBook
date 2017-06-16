@@ -469,8 +469,9 @@ class MafiaGame(APIView):
         except ObjectDoesNotExist: 
             return Response('', status=404)
         func(room, request.user)
+        return Response('', status=200)
     
-    def options(self, request, pk):
+    def options(self, request, func, pk):
         return options_cors()
 
 
@@ -482,3 +483,7 @@ class MafiaGameAbility(APIView):
         except ObjectDoesNotExist: 
             return Response('', status=404)
         use_ability(room, request.user, target)
+        return Response('', status=200)
+    
+    def options(self, request, pk, username):
+        return options_cors()

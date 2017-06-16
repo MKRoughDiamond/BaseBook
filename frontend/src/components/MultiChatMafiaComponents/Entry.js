@@ -11,7 +11,7 @@ class Entry extends React.Component {
 
     return (
       <div className={(chat.username === 'system')?
-        "chat-wrapper" : "chat-wrapper-system"}
+        'chat-wrapper-system' : 'chat-wrapper'}
       >
         <div className="chat-writer">
           {chat.username}

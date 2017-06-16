@@ -8,6 +8,7 @@ import {
   GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND, GET_HASHFEED_LIST,
   GET_MULTICHATROOM_LIST, CREATE_MULTICHAT, START_MULTICHAT,
   GET_MULTICHAT_LIST, GET_MULTICHAT, POST_MULTICHAT, SET_MULTICHAT_LIST,
+  MAFIA_GENERAL, MAFIA_TARGET,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
@@ -561,6 +562,7 @@ export function* postMultiChat(multichatRoomID, contents) {
 }
 
 export function* postMafiaGeneral(multichatRoomID, suburl) {
+  const state = yield select();
   yield call(fetch, url + '/mafia/' + multichatRoomID + '/' + suburl + '/', {
     method: 'POST',
     headers: {
@@ -571,6 +573,7 @@ export function* postMafiaGeneral(multichatRoomID, suburl) {
 }
 
 export function* postMafiaTarget(multichatRoomID, target) {
+  const state = yield select();
   yield call(fetch, url + '/mafia/' + multichatRoomID + '/target/' + target + '/', {
     method: 'POST',
     headers: {
@@ -969,7 +972,7 @@ export function* watchMafiaGeneral() {
   const t = true;
   while(t) {
     const action = yield take(MAFIA_GENERAL);
-    yield put(postMafiaGeneral(action.roomID, action.suburl));
+    yield call(postMafiaGeneral, action.roomID, action.suburl);
   }
 }
 
@@ -977,7 +980,7 @@ export function* watchMafiaTarget() {
   const t = true;
   while(t) {
     const action = yield take(MAFIA_TARGET);
-    yield put(postMafiaGeneral(action.roomID, action.target));
+    yield call(postMafiaTarget, action.roomID, action.target);
   }
 }
 

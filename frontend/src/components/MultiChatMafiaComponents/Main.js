@@ -29,13 +29,13 @@ class MultiChatMain extends React.Component {
   handlePostMultiChat() {
     const contents = document.getElementById('new-chat-text').value;
     document.getElementById('new-chat-text').value = '';
-    if(contents.startsWith('/게임시작')) {
+    if(contents.startsWith('/게임시작') || contents.startsWith('/start')) {
       this.props.mafiaGeneral(this.props.multichatRoomID, 'start');
     }
-    else if(contents.startsWith('/조기투표')) {
+    else if(contents.startsWith('/조기투표') || contents.startsWith('/earlyvote')) {
       this.props.mafiaGeneral(this.props.multichatRoomID, 'earlyvote');
     }
-    else if(contents.startsWith('/끝내기')) {
+    else if(contents.startsWith('/끝내기') || contents.startsWith('/end')) {
       this.props.mafiaGeneral(this.props.multichatRoomID, 'end');
     }
     else {
