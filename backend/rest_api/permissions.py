@@ -35,3 +35,9 @@ class IsAuthNotOptions(permissions.BasePermission):
             return True
         return permissions.IsAuthenticated.has_permission(self, request, view)
     
+class IsAdminUser(permissions.BasePermission):
+    """
+    Allows access only to admin users.
+    """
+    def has_permission(self, request):
+        return request.user and request.user.is_staff

@@ -12,10 +12,9 @@ import re
 
 from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, \
 ChatRoomSerializer, ChatSerializer, FriendListSerializer, HashTagListSerializer, MultiChatRoomSerializer, BaseUserSerializer
-from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions
+from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions, IsAdminUser
 from core.models import Feed, Reply, Chat, ChatRoom, Friend, HashTag, MultiChatRoom, MultiChatUser, BaseUser
 from mafia.interface import mafia_tick, user_chat_team, user_entered, use_ability
-#from core.models import BaseUser, Friend, Feed, Reply, Picture
 
 
 # This function is needed to support POST with JSON in firefox.
@@ -32,6 +31,7 @@ def options_cors():
 class UserList(generics.ListAPIView):
     queryset = BaseUser.objects.all()
     serializer_class = BaseUserSerializer
+    permission_classes = (permissions.IsAdminUser, )
 
     def options(self, request):
         return options_cors()
@@ -57,9 +57,12 @@ class user_signup(APIView):
     
     def post(self, request):
         username = request.data.get('id', None)
+        nickname = request.data.get('nickname', None)
         password = request.data.get('password', None)
         if username is None:
             return Response({'detail':'Please put valid ID.'}, status=400)
+        if nickname is None:
+            return Response({'detail':'Please put valid Nickname.'}, status=400)
         if password is None:
             return Response({'detail':'Please put password.'}, status=400)
         username_regex = re.compile(r'^[a-zA-Z]\w+$')
@@ -73,7 +76,7 @@ class user_signup(APIView):
         except IntegrityError:
             return Response({'detail':'User already exists!'}, status=400)
         user.save()
-        baseuser = BaseUser(user=user, nickname=username);
+        baseuser = BaseUser(user=user, nickname=nickname);
         baseuser.save()
         return Response('',status=200)
     
