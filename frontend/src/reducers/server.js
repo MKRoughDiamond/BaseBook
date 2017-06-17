@@ -108,7 +108,7 @@ const server = (state = serverInitialState, action) => {
   case LOGOUT:
     return serverInitialState;
   case START_SOUND:
-    return Object.assign({}, state, { soundUrl : '/'+action.url+'.mp3', soundStart : true });
+    return Object.assign({}, state, { soundUrl : '/'+action.url+'.ogg', soundStart : true });
   case END_SOUND:
     return Object.assign({}, state, { soundStart : false });
   default:
