@@ -8,17 +8,17 @@ import {
   GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND, GET_HASHFEED_LIST,
   GET_MULTICHATROOM_LIST, CREATE_MULTICHAT, START_MULTICHAT,
   GET_MULTICHAT_LIST, GET_MULTICHAT, POST_MULTICHAT, SET_MULTICHAT_LIST,
-  MAFIA_GENERAL, MAFIA_TARGET,
+  MAFIA_GENERAL, MAFIA_TARGET, CHANGE_PROFILE,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
   getMultiChatRoomList, setMultiChatRoomList,// getMultiChatRoomID,
   getMultiChatList, setMultiChatList, setMultiChat, getMultiChat,
-  setUserList, GET_USER_LIST, getTimelineList
+  setUserList, GET_USER_LIST, getTimelineList, setNick, setPW
 } from './actions';
 
-const url = 'http://localhost:8000';
-//const url = 'http://13.124.80.116:8001';
+//const url = 'http://localhost:8000';
+const url = 'http://13.124.80.116:8001';
 
 export function* postSignUp() {
   const state = yield select();
@@ -1086,6 +1086,7 @@ export function* watchChangeProfile() {
   const t = true;
   while(t) {
     const action = yield take(CHANGE_PROFILE);
+    console.log('chpro');
     yield call(postProfile, action.newNick, action.newPW, action.retypePW);
   }
 }
@@ -1131,4 +1132,5 @@ export function* rootSaga() {
 
   yield fork(watchMafiaGeneral);
   yield fork(watchMafiaTarget);
+  yield fork(watchChangeProfile);
 }
