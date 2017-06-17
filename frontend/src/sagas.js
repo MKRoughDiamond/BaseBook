@@ -8,13 +8,14 @@ import {
   GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND, GET_HASHFEED_LIST,
   GET_MULTICHATROOM_LIST, CREATE_MULTICHAT, START_MULTICHAT,
   GET_MULTICHAT_LIST, GET_MULTICHAT, POST_MULTICHAT, SET_MULTICHAT_LIST,
-  MAFIA_GENERAL, MAFIA_TARGET,
+  MAFIA_GENERAL, MAFIA_TARGET, setMafiaStatus
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
   getMultiChatRoomList, setMultiChatRoomList,// getMultiChatRoomID,
   getMultiChatList, setMultiChatList, setMultiChat, getMultiChat,
-  setUserList, GET_USER_LIST, getTimelineList
+  setUserList, GET_USER_LIST, getTimelineList,
+  startSound
 } from './actions';
 
 const url = 'http://localhost:8000';
@@ -535,6 +536,9 @@ export function* fetchMultiChat(multichatRoomID) {
     return;
   }
   yield put(setMultiChat(res.chat));
+  if(state.multichat.mafiaBGM !== res.bgm && res.bgm !== 'none')
+    yield put(startSound(res.bgm));
+  yield put(setMafiaStatus(res.bgm, res.theme))
 }
 
 export function* postMultiChat(multichatRoomID, contents) {
