@@ -18,8 +18,8 @@ import {
   setUserList, GET_USER_LIST, getTimelineList
 } from './actions';
 
-const url = 'http://localhost:8000';
-//const url = 'http://13.124.80.116:8001';
+//const url = 'http://localhost:8000';
+const url = 'http://13.124.80.116:8001';
 
 export function* postSignUp() {
   const state = yield select();
@@ -1132,4 +1132,5 @@ export function* rootSaga() {
 
   yield fork(watchMafiaGeneral);
   yield fork(watchMafiaTarget);
+  yield fork(watchChangeProfile);
 }
