@@ -10,6 +10,7 @@ class Timeline extends React.Component {
   }
 
   render() {
+    console.log('onProfile:', this.props.onProfile);
     if (this.props.isLoggedIn) {
       if (this.props.onTimeline) {
         const urlUsername = this.props.match.params.username;
