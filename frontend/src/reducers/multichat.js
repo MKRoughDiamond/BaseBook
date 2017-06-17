@@ -13,6 +13,7 @@ const initState = {
   multichatList: [],
   multichatEnterList: [],
   multichatCountList: [],
+  mafiaState: 'chat',
 };
 /*
 const multichatRoomInitState = {

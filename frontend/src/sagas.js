@@ -577,6 +577,28 @@ export function* postMultiChat(multichatRoomID, contents) {
   yield put(getMultiChat(multichatRoomID)); // refresh chat log
 }
 
+export function* postMafiaGeneral(multichatRoomID, suburl) {
+  const state = yield select();
+  yield call(fetch, url + '/mafia/' + multichatRoomID + '/' + suburl + '/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    },
+  });
+}
+
+export function* postMafiaTarget(multichatRoomID, target) {
+  const state = yield select();
+  yield call(fetch, url + '/mafia/' + multichatRoomID + '/target/' + target + '/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    },
+  });
+}
+
 export function* startChat(username) {
   const state = yield select();
   if(username === '')
@@ -1011,6 +1033,22 @@ export function* createMultiChatReciever() {
     const state = yield select();
     if (state.multichat.multichatOn === true && state.multichat.multichatRoomID !== null)
       yield put(getMultiChat(state.multichat.multichatRoomID));
+  }
+}
+
+export function* watchMafiaGeneral() {
+  const t = true;
+  while(t) {
+    const action = yield take(MAFIA_GENERAL);
+    yield call(postMafiaGeneral, action.roomID, action.suburl);
+  }
+}
+
+export function* watchMafiaTarget() {
+  const t = true;
+  while(t) {
+    const action = yield take(MAFIA_TARGET);
+    yield call(postMafiaTarget, action.roomID, action.target);
   }
 }
 

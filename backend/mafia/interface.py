@@ -54,7 +54,7 @@ def end_game(room, user):
 
 def make_vote(room, user):
     mafia = mafia_rooms.get(str(room.id))
-    if mafia is None or mafia.status == 'chat':
+    if mafia is None or mafia.status != 'day':
         return
     
     mafia.use_ability(user, None)
@@ -64,7 +64,7 @@ def make_vote(room, user):
 
 def use_ability(room, user, target):
     mafia = mafia_rooms.get(str(room.id))
-    if mafia is None or mafia.status == 'chat':
+    if mafia is None or mafia.status == 'chat' or mafia.status == 'day':
         return
     mafia.use_ability(user, target)
 

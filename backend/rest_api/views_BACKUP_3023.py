@@ -15,6 +15,7 @@ ChatRoomSerializer, ChatSerializer, FriendListSerializer, HashTagListSerializer,
 from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions
 from core.models import Feed, Reply, Chat, ChatRoom, Friend, HashTag, MultiChatRoom, MultiChatUser, BaseUser
 from mafia.interface import mafia_tick, user_chat_team, user_entered, use_ability
+#from core.models import BaseUser, Friend, Feed, Reply, Picture
 
 
 # This function is needed to support POST with JSON in firefox.
@@ -56,12 +57,9 @@ class user_signup(APIView):
     
     def post(self, request):
         username = request.data.get('id', None)
-        nickname = request.data.get('nickname', None)
         password = request.data.get('password', None)
         if username is None:
             return Response({'detail':'Please put valid ID.'}, status=400)
-        if nickname is None:
-            return Response({'detail':'Please put valid Nickname.'}, status=400)
         if password is None:
             return Response({'detail':'Please put password.'}, status=400)
         username = username.lower()
@@ -78,7 +76,7 @@ class user_signup(APIView):
         except IntegrityError:
             return Response({'detail':'User already exists!'}, status=400)
         user.save()
-        baseuser = BaseUser(user=user, nickname=nickname);
+        baseuser = BaseUser(user=user, nickname=username);
         baseuser.save()
         return Response('',status=200)
     
@@ -487,10 +485,11 @@ class MafiaGameAbility(APIView):
         except ObjectDoesNotExist: 
             return Response('', status=404)
         use_ability(room, request.user, target)
+<<<<<<< HEAD
         return Response('', status=200)
     
     def options(self, request, pk, username):
-        return options_cors()
+=======
 
 class Password(APIView):
     def post(self, request):
@@ -532,4 +531,5 @@ class Profile(APIView):
         return Response(serializer.data)
 
     def options(self, request):
+>>>>>>> repo/master
         return options_cors()
