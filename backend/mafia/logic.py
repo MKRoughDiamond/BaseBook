@@ -308,10 +308,10 @@ class MafiaRoom:
         
         if police_target in self._mafias:
             self._print('{}(은)는 마피아가 맞습니다.'
-                        .format(police_target.user.nickname), self._polices)
+                        .format(police_target.user.username), self._polices)
         else:
             self._print('{}(은)는 마피아가 아닙니다.'
-                        .format(police_target.user.nickname), self._polices)
+                        .format(police_target.user.username), self._polices)
         
         if mafia_target is None or mafia_target == doctor_target:
             self._corpse = None
