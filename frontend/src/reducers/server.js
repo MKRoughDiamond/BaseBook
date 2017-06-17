@@ -29,12 +29,14 @@ const server = (state = serverInitialState, action) => {
   case SETID:
     return Object.assign({}, state, { ID : action.ID });
   case SETNICK:
+    console.log('SETNICK');
     return Object.assign({}, state, { Nick : action.Nick });
   case SETPW:
     return Object.assign({}, state, { PW : action.PW });
   case NEWID:
     return Object.assign({}, state, { newID : action.newID });
   case NEWNICK:
+    console.log('NEWNICK');
     return Object.assign({}, state, { newNick : action.newNick });
   case NEWPW:
     return Object.assign({}, state, { newPW : action.newPW });
@@ -86,7 +88,7 @@ const server = (state = serverInitialState, action) => {
   case LOGIN_SUCCESS:
     return Object.assign({}, state, { 
       loggedIn : true, 
-      hash: action.hash, 
+      hash: action.hash,
       onTimeline: false, 
       onHashFeed: false,
       onProfile : false,

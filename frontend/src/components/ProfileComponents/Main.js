@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {toFeed, getProfile, /*changeNick, changePW*/ setNick, setPW} from '../../actions';
+import {toFeed, getProfile, newNick, newPW, retypePW, changeProfile} from '../../actions';
 import TopBar from '../TopBar';
 
 class ProfileMain extends React.Component {
@@ -8,8 +8,12 @@ class ProfileMain extends React.Component {
     super(props);
     this.handleToFeed = this.handleToFeed.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.handleChangeNick = this.handleChangeNick.bind(this);
-    this.handleChangePW = this.handleChangePW.bind(this);
+
+    this.handleUpdateNick = this.handleUpdateNick.bind(this);
+    this.handleUpdatePW = this.handleUpdatePW.bind(this);
+    this.handleUpdateRetypePW = this.handleUpdateRetypePW.bind(this);
+
+    this.handleChangeProfile = this.handleChangeProfile.bind(this);
   }
   componentDidMount() {
     this.props.getProfile();
@@ -23,15 +27,27 @@ class ProfileMain extends React.Component {
       this.handlePostChat();
   }
 
-  handleChangeNick() {
-    this.props.changeNick();
+  handleUpdateNick(e) {
+    this.props.onUpdateNick(e.target.value);
   }
-  handleChangePW() {
-    this.props.changePW();
+  handleUpdatePW(e) {
+    this.props.onUpdatePW(e.target.value);
+  }
+  handleUpdateRetypePW(e) {
+    this.props.onUpdateRetypePW(e.target.value);
+  }
+
+  handleChangeProfile() {
+    //order : newNick, newPW, retypePW
+    this.props.changeProfile(
+      this.props.newNick,
+      this.props.newPW,
+      this.props.retypePW
+    );
   }
 
   render() {
-    let pagenameStr = this.props.username + '(Nickname: ' + this.props.nickname + ')\'s Profile';
+    let pagenameStr = this.props.username + '\'s Profile';
     return (
       <div id="main-wrapper">
         <TopBar/>
@@ -40,13 +56,8 @@ class ProfileMain extends React.Component {
             {pagenameStr}
           </div>
           <div className="line">
-            <div id="password">Password: </div>
-            <input type="password" id="input-password"/>
-          </div>
-          <div className="line">
             <div id="nickname">Nickname: </div>
             <input type="text" id="input-nickname" defaultValue={this.props.nickname} />
-            <button id="change-nickname" className="loginButtons" onClick={this.handleChangeNick}>Change Nickname</button>
           </div>
           <div className="line">
             <div>
@@ -57,7 +68,11 @@ class ProfileMain extends React.Component {
               <div id="retypepassword">Retype New Password: </div>
               <input type="password" id="input-retypepassword"/>
             </div>
-            <button id="change-password" className="loginButtons" onClick={this.handleChangePW}>Change Password</button>
+          </div>
+          <div className="line">
+            <div id="password">Password: </div>
+            <input type="password" id="input-password"/>
+            <button id="change-password" className="changeButtons" onClick={this.handleChangeProfile}>Confirm</button>
           </div>
         </div>
       </div>
@@ -69,6 +84,9 @@ let mapStateToProps = (state) => {
   return {
     username: state.server.ID,
     nickname: state.server.Nick,
+    newNick: state.server.newNick,
+    newPW: state.server.newPW,
+    retypePW: state.server.retypePW,
   };
 };
 
@@ -76,10 +94,13 @@ let mapDispatchToProps = (dispatch) => {
   return {
     toFeed: () => dispatch(toFeed()),
     getProfile: () => dispatch(getProfile()),
-    changeNick: (newNick) => dispatch(setPW(newNick)),
-    changePW: (newPW) => dispatch(setNick(newPW)),
-//    changeNick: (newNick) => dispatch(changeNick(newNick)),
-//    changePW: (newPW) => dispatch(changeNick(newPW)),
+
+    onUpdateNick: (value) => dispatch(newNick(value)),
+    onUpdatePW: (value) => dispatch(newPW(value)),
+    onUpdateRetypePW: (value) => dispatch(retypePW(value)),
+
+    changeProfile: (newNick, newPW, retypePW) =>
+      dispatch(changeProfile(newNick, newPW, retypePW)),
   };
 };
 

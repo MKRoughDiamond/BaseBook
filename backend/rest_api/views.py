@@ -12,7 +12,7 @@ import re
 
 from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSerializer, ReplySerializer, ReplyListSerializer, LikeSerializer, DislikeSerializer, \
 ChatRoomSerializer, ChatSerializer, FriendListSerializer, HashTagListSerializer, MultiChatRoomSerializer, BaseUserSerializer
-from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions, IsAdminUser
+from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions
 from core.models import Feed, Reply, Chat, ChatRoom, Friend, HashTag, MultiChatRoom, MultiChatUser, BaseUser
 from mafia.interface import mafia_tick, user_chat_team, user_entered, use_ability
 
@@ -31,7 +31,6 @@ def options_cors():
 class UserList(generics.ListAPIView):
     queryset = BaseUser.objects.all()
     serializer_class = BaseUserSerializer
-    permission_classes = (permissions.IsAdminUser, )
 
     def options(self, request):
         return options_cors()
