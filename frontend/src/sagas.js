@@ -15,7 +15,7 @@ import {
   getChatRoomID, getChatList, setChatList, setChat, getChat,
   getMultiChatRoomList, setMultiChatRoomList,// getMultiChatRoomID,
   getMultiChatList, setMultiChatList, setMultiChat, getMultiChat,
-  setUserList, GET_USER_LIST, getTimelineList
+  setUserList, GET_USER_LIST, getTimelineList, getUserList
 } from './actions';
 
 //const url = 'http://localhost:8000';
@@ -780,6 +780,7 @@ export function* postProfile(newNick, newPW, retypePW) {
       //errorbox?
     }else{
       yield put(setPW(newPW));
+      const state = yield select();
       const hash = new Buffer(`${state.server.ID}:${state.server.PW}`).toString('base64');
       yield put(loginSuccess(hash));
     }
@@ -788,6 +789,7 @@ export function* postProfile(newNick, newPW, retypePW) {
     //errorbox 띄워주면 좋겠음
   }else{
     yield put(setNick(newNick));
+    yield put(getUserList());
   }
 }
 
@@ -1058,6 +1060,7 @@ export function* watchGetUserList() {
   const t = true;
   while(t) {
     yield take(GET_USER_LIST);
+    console.log('getuserlist');
     yield call(fetchUserList);
   }
 }
