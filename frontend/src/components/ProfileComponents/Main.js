@@ -18,10 +18,13 @@ class ProfileMain extends React.Component {
   }
   componentDidMount() {
     this.props.getProfile();
+    this.props.getProfile();
+    this.props.getProfile();
+    this.props.getProfile();
   }
 
   handleToFeed() {
-    this.props.toFeed();
+    //this.props.toFeed();
   }
 
   handleUpdateNick(e) {
@@ -49,6 +52,7 @@ class ProfileMain extends React.Component {
         this.props.newPW,
         this.props.retypePW
       );
+      this.props.getProfile();
     }
   }
 
