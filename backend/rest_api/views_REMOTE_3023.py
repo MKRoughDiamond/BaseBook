@@ -62,10 +62,7 @@ class user_signup(APIView):
             return Response({'detail':'Please put valid ID.'}, status=400)
         if password is None:
             return Response({'detail':'Please put password.'}, status=400)
-        username = username.lower()
-        if username == 'admin' or username == 'system':     # reserved username
-            return Response({'detail':'User already exists!'}, status=400)
-        username_regex = re.compile(r'^[a-z]\w+$')
+        username_regex = re.compile(r'^[a-zA-Z]\w+$')
         if username_regex.match(username) is None:
             return Response({'detail':'ID should consist of alphabets and numbers.'}, status=400)
         if len(password) < 4:
@@ -471,9 +468,8 @@ class MafiaGame(APIView):
         except ObjectDoesNotExist: 
             return Response('', status=404)
         func(room, request.user)
-        return Response('', status=200)
     
-    def options(self, request, func, pk):
+    def options(self, request, pk):
         return options_cors()
 
 
@@ -485,10 +481,6 @@ class MafiaGameAbility(APIView):
         except ObjectDoesNotExist: 
             return Response('', status=404)
         use_ability(room, request.user, target)
-        return Response('', status=200)
-    
-    def options(self, request, pk, username):
-        return options_cors()
 
 class Password(APIView):
     def post(self, request):
