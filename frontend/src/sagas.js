@@ -8,14 +8,13 @@ import {
   GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND, GET_HASHFEED_LIST,
   GET_MULTICHATROOM_LIST, CREATE_MULTICHAT, START_MULTICHAT,
   GET_MULTICHAT_LIST, GET_MULTICHAT, POST_MULTICHAT, SET_MULTICHAT_LIST,
-  GET_USER_LIST, CHANGE_PROFILE,
-  setPW, setNick, loginSuccess, loginPageError, getFeedList, setFeedList, setFeed,
-  getReplyList, setReplyList, setReply,
+  MAFIA_GENERAL, MAFIA_TARGET,
+  loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
   getMultiChatRoomList, setMultiChatRoomList,// getMultiChatRoomID,
   getMultiChatList, setMultiChatList, setMultiChat, getMultiChat,
-  setUserList, getTimelineList, //changeProfile,
+  setUserList, GET_USER_LIST, getTimelineList
 } from './actions';
 
 const url = 'http://localhost:8000';
@@ -1092,5 +1091,6 @@ export function* rootSaga() {
   yield fork(watchPostMultiChat);
   yield fork(createMultiChatReciever);
 
-  yield fork(watchChangeProfile);
+  yield fork(watchMafiaGeneral);
+  yield fork(watchMafiaTarget);
 }
