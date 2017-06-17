@@ -9,12 +9,13 @@ import {
   GET_MULTICHATROOM_LIST, CREATE_MULTICHAT, START_MULTICHAT,
   GET_MULTICHAT_LIST, GET_MULTICHAT, POST_MULTICHAT, SET_MULTICHAT_LIST,
   MAFIA_GENERAL, MAFIA_TARGET, CHANGE_PROFILE,
+  setNick, setPW,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
   getMultiChatRoomList, setMultiChatRoomList,// getMultiChatRoomID,
   getMultiChatList, setMultiChatList, setMultiChat, getMultiChat,
-  setUserList, GET_USER_LIST, getTimelineList, setNick, setPW
+  setUserList, GET_USER_LIST, getTimelineList
 } from './actions';
 
 //const url = 'http://localhost:8000';
@@ -1086,7 +1087,6 @@ export function* watchChangeProfile() {
   const t = true;
   while(t) {
     const action = yield take(CHANGE_PROFILE);
-    console.log('chpro');
     yield call(postProfile, action.newNick, action.newPW, action.retypePW);
   }
 }
