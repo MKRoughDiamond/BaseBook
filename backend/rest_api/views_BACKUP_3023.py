@@ -485,10 +485,11 @@ class MafiaGameAbility(APIView):
         except ObjectDoesNotExist: 
             return Response('', status=404)
         use_ability(room, request.user, target)
+<<<<<<< HEAD
         return Response('', status=200)
     
     def options(self, request, pk, username):
-        return options_cors()
+=======
 
 class Password(APIView):
     def post(self, request):
@@ -530,4 +531,5 @@ class Profile(APIView):
         return Response(serializer.data)
 
     def options(self, request):
+>>>>>>> repo/master
         return options_cors()

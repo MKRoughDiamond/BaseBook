@@ -8,8 +8,11 @@ class Entry extends React.Component {
     const chat = this.props.multichatList[this.props.index];
     if(chat.contents === null)
       return <div/>;
+
     return (
-      <div className="chat-wrapper">
+      <div className={(chat.username === 'system')?
+        'chat-wrapper-system' : 'chat-wrapper'}
+      >
         <div className="chat-writer">
           {chat.username}
         </div>

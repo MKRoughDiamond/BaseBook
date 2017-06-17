@@ -8,6 +8,7 @@ import {
   GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND, GET_HASHFEED_LIST,
   GET_MULTICHATROOM_LIST, CREATE_MULTICHAT, START_MULTICHAT,
   GET_MULTICHAT_LIST, GET_MULTICHAT, POST_MULTICHAT, SET_MULTICHAT_LIST,
+  MAFIA_GENERAL, MAFIA_TARGET,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
@@ -16,8 +17,8 @@ import {
   setUserList, GET_USER_LIST, getTimelineList
 } from './actions';
 
-//const url = 'http://localhost:8000';
-const url = 'http://13.124.80.116:8001';
+const url = 'http://localhost:8000';
+//const url = 'http://13.124.80.116:8001';
 
 export function* postSignUp() {
   const state = yield select();
@@ -560,6 +561,28 @@ export function* postMultiChat(multichatRoomID, contents) {
   yield put(getMultiChat(multichatRoomID)); // refresh chat log
 }
 
+export function* postMafiaGeneral(multichatRoomID, suburl) {
+  const state = yield select();
+  yield call(fetch, url + '/mafia/' + multichatRoomID + '/' + suburl + '/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    },
+  });
+}
+
+export function* postMafiaTarget(multichatRoomID, target) {
+  const state = yield select();
+  yield call(fetch, url + '/mafia/' + multichatRoomID + '/target/' + target + '/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    },
+  });
+}
+
 export function* startChat(username) {
   const state = yield select();
   if(username === '')
@@ -945,6 +968,22 @@ export function* createMultiChatReciever() {
   }
 }
 
+export function* watchMafiaGeneral() {
+  const t = true;
+  while(t) {
+    const action = yield take(MAFIA_GENERAL);
+    yield call(postMafiaGeneral, action.roomID, action.suburl);
+  }
+}
+
+export function* watchMafiaTarget() {
+  const t = true;
+  while(t) {
+    const action = yield take(MAFIA_TARGET);
+    yield call(postMafiaTarget, action.roomID, action.target);
+  }
+}
+
 // calls the function only once
 export function* watchGetUserList() {
   yield take(GET_USER_LIST);
@@ -1013,4 +1052,7 @@ export function* rootSaga() {
   yield fork(watchGetMultiChat);
   yield fork(watchPostMultiChat);
   yield fork(createMultiChatReciever);
+
+  yield fork(watchMafiaGeneral);
+  yield fork(watchMafiaTarget);
 }
