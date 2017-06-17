@@ -16,11 +16,11 @@ import {
   getMultiChatRoomList, setMultiChatRoomList,// getMultiChatRoomID,
   getMultiChatList, setMultiChatList, setMultiChat, getMultiChat,
   setUserList, GET_USER_LIST, getTimelineList,
-  startSound, endSound
+  startSound, endSound, getUserList
 } from './actions';
 
-const url = 'http://localhost:8000';
-//const url = 'http://13.124.80.116:8001';
+//const url = 'http://localhost:8000';
+const url = 'http://13.124.80.116:8001';
 
 export function* postSignUp() {
   const state = yield select();
@@ -444,7 +444,7 @@ export function* fetchMultiChatRoomList() {
   for(let i in res){
     list.push(res[i].id);
     countList.push(res[i].users.length);
-    if (res[i].users.indexOf(state.server.ID) !== -1) {
+    if (res[i].users.indexOf(state.server.Nick) !== -1) {
       enterList.push(res[i].id);
     }
   }

@@ -13,11 +13,11 @@ def _create_system_user():
         user =  User.objects.get(username='system')
     user.save()
     try:
-        baseuser = BaseUser(user=user, nickname='system')
+        return BaseUser.objects.get(nickname='system')
     except Exception:
-        return BaseUser.obejcts.get(nickname='system')
-    baseuser.save()
-    return BaseUser.objects.get(nickname='system')
+        baseuser =  BaseUser(user=user, nickname='system')
+        baseuser.save()
+        return BaseUser.objects.get(nickname='system')
 
 
 MIN_START_PLAYER = 5
@@ -345,10 +345,10 @@ class MafiaRoom:
         if police_target is not None:
             if police_target in self._mafias:
                 self._print('{}(은)는 마피아가 맞습니다.'
-                            .format(police_target.user.username), self._polices)
+                            .format(police_target.user.nickname), self._polices)
             else:
                 self._print('{}(은)는 마피아가 아닙니다.'
-                            .format(police_target.user.username), self._polices)
+                            .format(police_target.user.nickname), self._polices)
         
         if mafia_target is None or mafia_target == doctor_target:
             self._corpse = None
