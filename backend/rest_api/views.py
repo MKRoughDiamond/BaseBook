@@ -480,7 +480,7 @@ class MafiaGameAbility(APIView):
             target = BaseUser.objects.get(nickname=nickname)
         except ObjectDoesNotExist: 
             return Response('', status=404)
-        use_ability(room, request.user, target.user)
+        use_ability(room, request.user, target)
 
 class Password(APIView):
     def post(self, request):
