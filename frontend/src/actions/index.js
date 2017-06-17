@@ -1,8 +1,11 @@
 export const SETID = 'SETID';
+export const SETNICK = 'SETNICK';
 export const SETPW = 'SETPW';
 export const NEWID = 'NEWID';
+export const NEWNICK = 'NEWNICK';
 export const NEWPW = 'NEWPW';
 export const RETYPEPW = 'RETYPEPW';
+export const CONFIRMPW = 'CONFIRMPW';
 export const TOMAIN = 'TOMAIN';
 export const TOSIGNUP = 'TOSIGNUP';
 export const LOGIN ='LOGIN';
@@ -39,6 +42,8 @@ export const SET_CHAT = 'SET_CHAT';
 export const POST_CHAT = 'POST_CHAT';
 export const TOFEED = 'TOFEED';
 
+export const CHANGE_PROFILE = 'CHANGE_PROFILE';
+
 export const TOTIMELINE = 'TOTIMELINE';
 export const GET_TIMELINE_LIST = 'GET_TIMELINE_LIST';
 
@@ -46,6 +51,7 @@ export const GET_USER_LIST = 'GET_USER_LIST';
 export const SET_USER_LIST = 'SET_USER_LIST';
 export const USER_QUERY = 'USER_QUERY';
 export const LOGOUT = 'LOGOUT';
+export const TOPROFILE = 'TOPROFILE';
 
 export const DELETE_FEED = 'DELETE_FEED';
 export const DELETE_REPLY = 'DELETE_REPLY';
@@ -85,6 +91,13 @@ export function setID(value) {
   };
 }
 
+export function setNick(value) {
+  return {
+    type : SETNICK,
+    Nick : value
+  };
+}
+
 export function setPW(value) {
   return {
     type : SETPW,
@@ -99,6 +112,14 @@ export function newID(value) {
   };
 }
 
+export function newNick(value) {
+  return {
+    type : NEWNICK,
+    newNick : value
+  };
+}
+
+
 export function newPW(value) {
   return {
     type : NEWPW,
@@ -110,6 +131,13 @@ export function retypePW(value) {
   return {
     type : RETYPEPW,
     retypePW : value
+  };
+}
+
+export function confirmPW(value) {
+  return {
+    type : CONFIRMPW,
+    confirmPW : value
   };
 }
 
@@ -177,6 +205,16 @@ export function getFeed(id) {
     id: id
   };
 }
+
+export function changeProfile(newNick, newPW, retypePW) {
+  return {
+    type: CHANGE_PROFILE,
+    newNick: newNick,
+    newPW: newPW,
+    retypePW: retypePW,
+  };
+}
+
 
 export function setFeed(id, feed) {
   return {
@@ -366,6 +404,12 @@ export function userQuery(keyword) {
 export function logout() {
   return {
     type: LOGOUT
+  };
+}
+
+export function toProfile() {
+  return {
+    type: TOPROFILE
   };
 }
 

@@ -7,6 +7,7 @@ import {rootSaga} from './sagas';
 import {Provider} from 'react-redux';
 import Login from './components/Login';
 import Feed from './components/Feed';
+import Profile from './components/Profile';
 import Chat from './components/Chat';
 import Timeline from './components/Timeline';
 import HashFeed from './components/HashFeed';
@@ -31,6 +32,7 @@ ReactDOM.render(
           <Route exact path="/" component={Feed}/>
           <Route path="/timeline/:username" component={Timeline}/>
           <Route path="/hashtag/:tagname" component={HashFeed}/>
+          <Route path="/users/profile" component={Profile}/>
           <Route path="/login" component={Login}/>
           <Route path="/chat" component={Chat}/>
           <Route path="/multichat" component={MultiChat}/>

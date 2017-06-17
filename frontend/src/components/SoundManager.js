@@ -19,15 +19,17 @@ class SoundManager extends React.Component {
   }
   render() {
     if(this.props.soundStart) {
-      return (<Sound
-        url={this.props.soundUrl}
-        playStatus={Sound.status.PLAYING}
-        onFinishedPlaying={this.handlesoundEnd}
-      />);
+      return (
+        <Sound
+          url={this.props.soundUrl}
+          playStatus={Sound.status.PLAYING}
+          onFinishedPlaying={this.handlesoundEnd}
+        />
+      );
     }
     else
     {
-      return (<div></div>);
+      return (<div/>);
     }
   }
 }

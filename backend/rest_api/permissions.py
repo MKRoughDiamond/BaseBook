@@ -34,4 +34,3 @@ class IsAuthNotOptions(permissions.BasePermission):
         if request.method == 'OPTIONS':
             return True
         return permissions.IsAuthenticated.has_permission(self, request, view)
-    

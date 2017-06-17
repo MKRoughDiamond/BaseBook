@@ -8,7 +8,8 @@ import {
   GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND, GET_HASHFEED_LIST,
   GET_MULTICHATROOM_LIST, CREATE_MULTICHAT, START_MULTICHAT,
   GET_MULTICHAT_LIST, GET_MULTICHAT, POST_MULTICHAT, SET_MULTICHAT_LIST,
-  MAFIA_GENERAL, MAFIA_TARGET, setMafiaStatus,
+  MAFIA_GENERAL, MAFIA_TARGET, setMafiaStatus, CHANGE_PROFILE,
+  setNick, setPW,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
@@ -18,13 +19,14 @@ import {
   startSound, endSound
 } from './actions';
 
-const url = 'http://localhost:8000';
-//const url = 'http://13.124.80.116:8001';
+//const url = 'http://localhost:8000';
+const url = 'http://13.124.80.116:8001';
 
 export function* postSignUp() {
   const state = yield select();
   const signUpInfo = {
     'id': state.server.newID,
+    'nickname': state.server.newNick,
     'password': state.server.newPW
   };
   const response = yield call(fetch, url + '/signup/', {
@@ -57,8 +59,23 @@ export function* postLogin() {
       'Authorization': `Basic ${hash}`
     }
   });
-  if(response.ok) {
+  const responseProfile = yield call(fetch, url + '/users/profile/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${hash}`
+    }
+  });
+  if(response.ok && responseProfile.ok) {
     yield put(loginSuccess(hash));
+    let res;
+    try {
+      res = yield responseProfile.json();
+    }
+    catch(e) {
+      window.location.href = '/notfound/';
+      return;
+    }
+    yield put(setNick(res.nickname));
   }
   else {
     let res = {};
@@ -729,6 +746,58 @@ export function* postFriend(username) {
   }
 }
 
+export function* fetchProfile() {
+  const state = yield select();
+  const response = yield call(fetch, url + '/users/profile/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+}
+
+export function* postProfile(newNick, newPW, retypePW) {
+  const state = yield select();
+  const responseChangeNick = yield call(fetch, url + '/users/profile/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      nickname: newNick
+    })
+  });
+  if(newPW !== null && newPW.length >= 4 && newPW === retypePW){
+    const responseChangePW = yield call(fetch, url + '/users/password/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${state.server.hash}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        password: newPW
+      })
+    });
+    if(responseChangePW.ok === false){
+      //errorbox?
+    }else{
+      yield put(setPW(newPW));
+      const hash = new Buffer(`${state.server.ID}:${state.server.PW}`).toString('base64');
+      yield put(loginSuccess(hash));
+    }
+  }
+  if (responseChangeNick.ok === false) {
+    //errorbox 띄워주면 좋겠음
+  }else{
+    yield put(setNick(newNick));
+  }
+}
+
 
 export function* watchSignUp() {
   const t = true;
@@ -1021,6 +1090,14 @@ export function* watchPostFriend() {
   }
 }
 
+export function* watchChangeProfile() {
+  const t = true;
+  while(t) {
+    const action = yield take(CHANGE_PROFILE);
+    yield call(postProfile, action.newNick, action.newPW, action.retypePW);
+  }
+}
+
 export function* rootSaga() {
   yield fork(watchSignUp);
   yield fork(watchLogin);
@@ -1062,4 +1139,5 @@ export function* rootSaga() {
 
   yield fork(watchMafiaGeneral);
   yield fork(watchMafiaTarget);
+  yield fork(watchChangeProfile);
 }
