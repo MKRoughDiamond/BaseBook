@@ -15,7 +15,8 @@ import {
   getChatRoomID, getChatList, setChatList, setChat, getChat,
   getMultiChatRoomList, setMultiChatRoomList,// getMultiChatRoomID,
   getMultiChatList, setMultiChatList, setMultiChat, getMultiChat,
-  setUserList, GET_USER_LIST, getTimelineList, getUserList
+  setUserList, GET_USER_LIST, getTimelineList,
+  startSound, endSound, getUserList
 } from './actions';
 
 //const url = 'http://localhost:8000';
