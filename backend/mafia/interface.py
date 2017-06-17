@@ -69,6 +69,20 @@ def use_ability(room, user, target):
     mafia.use_ability(user, target)
 
 
+def get_bgm(room, user):
+    mafia = mafia_rooms.get(str(room.id))
+    if mafia is None or mafia.status == 'chat':
+        return 'none'
+    return mafia.get_bgm(user)
+
+
+def get_theme(room):
+    mafia = mafia_rooms.get(str(room.id))
+    if mafia is None or mafia.status == 'chat':
+        return 'none'
+    return mafia.get_theme()
+
+
 def test_mafia_tick(room):
     while True:
         mafia_tick(room)

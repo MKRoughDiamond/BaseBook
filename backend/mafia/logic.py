@@ -93,8 +93,37 @@ class MafiaRoom:
     def early_vote(self):
         self._print('과반수가 조기투표에 찬성했으므로 5초 후 투표가 시작됩니다.')
         map(self._scheduler.cancel, self._scheduler.queue)
+        self._scheduler = sched.scheduler()
         self._scheduler.enter(5, 1, self._make_vote)
         self._scheduler.run(False)
+        
+    def get_bgm(self, user):
+        player = self._player(user)
+        if player is None or self.status == 'chat':
+            return 'none'
+        if self.status == 'vote':
+            return 'vote'
+        if self.status == 'day':
+            if self._daycount == 1:
+                return 'day_first'
+            else:
+                return 'day_normal'
+        if self.status == 'night':
+            if self._daycount == 0:
+                return 'none'
+            if player in self._mafias:
+                return 'night_mafia'
+            if player in self._polices:
+                return 'night_police'
+            if player in self._doctors:
+                return 'night_doctor'
+            return 'night_civilian'
+    
+    def get_theme(self):
+        if self.status == 'night':
+            return 'night'
+        else:
+            return 'none'
     
     def use_ability(self, caster, target=None):
         p_caster = self._survivor(caster)
@@ -196,8 +225,15 @@ class MafiaRoom:
         
     def _assign_job(self):
         n_player = self.player_count()
-        n_mafia = 2
-        n_police = 1
+        if n_player < 8:
+            n_mafia = 2
+            n_police = 1
+        elif n_player < 11:
+            n_mafia = 3
+            n_police = 1
+        else:
+            n_mafia = 4
+            n_police = 2
         n_doctor = 1
         n_civilian = n_player - (n_mafia + n_police + n_doctor)
         self._print('총 인원: {}  마피아: {}  경찰: {}  의사: {}'
@@ -301,12 +337,13 @@ class MafiaRoom:
         else:
             doctor_target = targets[0]
         
-        if police_target in self._mafias:
-            self._print('{}(은)는 마피아가 맞습니다.'
-                        .format(police_target.user.username), self._polices)
-        else:
-            self._print('{}(은)는 마피아가 아닙니다.'
-                        .format(police_target.user.username), self._polices)
+        if police_target is not None:
+            if police_target in self._mafias:
+                self._print('{}(은)는 마피아가 맞습니다.'
+                            .format(police_target.user.username), self._polices)
+            else:
+                self._print('{}(은)는 마피아가 아닙니다.'
+                            .format(police_target.user.username), self._polices)
         
         if mafia_target is None or mafia_target == doctor_target:
             self._corpse = None
