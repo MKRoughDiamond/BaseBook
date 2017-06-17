@@ -1,7 +1,7 @@
 import {
   TOMULTICHAT, START_MULTICHAT, GET_MULTICHAT_ROOM_ID,
   SET_MULTICHATROOM_LIST,// SET_MULTICHATROOM,
-  SET_MULTICHAT_LIST, SET_MULTICHAT, TOFEED, LOGOUT
+  SET_MULTICHAT_LIST, SET_MULTICHAT, TOFEED, TOPROFILE, LOGOUT
 } from '../actions';
 
 const initState = {
@@ -27,6 +27,8 @@ const multichat = (state = initState, action) => {
   case TOMULTICHAT:
     return Object.assign({}, state, { multichatOn : true , multichatRoomID : null});
   case TOFEED:
+    return initState;
+  case TOPROFILE:
     return initState;
   case LOGOUT:
     return initState;

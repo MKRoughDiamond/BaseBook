@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { toFeed, toTimeline, userQuery, getUserList, logout, startSound } from '../actions';
+import { toFeed, toTimeline, userQuery, getUserList, toProfile, logout, startSound } from '../actions';
 
 class TopBar extends React.Component {
   constructor(props) {
@@ -9,6 +9,7 @@ class TopBar extends React.Component {
     this.handleToTimeline = this.handleToTimeline.bind(this);
     this.handleUserQuery = this.handleUserQuery.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+    this.handleToProfile = this.handleToProfile.bind(this);
   }
 
   componentDidMount() {
@@ -27,7 +28,6 @@ class TopBar extends React.Component {
     this.props.userQuery('');
     this.props.toTimeline(username);
   }
-
   handleUserQuery() {
     this.props.userQuery(this.refs.query.value);
   }
@@ -35,6 +35,10 @@ class TopBar extends React.Component {
   handleLogout() {
     this.props.startSound('logout');
     this.props.logout();
+  }
+  handleToProfile() {
+//    this.props.startSound('logout');
+    this.props.toProfile();
   }
 
   render() {
@@ -45,6 +49,9 @@ class TopBar extends React.Component {
         </div>
         <div id="logout" onClick={this.handleLogout}>
           logout
+        </div>
+        <div id="profile" onClick={this.handleToProfile}>
+          Profile
         </div>
         <div id="find-people">
           <div id="find-people-title">
@@ -85,6 +92,7 @@ let mapDispatchToProps = (dispatch) => {
     userQuery: (keyword) => dispatch(userQuery(keyword)),
     getUserList: () => dispatch(getUserList()),
     logout: () => dispatch(logout()),
+    toProfile: () => dispatch(toProfile()),
     startSound: (url) => dispatch(startSound(url))
   };
 };
