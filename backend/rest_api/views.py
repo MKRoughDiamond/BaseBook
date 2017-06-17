@@ -81,20 +81,20 @@ class user_signup(APIView):
         return options_cors()
 
 class FeedList(APIView):
-    def get(self, request, username=None):
-        if username is None: # Newsfeed query
-            friends = Friend.objects.filter(user=request.user).values('friend')
+    def get(self, request, nickname=None):
+        if nickname is None: # Newsfeed query
+            friends = Friend.objects.filter(baseuser__user=request.user).values('friend')
             friend_feeds = Feed.objects.filter(author__in=friends, scope__in=['Public', 'Friends Only'])
-            my_feeds = Feed.objects.filter(author=request.user)
+            my_feeds = Feed.objects.filter(author__user=request.user)
             feeds = (my_feeds | friend_feeds)
         else: # Timeline query
             try:
-                owner = User.objects.get(username=username)
+                owner = BaseUser.objects.get(user__nickname=nickname)
             except ObjectDoesNotExist:
                 return Response('', status=404)
-            owner_friends = Friend.objects.filter(user=owner).values('friend')
+            owner_friends = Friend.objects.filter(baseuser=owner).values('friend')
             owner_feeds = Feed.objects.filter(author=owner)
-            if request.user in owner_friends:
+            if BaseUser.objects.get(user=request.user) in owner_friends:
                 feeds = owner_feeds.filter(scope__in=['Public', 'Friends Only'])
             else:
                 feeds = owner_feeds.filter(scope='Public')
@@ -103,7 +103,7 @@ class FeedList(APIView):
         serializer = FeedListSerializer(feeds)
         return Response(serializer.data)
 
-    def post(self, request, username=None):
+    def post(self, request, nickname=None):
         parseStringList=['\n','\t','\0']
         contents = request.data.get('contents', None)
         scope = request.data.get('scope', None)
@@ -111,7 +111,7 @@ class FeedList(APIView):
         if contents is None or (scope,scope) not in Feed.SCOPE_CHOICES or (feedtype,feedtype) not in Feed.FEED_TYPE_CHOICES:
             return Response('No Contents', status=400)
 
-        feed = Feed(author_id=request.user.id, contents=contents, scope=scope, feedtype=feedtype)
+        feed = Feed(author=BaseUser.objects.get(user=request.user), contents=contents, scope=scope, feedtype=feedtype)
         feed.save()
         if feedtype == 'Text':
             contentsParse = contents
@@ -130,7 +130,7 @@ class FeedList(APIView):
                     
         return Response('', status=200)
 
-    def options(self, request, username=None):
+    def options(self, request, nickname=None):
         return options_cors()
 
 class HashTagFeedList(APIView):
@@ -183,11 +183,11 @@ class LikeList(APIView):
             return Response('', status=404)
         serializer = LikeSerializer(likes)
         data = serializer.data
-        if request.user.username in data['likes']:
+        if BaseUser.objects.get(user=request.user).nickname in data['likes']:
             return Response('Already Liked', status=400)
         else:
-            user = User.objects.get(id=request.user.id)
-            likes.like.add(user)
+            baseuser=BaseUser.objects.get(user=request.user)
+            likes.like.add(baseuser)
             return Response('', status=200)
 
     def delete(self, request, pk):
@@ -197,9 +197,9 @@ class LikeList(APIView):
             return Response('', status=404)
         serializer = LikeSerializer(likes)
         data = serializer.data
-        if request.user.username in data['likes']:
-            user = User.objects.get(id=request.user.id)
-            likes.like.remove(user)
+        if BaseUser.objects.get(user=request.user).nickname in data['likes']:
+            baseuser=BaseUser.objects.get(user=request.user)
+            likes.like.remove(baseuser)
             return Response('', status=200)
         else:
             return Response('Not Yet Like', status=400)
@@ -224,11 +224,11 @@ class DislikeList(APIView):
             return Response('', status=404)
         serializer = DislikeSerializer(dislikes)
         data = serializer.data
-        if request.user.username in data['dislikes']:
+        if BaseUser.objects.get(user=request.user).nickname in data['dislikes']:
             return Response('Already Disliked', status=400)
         else:
-            user = User.objects.get(id=request.user.id)
-            dislikes.dislike.add(user)
+            baseuser = BaseUser.objects.get(user=request.user)
+            dislikes.dislike.add(baseuser)
             return Response('', status=200)
 
     def delete(self, request, pk):
@@ -238,9 +238,9 @@ class DislikeList(APIView):
             return Response('', status=404)
         serializer = DislikeSerializer(dislikes)
         data = serializer.data
-        if request.user.username in data['dislikes']:
-            user = User.objects.get(id=request.user.id)
-            dislikes.dislike.remove(user)
+        if BaseUser.objects.get(user=request.user).nickname in data['dislikes']:
+            baseuser = BaseUser.objects.get(user=request.user)
+            dislikes.dislike.remove(baseuser)
             return Response('', status=200)
         else:
             return Response('Not Yet Dislike', status=400)
@@ -258,7 +258,7 @@ class ReplyList(APIView):
         contents = request.data.get('contents', None)
         if contents is None:
             return Response('No Contents', status=400)
-        reply = Reply(feed_id=pk, contents=contents, author_id=request.user.id)
+        reply = Reply(feed_id=pk, contents=contents, author=BaseUser.objects.get(user=request.user))
         reply.save()
         return Response('', status=200)
 
@@ -275,28 +275,28 @@ class ReplyDetail(generics.RetrieveUpdateDestroyAPIView):
         return options_cors()
 
 class ChatRoomID(APIView):
-    def post(self, request, username):
-        user1 = request.user
+    def post(self, request, nickname):
+        baseuser1 = BaseUser.objects.get(user=request.user)
         try:
-            user2 = User.objects.get(username=username)
+            baseuser2 = BaseUser.objects.get(nickname=nickname)
         except ObjectDoesNotExist:
             return Response('', status=404)
-        if user1.id == user2.id:
+        if baseuser1.user.id == baseuser2.user.id:
             return Response('', status=400)
-        if user1.id > user2.id:
-            temp = user2
-            user2 = user1
-            user1 = temp
+        if baseuser1.user.id > baseuser2.user.id:
+            temp = baseuser2
+            baseuser2 = baseuser1
+            baseuser1 = temp
         try:
-            room = ChatRoom.objects.get(user1=user1, user2=user2)
+            room = ChatRoom.objects.get(baseuser1=baseuser1, baseuser2=baseuser2)
         except ObjectDoesNotExist: 
             time = timezone.now()
-            room = ChatRoom(user1=user1, user2=user2, updated1=time, updated2=time)
+            room = ChatRoom(baseuser1=baseuser1, baseuser2=baseuser2, updated1=time, updated2=time)
             room.save()
         serializer = ChatRoomSerializer(room)
         return Response(serializer.data)
     
-    def options(self, request, username):
+    def options(self, request, nickname):
         return options_cors()
 
 class ChatDetail(APIView):
@@ -306,16 +306,16 @@ class ChatDetail(APIView):
         except ObjectDoesNotExist:
             return Response('', status=404)
         chats = Chat.objects.filter(room=room)
-        if request.user == room.user1:
+        if request.user == room.baseuser1.user:
             chats = chats.filter(timestamp__gt=room.updated1)
             room.updated1 = timezone.now()
-        elif request.user == room.user2:
+        elif request.user == room.baseuser2.user:
             chats = chats.filter(timestamp__gt=room.updated2)
             room.updated2 = timezone.now()
         else:
             return Response('', status=401)
         room.save() 
-        chats = chats.exclude(invisible=request.user)
+        chats = chats.exclude(invisible__user=request.user)
         serializer = ChatSerializer(chats)
         return Response(serializer.data)
     
@@ -324,7 +324,7 @@ class ChatDetail(APIView):
             room = ChatRoom.objects.get(pk=pk)
         except ObjectDoesNotExist:
             return Response('', status=404)
-        chat = Chat(room=room, user=request.user, contents=request.data.get('contents', ''))
+        chat = Chat(room=room, baseuser=BaseUser.objects.get(user=request.user), contents=request.data.get('contents', ''))
         chat.save()
         return Response('')
     
@@ -338,10 +338,10 @@ class ChatAll(APIView):
         except ObjectDoesNotExist:
             return Response('', status=404)
         chats = Chat.objects.filter(room=room)
-        chats = chats.exclude(invisible=request.user)
-        if request.user == room.user1:
+        chats = chats.exclude(invisible__user=request.user)
+        if request.user == room.baseuser1.user:
             room.updated1 = timezone.now()
-        elif request.user == room.user2:
+        elif request.user == room.baseuser2.user:
             room.updated2 = timezone.now()
         else:
             return Response('', status=401)
@@ -368,10 +368,10 @@ class MultiChatRoomID(APIView):
             except ObjectDoesNotExist: 
                 room = MultiChatRoom()
         room.save()
-        current_users = [x[0] for x in room.users.values_list('user')]
-        if request.user.id not in current_users:
+        current_users = [x[0] for x in room.users.values_list('baseuser')]
+        if BaseUser.objects.get(user=request.user).id not in current_users:
             time = timezone.now()
-            roomuser = MultiChatUser(user=request.user)
+            roomuser = MultiChatUser(baseuser=BaseUser.objects.get(user=request.user))
             roomuser.updated = time
             roomuser.save()
             room.users.add(roomuser)
@@ -390,7 +390,7 @@ class MultiChatDetail(APIView):
         except ObjectDoesNotExist:
             return Response('', status=404)
         try:
-            roomuser = room.users.get(user=request.user)
+            roomuser = room.users.get(baseuser=BaseUser.objects.get(user=request.user))
         except ObjectDoesNotExist:
             return Response('', status=404)
         
@@ -400,7 +400,7 @@ class MultiChatDetail(APIView):
         roomuser.updated = timezone.now()
         roomuser.save()
         
-        chats = chats.exclude(invisible=request.user)
+        chats = chats.exclude(invisible__user=request.user)
         serializer = ChatSerializer(chats)
         return Response(serializer.data)
     
@@ -409,7 +409,7 @@ class MultiChatDetail(APIView):
             room = MultiChatRoom.objects.get(pk=pk)
         except ObjectDoesNotExist:
             return Response('', status=404)
-        chat = Chat(multiroom=room, user=request.user, contents=request.data.get('contents', ''))
+        chat = Chat(multiroom=room, baseuser=BaseUser.objects.get(user=request.user), contents=request.data.get('contents', ''))
         chat = user_chat_team(room, request.user, chat)
         chat.save()
         return Response('')
@@ -424,11 +424,11 @@ class MultiChatAll(APIView):
         except ObjectDoesNotExist:
             return Response('', status=404)
         try:
-            roomuser = room.users.get(user=request.user)
+            roomuser = room.users.get(baseuser__user=request.user)
         except ObjectDoesNotExist:
             return Response('', status=404)
         chats = Chat.objects.filter(multiroom=room)
-        chats = chats.exclude(invisible=request.user)
+        chats = chats.exclude(invisible__user=request.user)
         roomuser.updated = timezone.now()
         roomuser.save()
         serializer = ChatSerializer(chats)
@@ -439,25 +439,25 @@ class MultiChatAll(APIView):
 
 
 class FriendList(APIView):
-    def post(self, request, username):
-        user1 = request.user
-        user2 = User.objects.get(username=username)
+    def post(self, request, nickname):
+        baseuser1 = BaseUser.objects.get(user=request.user)
+        baseuser2 = BaseUser.objects.get(nickname=nickname)
         try:
-            friend = Friend.objects.get(user=user1, friend=user2)
+            friend = Friend.objects.get(baseuser=baseuser1, friend=baseuser2)
         except ObjectDoesNotExist:
-            friend1 = Friend(user=user1, friend=user2)
-            friend2 = Friend(user=user2, friend=user1)
+            friend1 = Friend(baseuser=baseuser1, friend=baseuser2)
+            friend2 = Friend(baseuser=baseuser2, friend=baseuser1)
             friend1.save()
             friend2.save()
             return Response('', status=200)
         # You are already friends!
         return Response('', status=400)
-    def get(self, request, username):
-        friends = Friend.objects.filter(user__username=username)
+    def get(self, request, nickname):
+        friends = Friend.objects.filter(baseuser__nickname=nickname)
         serializer = FriendListSerializer(friends)
         return Response(serializer.data)
 
-    def options(self, request, username):
+    def options(self, request, nickname):
         return options_cors()
 
 
@@ -474,13 +474,13 @@ class MafiaGame(APIView):
 
 
 class MafiaGameAbility(APIView):
-    def post(self, request, pk, username):
+    def post(self, request, pk, nickname):
         try:
             room = MultiChatRoom.objects.get(pk=pk)
-            target = User.objects.get(username=username)
+            target = BaseUser.objects.get(nickname=nickname)
         except ObjectDoesNotExist: 
             return Response('', status=404)
-        use_ability(room, request.user, target)
+        use_ability(room, request.user, target.user)
 
 class Password(APIView):
     def post(self, request):
