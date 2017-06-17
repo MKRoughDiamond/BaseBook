@@ -5,6 +5,7 @@ export const NEWID = 'NEWID';
 export const NEWNICK = 'NEWNICK';
 export const NEWPW = 'NEWPW';
 export const RETYPEPW = 'RETYPEPW';
+export const CONFIRMPW = 'CONFIRMPW';
 export const TOMAIN = 'TOMAIN';
 export const TOSIGNUP = 'TOSIGNUP';
 export const LOGIN ='LOGIN';
@@ -127,6 +128,13 @@ export function retypePW(value) {
   return {
     type : RETYPEPW,
     retypePW : value
+  };
+}
+
+export function confirmPW(value) {
+  return {
+    type : CONFIRMPW,
+    confirmPW : value
   };
 }
 

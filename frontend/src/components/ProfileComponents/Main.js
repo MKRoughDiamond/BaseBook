@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {toFeed, getProfile, newNick, newPW, retypePW, changeProfile} from '../../actions';
+import {toFeed, getProfile, newNick, newPW, retypePW, confirmPW, changeProfile} from '../../actions';
 import TopBar from '../TopBar';
 
 class ProfileMain extends React.Component {
@@ -13,6 +13,7 @@ class ProfileMain extends React.Component {
     this.handleUpdatePW = this.handleUpdatePW.bind(this);
     this.handleUpdateRetypePW = this.handleUpdateRetypePW.bind(this);
 
+    this.handleUpdateConfirmPW = this.handleUpdateConfirmPW.bind(this);
     this.handleChangeProfile = this.handleChangeProfile.bind(this);
   }
   componentDidMount() {
@@ -37,6 +38,9 @@ class ProfileMain extends React.Component {
     this.props.onUpdateRetypePW(e.target.value);
   }
 
+  handleUpdateConfirmPW(e) {
+    this.props.onUpdateConfirmPW(e.target.value);
+  }
   handleChangeProfile() {
     //order : newNick, newPW, retypePW
     this.props.changeProfile(
@@ -57,21 +61,21 @@ class ProfileMain extends React.Component {
           </div>
           <div className="line">
             <div id="nickname">Nickname: </div>
-            <input type="text" id="input-nickname" defaultValue={this.props.nickname} />
+            <input type="text" id="input-nickname" defaultValue={this.props.nickname} onChange={this.handleUpdateNick}/>
           </div>
           <div className="line">
             <div>
               <div id="password">New Password: </div>
-              <input type="password" id="input-password"/>
+              <input type="password" id="input-password" onChange={this.handleUpdatePW}/>
             </div>
             <div>
               <div id="retypepassword">Retype New Password: </div>
-              <input type="password" id="input-retypepassword"/>
+              <input type="password" id="input-retypepassword" onChange={this.handleUpdateRetypePW}/>
             </div>
           </div>
           <div className="line">
             <div id="password">Password: </div>
-            <input type="password" id="input-password"/>
+            <input type="password" id="input-password" onChange={this.handleUpdateConfirmPW}/>
             <button id="change-password" className="changeButtons" onClick={this.handleChangeProfile}>Confirm</button>
           </div>
         </div>
@@ -87,6 +91,7 @@ let mapStateToProps = (state) => {
     newNick: state.server.newNick,
     newPW: state.server.newPW,
     retypePW: state.server.retypePW,
+    confirmPW: state.server.confirmPW,
   };
 };
 
@@ -99,6 +104,7 @@ let mapDispatchToProps = (dispatch) => {
     onUpdatePW: (value) => dispatch(newPW(value)),
     onUpdateRetypePW: (value) => dispatch(retypePW(value)),
 
+    onUpdateConfirmPW: (value) => dispatch(confirmPW(value)),
     changeProfile: (newNick, newPW, retypePW) =>
       dispatch(changeProfile(newNick, newPW, retypePW)),
   };

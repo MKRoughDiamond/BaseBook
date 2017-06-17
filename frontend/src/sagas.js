@@ -719,16 +719,16 @@ export function* postFriend(username) {
 
 export function* postProfile(newNick, newPW, retypePW) {
   const state = yield select();
-  const responseChangeNick = yield call(fetch, url + '/user/nickname/', {
+  const responseChangeNick = yield call(fetch, url + '/users/profile/', {
     method: 'POST',
     headers: {
       'Authorization': `Basic ${state.server.hash}`
     },
     body: JSON.stringify({
-      nickname: newNick
+      nickname: newNick,
     })
   });
-  if(newPW === retypePW){
+  if(newPW !== null && newPW.length > 4 && !newPW === retypePW){
     const responseChangePW = yield call(fetch, url + '/users/password/', {
       method: 'POST',
       headers: {

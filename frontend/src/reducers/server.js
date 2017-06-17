@@ -1,4 +1,4 @@
-import { SETID, SETNICK, SETPW, NEWID, NEWNICK, NEWPW, RETYPEPW,
+import { SETID, SETNICK, SETPW, NEWID, NEWNICK, NEWPW, RETYPEPW, CONFIRMPW,
   TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED, LOGOUT,
   TOHASHFEED, TOPROFILE, START_SOUND, END_SOUND
 } from '../actions';
@@ -12,6 +12,7 @@ const serverInitialState = {
   newNick: '',
   newPW: '',
   retypePW: '',
+  confirmPW: '',
   isLogin: true,
   loggedIn: false,
   errorMsg: null,
@@ -42,6 +43,8 @@ const server = (state = serverInitialState, action) => {
     return Object.assign({}, state, { newPW : action.newPW });
   case RETYPEPW:
     return Object.assign({}, state, { retypePW : action.retypePW });
+  case CONFIRMPW:
+    return Object.assign({}, state, { confirmPW : action.confirmPW });
   case TOFEED:
     return Object.assign({}, state, {
       onTimeline: false,
