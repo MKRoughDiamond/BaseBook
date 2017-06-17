@@ -96,6 +96,7 @@ class ChatSerializer(serializers.BaseSerializer):
         return {
             'chat': chatlist
         }
+
         
 class MultiChatRoomSerializer(serializers.ModelSerializer):
     users = serializers.StringRelatedField(many=True)

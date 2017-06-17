@@ -95,6 +95,32 @@ class MafiaRoom:
         map(self._scheduler.cancel, self._scheduler.queue)
         self._scheduler.enter(5, 1, self._make_vote)
         self._scheduler.run(False)
+        
+    def get_bgm(self, user):
+        player = self._player(user)
+        if player is None or self.status == 'chat':
+            return 'none'
+        if self.status == 'vote':
+            return 'vote'
+        if self.status == 'day':
+            if self._daycount == 1:
+                return 'day_first'
+            else:
+                return 'day_normal'
+        if self.status == 'night':
+            if player in self._mafias:
+                return 'night_mafia'
+            if player in self._polices:
+                return 'night_police'
+            if player in self._doctors:
+                return 'night_doctor'
+            return 'night_civilian'
+    
+    def get_theme(self):
+        if self.status == 'night':
+            return 'night'
+        else:
+            return 'none'
     
     def use_ability(self, caster, target=None):
         p_caster = self._survivor(caster)

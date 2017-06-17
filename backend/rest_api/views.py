@@ -14,7 +14,7 @@ from rest_api.serializers import UserSerializer, FeedListSerializer, FeedSeriali
 ChatRoomSerializer, ChatSerializer, FriendListSerializer, HashTagListSerializer, MultiChatRoomSerializer, BaseUserSerializer
 from rest_api.permissions import IsCurrUser, IsCurrUserReply, IsAuthNotOptions
 from core.models import Feed, Reply, Chat, ChatRoom, Friend, HashTag, MultiChatRoom, MultiChatUser, BaseUser
-from mafia.interface import mafia_tick, user_chat_team, user_entered, use_ability
+from mafia.interface import mafia_tick, user_chat_team, user_entered, use_ability, get_bgm, get_theme
 #from core.models import BaseUser, Friend, Feed, Reply, Picture
 
 
@@ -405,6 +405,8 @@ class MultiChatDetail(APIView):
         
         chats = chats.exclude(invisible=request.user)
         serializer = ChatSerializer(chats)
+        serializer.data['bgm'] = get_bgm(room, request.user)
+        serializer.data['theme'] = get_theme(room)
         return Response(serializer.data)
     
     def post(self, request, pk):
