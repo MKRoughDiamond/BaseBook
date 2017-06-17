@@ -9,7 +9,7 @@ import {
   GET_MULTICHATROOM_LIST, CREATE_MULTICHAT, START_MULTICHAT,
   GET_MULTICHAT_LIST, GET_MULTICHAT, POST_MULTICHAT, SET_MULTICHAT_LIST,
   GET_USER_LIST, CHANGE_PROFILE,
-  setNick, loginSuccess, loginPageError, getFeedList, setFeedList, setFeed,
+  setPW, setNick, loginSuccess, loginPageError, getFeedList, setFeedList, setFeed,
   getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
@@ -718,21 +718,27 @@ export function* postFriend(username) {
 }
 
 export function* postProfile(newNick, newPW, retypePW) {
+  console.log('newNick, newPW, retypePW: ',newNick, newPW, retypePW);
   const state = yield select();
+  console.log('1');
   const responseChangeNick = yield call(fetch, url + '/users/profile/', {
     method: 'POST',
     headers: {
-      'Authorization': `Basic ${state.server.hash}`
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      nickname: newNick,
+      nickname: newNick
     })
   });
-  if(newPW !== null && newPW.length > 4 && !newPW === retypePW){
+  console.log('2');
+  if(newPW !== null && newPW.length > 4 && newPW === retypePW){
+    console.log('3');
     const responseChangePW = yield call(fetch, url + '/users/password/', {
       method: 'POST',
       headers: {
-        'Authorization': `Basic ${state.server.hash}`
+        'Authorization': `Basic ${state.server.hash}`,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         password: newPW
@@ -740,11 +746,14 @@ export function* postProfile(newNick, newPW, retypePW) {
     });
     if(responseChangePW.ok === false){
       //errorbox?
+    }else{
+      put(setPW(newPW));
     }
   }
   if (responseChangeNick.ok === false) {
     //errorbox 띄워주면 좋겠음
   }
+  console.log('4');
 }
 
 

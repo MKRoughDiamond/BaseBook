@@ -23,10 +23,6 @@ class ProfileMain extends React.Component {
   handleToFeed() {
     this.props.toFeed();
   }
-  handleKeyPress(e) {
-    if(e.key === 'Enter')
-      this.handlePostChat();
-  }
 
   handleUpdateNick(e) {
     this.props.onUpdateNick(e.target.value);
@@ -41,17 +37,24 @@ class ProfileMain extends React.Component {
   handleUpdateConfirmPW(e) {
     this.props.onUpdateConfirmPW(e.target.value);
   }
+  handleKeyPress(e) {
+    if(e.key === 'Enter')
+      this.handleToFeed();
+  }
   handleChangeProfile() {
     //order : newNick, newPW, retypePW
-    this.props.changeProfile(
-      this.props.newNick,
-      this.props.newPW,
-      this.props.retypePW
-    );
+    if(this.props.confirmPW === this.props.PW){
+      this.props.changeProfile(
+        this.props.newNick,
+        this.props.newPW,
+        this.props.retypePW
+      );
+    }
   }
 
   render() {
     let pagenameStr = this.props.username + '\'s Profile';
+    pagenameStr += '  password: ' + this.props.PW;
     return (
       <div id="main-wrapper">
         <TopBar/>
@@ -75,7 +78,7 @@ class ProfileMain extends React.Component {
           </div>
           <div className="line">
             <div id="password">Password: </div>
-            <input type="password" id="input-password" onChange={this.handleUpdateConfirmPW}/>
+            <input type="password" id="input-password" onChange={this.handleUpdateConfirmPW} onKeyPress={this.handleKeyPress}/>
             <button id="change-password" className="changeButtons" onClick={this.handleChangeProfile}>Confirm</button>
           </div>
         </div>
@@ -88,6 +91,8 @@ let mapStateToProps = (state) => {
   return {
     username: state.server.ID,
     nickname: state.server.Nick,
+    PW: state.server.PW,
+
     newNick: state.server.newNick,
     newPW: state.server.newPW,
     retypePW: state.server.retypePW,
