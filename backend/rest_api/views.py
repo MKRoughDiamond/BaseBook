@@ -470,7 +470,7 @@ class MafiaGame(APIView):
             room = MultiChatRoom.objects.get(pk=pk)
         except ObjectDoesNotExist: 
             return Response('', status=404)
-        func(room, request.user)
+        func(room, BaseUser.objects.get(user=request.user))
         return Response('', status=200)
     
     def options(self, request, func, pk):
@@ -484,10 +484,10 @@ class MafiaGameAbility(APIView):
             target = BaseUser.objects.get(nickname=nickname)
         except ObjectDoesNotExist: 
             return Response('', status=404)
-        use_ability(room, request.user, target)
+        use_ability(room, BaseUser.objects.get(user=request.user), target)
         return Response('', status=200)
     
-    def options(self, request, pk, username):
+    def options(self, request, pk, nickname):
         return options_cors()
 
 class Password(APIView):
