@@ -93,6 +93,7 @@ class MafiaRoom:
     def early_vote(self):
         self._print('과반수가 조기투표에 찬성했으므로 5초 후 투표가 시작됩니다.')
         map(self._scheduler.cancel, self._scheduler.queue)
+        self._scheduler = sched.scheduler()
         self._scheduler.enter(5, 1, self._make_vote)
         self._scheduler.run(False)
         
@@ -224,8 +225,15 @@ class MafiaRoom:
         
     def _assign_job(self):
         n_player = self.player_count()
-        n_mafia = 2
-        n_police = 1
+        if n_player < 8:
+            n_mafia = 2
+            n_police = 1
+        elif n_player < 11:
+            n_mafia = 3
+            n_police = 1
+        else:
+            n_mafia = 4
+            n_police = 2
         n_doctor = 1
         n_civilian = n_player - (n_mafia + n_police + n_doctor)
         self._print('총 인원: {}  마피아: {}  경찰: {}  의사: {}'
@@ -377,7 +385,6 @@ class MafiaRoom:
             self._end_game()
         else:
             self._print('3분간 자유롭게 토론해주시기 바랍니다.')
-            map(self._scheduler.cancel, self._scheduler.queue)
             self._scheduler.enter(150, 1, self._make_vote_30)
             self._scheduler.run(False)
     
