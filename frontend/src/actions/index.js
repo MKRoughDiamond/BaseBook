@@ -74,6 +74,9 @@ export const GET_MULTICHAT = 'GET_MULTICHAT';
 export const SET_MULTICHAT = 'SET_MULTICHAT';
 export const POST_MULTICHAT = 'POST_MULTICHAT';
 
+export const MAFIA_GENERAL = 'MAFIA_GENERAL';
+export const MAFIA_TARGET = 'MAFIA_TARGET';
+
 export function setID(value) {
   return {
     type : SETID,
@@ -497,3 +500,20 @@ export function postMultiChat(multichatRoomID, contents) {
     contents: contents
   };
 }
+
+export function mafiaGeneral(roomID, suburl) {
+  return {
+    type: MAFIA_GENERAL,
+    roomID: roomID,
+    suburl: suburl
+  };
+}
+
+export function mafiaTarget(roomID, target) {
+  return {
+    type: MAFIA_TARGET,
+    roomID: roomID,
+    target: target
+  };
+}
+
