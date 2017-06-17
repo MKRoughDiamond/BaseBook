@@ -2,7 +2,10 @@ import React from 'react';
 import Sound from 'react-sound';
 import {connect} from 'react-redux';
 import {endSound} from '../actions';
+import soundManager from 'soundmanager2';
 
+soundManager.soundManager.audioFormats.mp3.required = false;
+soundManager.soundManager.audioFormats.ogg.required = true;
 
 class SoundManager extends React.Component {
   constructor(props) {

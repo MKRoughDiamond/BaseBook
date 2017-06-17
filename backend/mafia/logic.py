@@ -108,6 +108,8 @@ class MafiaRoom:
             else:
                 return 'day_normal'
         if self.status == 'night':
+            if self._daycount == 0:
+                return 'none'
             if player in self._mafias:
                 return 'night_mafia'
             if player in self._polices:
@@ -327,12 +329,13 @@ class MafiaRoom:
         else:
             doctor_target = targets[0]
         
-        if police_target in self._mafias:
-            self._print('{}(은)는 마피아가 맞습니다.'
-                        .format(police_target.user.username), self._polices)
-        else:
-            self._print('{}(은)는 마피아가 아닙니다.'
-                        .format(police_target.user.username), self._polices)
+        if police_target is not None:
+            if police_target in self._mafias:
+                self._print('{}(은)는 마피아가 맞습니다.'
+                            .format(police_target.user.username), self._polices)
+            else:
+                self._print('{}(은)는 마피아가 아닙니다.'
+                            .format(police_target.user.username), self._polices)
         
         if mafia_target is None or mafia_target == doctor_target:
             self._corpse = None
@@ -374,6 +377,7 @@ class MafiaRoom:
             self._end_game()
         else:
             self._print('3분간 자유롭게 토론해주시기 바랍니다.')
+            map(self._scheduler.cancel, self._scheduler.queue)
             self._scheduler.enter(150, 1, self._make_vote_30)
             self._scheduler.run(False)
     
