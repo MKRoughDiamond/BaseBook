@@ -89,7 +89,7 @@ class FeedList(APIView):
             feeds = (my_feeds | friend_feeds)
         else: # Timeline query
             try:
-                owner = BaseUser.objects.get(user__nickname=nickname)
+                owner = BaseUser.objects.get(nickname=nickname)
             except ObjectDoesNotExist:
                 return Response('', status=404)
             owner_friends = Friend.objects.filter(baseuser=owner).values('friend')

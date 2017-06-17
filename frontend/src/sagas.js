@@ -681,7 +681,7 @@ export function* fetchUserList() {
   }
   let userList = [];
   res.map((obj) => {
-    userList.push(obj.username);
+    userList.push(obj.nickname);
   });
   yield put(setUserList(userList));
 }
@@ -947,8 +947,11 @@ export function* createMultiChatReciever() {
 
 // calls the function only once
 export function* watchGetUserList() {
-  yield take(GET_USER_LIST);
-  yield call(fetchUserList);
+  const t = true;
+  while(t) {
+    yield take(GET_USER_LIST);
+    yield call(fetchUserList);
+  }
 }
 
 export function* watchDeleteFeed() {
