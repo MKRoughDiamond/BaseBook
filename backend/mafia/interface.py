@@ -54,7 +54,7 @@ def end_game(room, user):
 
 def make_vote(room, user):
     mafia = mafia_rooms.get(str(room.id))
-    if mafia is None or mafia.status == 'chat':
+    if mafia is None or mafia.status != 'day':
         return
     
     mafia.use_ability(user, None)
@@ -64,9 +64,23 @@ def make_vote(room, user):
 
 def use_ability(room, user, target):
     mafia = mafia_rooms.get(str(room.id))
-    if mafia is None or mafia.status == 'chat':
+    if mafia is None or mafia.status == 'chat' or mafia.status == 'day':
         return
     mafia.use_ability(user, target)
+
+
+def get_bgm(room, user):
+    mafia = mafia_rooms.get(str(room.id))
+    if mafia is None or mafia.status == 'chat':
+        return 'none'
+    return mafia.get_bgm(user)
+
+
+def get_theme(room):
+    mafia = mafia_rooms.get(str(room.id))
+    if mafia is None or mafia.status == 'chat':
+        return 'none'
+    return mafia.get_theme()
 
 
 def test_mafia_tick(room):

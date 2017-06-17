@@ -1,8 +1,11 @@
 export const SETID = 'SETID';
+export const SETNICK = 'SETNICK';
 export const SETPW = 'SETPW';
 export const NEWID = 'NEWID';
+export const NEWNICK = 'NEWNICK';
 export const NEWPW = 'NEWPW';
 export const RETYPEPW = 'RETYPEPW';
+export const CONFIRMPW = 'CONFIRMPW';
 export const TOMAIN = 'TOMAIN';
 export const TOSIGNUP = 'TOSIGNUP';
 export const LOGIN ='LOGIN';
@@ -39,6 +42,8 @@ export const SET_CHAT = 'SET_CHAT';
 export const POST_CHAT = 'POST_CHAT';
 export const TOFEED = 'TOFEED';
 
+export const CHANGE_PROFILE = 'CHANGE_PROFILE';
+
 export const TOTIMELINE = 'TOTIMELINE';
 export const GET_TIMELINE_LIST = 'GET_TIMELINE_LIST';
 
@@ -46,6 +51,7 @@ export const GET_USER_LIST = 'GET_USER_LIST';
 export const SET_USER_LIST = 'SET_USER_LIST';
 export const USER_QUERY = 'USER_QUERY';
 export const LOGOUT = 'LOGOUT';
+export const TOPROFILE = 'TOPROFILE';
 
 export const DELETE_FEED = 'DELETE_FEED';
 export const DELETE_REPLY = 'DELETE_REPLY';
@@ -74,10 +80,21 @@ export const GET_MULTICHAT = 'GET_MULTICHAT';
 export const SET_MULTICHAT = 'SET_MULTICHAT';
 export const POST_MULTICHAT = 'POST_MULTICHAT';
 
+export const MAFIA_GENERAL = 'MAFIA_GENERAL';
+export const MAFIA_TARGET = 'MAFIA_TARGET';
+export const SET_MAFIA_STATUS = 'SET_MAFIA_STATUS';
+
 export function setID(value) {
   return {
     type : SETID,
     ID : value
+  };
+}
+
+export function setNick(value) {
+  return {
+    type : SETNICK,
+    Nick : value
   };
 }
 
@@ -95,6 +112,14 @@ export function newID(value) {
   };
 }
 
+export function newNick(value) {
+  return {
+    type : NEWNICK,
+    newNick : value
+  };
+}
+
+
 export function newPW(value) {
   return {
     type : NEWPW,
@@ -106,6 +131,13 @@ export function retypePW(value) {
   return {
     type : RETYPEPW,
     retypePW : value
+  };
+}
+
+export function confirmPW(value) {
+  return {
+    type : CONFIRMPW,
+    confirmPW : value
   };
 }
 
@@ -173,6 +205,16 @@ export function getFeed(id) {
     id: id
   };
 }
+
+export function changeProfile(newNick, newPW, retypePW) {
+  return {
+    type: CHANGE_PROFILE,
+    newNick: newNick,
+    newPW: newPW,
+    retypePW: retypePW,
+  };
+}
+
 
 export function setFeed(id, feed) {
   return {
@@ -365,6 +407,12 @@ export function logout() {
   };
 }
 
+export function toProfile() {
+  return {
+    type: TOPROFILE
+  };
+}
+
 export function deleteFeed(id) {
   return {
     type: DELETE_FEED,
@@ -495,5 +543,29 @@ export function postMultiChat(multichatRoomID, contents) {
     type: POST_MULTICHAT,
     multichatRoomID: multichatRoomID,
     contents: contents
+  };
+}
+
+export function mafiaGeneral(roomID, suburl) {
+  return {
+    type: MAFIA_GENERAL,
+    roomID: roomID,
+    suburl: suburl
+  };
+}
+
+export function mafiaTarget(roomID, target) {
+  return {
+    type: MAFIA_TARGET,
+    roomID: roomID,
+    target: target
+  };
+}
+
+export function setMafiaStatus(BGM, theme) {
+  return {
+    type: SET_MAFIA_STATUS,
+    BGM: BGM,
+    theme: theme
   };
 }

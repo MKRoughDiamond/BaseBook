@@ -369,6 +369,45 @@ def markdown_feed_post_test(url, contents, scope, uname, upwd):
         unexpected_exception('post markdownfeed', url, e)
     print('success')
 
+def change_password_test(url, npwd, uname, upwd):
+    sleep(0.05)
+    try:
+        headers = {'Content-Type': 'application/json'}
+        data = {'password': npwd}
+        res = requests.post(url, data=json.dumps(data), headers=headers, auth=(uname,upwd))
+        if res.status_code != 200:
+            wrong_status_code('change password', url, res.status_code)
+    except Exception as e:
+        unexpected_exception('change password', url, e)
+    print('success')
+
+def change_nickname_test(url, nickname, uname, upwd):
+    sleep(0.05)
+    try:
+        headers = {'Content-Type': 'application/json'}
+        data = {'nickname': nickname}
+        res = requests.post(url, data=json.dumps(data), headers=headers, auth=(uname,upwd))
+        if res.status_code != 200:
+            wrong_status_code('change nickname', url, res.status_code)
+    except Exception as e:
+        unexpected_exception('change nickname', url, e)
+    print('success')
+
+def get_nickname_test(url, nickname, uname, upwd):
+    sleep(0.05)
+    try:
+        headers = {'Content-Type': 'application/json'}
+        res = requests.get(url, headers=headers, auth=(uname,upwd))
+        if res.status_code != 200:
+            wrong_status_code('get nickname', url, res.status_code)
+    except Exception as e:
+        unexpected_exception('get nickname', url, e)
+    if res.json()['nickname'] != nickname:
+       print('Error')
+       sys.exit(1)
+
+    print('success')
+
 #def profile_test(url, ):
 #    sleep(0.05)
 #    try:

@@ -1,7 +1,7 @@
 from django.utils import timezone
 from django.contrib.auth.models import User
 import random
-import sched, time
+import sched
 from core.models import Chat
 
 # make system user
@@ -13,8 +13,6 @@ def _create_system_user():
         return User.objects.get(username='system')
     user.save()
     return User.objects.get(username='system')
-
-#_system_user = None
 
 
 MIN_START_PLAYER = 5
@@ -38,6 +36,7 @@ class MafiaRoom:
         self.room = room
         self.status = 'chat' # day / vote / night
         self._scheduler = sched.scheduler()
+        self._system_user = _create_system_user()
         self._jobs_textline = []
         
         self._players = {}  # key: user id
@@ -49,15 +48,13 @@ class MafiaRoom:
         self._ghosts = []
         self._daycount = 0
         self._corpse = None
-        
-        if _system_user is None:
-            _system_user = _create_system_user()
     
     def register(self, user):
         for player in self._players.values():
             if player.user.id == user.id:
                 return
         self._players[str(user.id)] = Player(user)
+        self._print('{}(이)가 마피아 게임 시작을 요청했습니다. (현재 {}명)'.format(user.username, self.player_count()))
     
     def survivor_count(self):
         return len(self._survivors)
@@ -95,17 +92,50 @@ class MafiaRoom:
     
     def early_vote(self):
         self._print('과반수가 조기투표에 찬성했으므로 5초 후 투표가 시작됩니다.')
+        map(self._scheduler.cancel, self._scheduler.queue)
+        self._scheduler = sched.scheduler()
         self._scheduler.enter(5, 1, self._make_vote)
         self._scheduler.run(False)
+        
+    def get_bgm(self, user):
+        player = self._player(user)
+        if player is None or self.status == 'chat':
+            return 'none'
+        if self.status == 'vote':
+            return 'vote'
+        if self.status == 'day':
+            if self._daycount == 1:
+                return 'day_first'
+            else:
+                return 'day_normal'
+        if self.status == 'night':
+            if self._daycount == 0:
+                return 'none'
+            if player in self._mafias:
+                return 'night_mafia'
+            if player in self._polices:
+                return 'night_police'
+            if player in self._doctors:
+                return 'night_doctor'
+            return 'night_civilian'
+    
+    def get_theme(self):
+        if self.status == 'night':
+            return 'night'
+        else:
+            return 'none'
     
     def use_ability(self, caster, target=None):
+        p_caster = self._survivor(caster)
+        if p_caster is None:
+            return
         if target is None:
             if self.status == 'day':
                 self._survivor(caster).ability_used = True
+                self._print('조기투표에 찬성하셨습니다.', [p_caster])
             return
-        p_caster = self._survivor(caster)
         p_target = self._survivor(target)
-        if p_caster is None or p_target is None:
+        if p_target is None:
             return
         if self.status == 'vote':
             if not p_caster.ability_used:
@@ -149,6 +179,10 @@ class MafiaRoom:
     
     def set_chat_team(self, user, chat):
         player = self._player(user)
+        if player in self._ghosts:
+            chat.save()
+            for survivor in self._survivors:
+                chat.invisible.add(survivor.user)
         if self.status == 'night':
             teams = [
                 self._mafias,
@@ -156,6 +190,7 @@ class MafiaRoom:
                 self._doctors,
                 self._ghosts
             ]
+            chat.save()
             for team in teams:
                 if player in team:
                     for other in self._players.values():
@@ -181,7 +216,7 @@ class MafiaRoom:
         return self._players.get(str(user.id))
     
     def _print(self, text, dm_players=None):
-        chat = Chat.objects.create(room=self.room, user=_system_user, contents=text)
+        chat = Chat.objects.create(multiroom=self.room, user=self._system_user, contents=text)
         if dm_players is not None:
             for player in self._players.values():
                 if player not in dm_players:
@@ -190,8 +225,15 @@ class MafiaRoom:
         
     def _assign_job(self):
         n_player = self.player_count()
-        n_mafia = 2
-        n_police = 1
+        if n_player < 8:
+            n_mafia = 2
+            n_police = 1
+        elif n_player < 11:
+            n_mafia = 3
+            n_police = 1
+        else:
+            n_mafia = 4
+            n_police = 2
         n_doctor = 1
         n_civilian = n_player - (n_mafia + n_police + n_doctor)
         self._print('총 인원: {}  마피아: {}  경찰: {}  의사: {}'
@@ -238,6 +280,7 @@ class MafiaRoom:
     def _kill_player(self, death_player):
         self._print('당신은 이제 죽었습니다.', [death_player])
         self._print('관전자가 되어 관전자끼리 대화할 수 있습니다.', [death_player])
+        self._print_player_jobs([death_player])
         self._make_ghost(death_player)
     
     def _make_ghost(self, player):
@@ -294,17 +337,19 @@ class MafiaRoom:
         else:
             doctor_target = targets[0]
         
+        if police_target is not None:
+            if police_target in self._mafias:
+                self._print('{}(은)는 마피아가 맞습니다.'
+                            .format(police_target.user.username), self._polices)
+            else:
+                self._print('{}(은)는 마피아가 아닙니다.'
+                            .format(police_target.user.username), self._polices)
+        
         if mafia_target is None or mafia_target == doctor_target:
             self._corpse = None
         else:
             self._corpse = mafia_target
             self._kill_player(mafia_target)
-        if police_target in self._mafias:
-            self._print('{}(은)는 마피아가 맞습니다.'
-                        .format(police_target.user.username), self._polices)
-        else:
-            self._print('{}(은)는 마피아가 아닙니다.'
-                        .format(police_target.user.username), self._polices)
         
     def _win_condition(self):
         if len(self._mafias) >= self.survivor_count() / 2:
@@ -317,14 +362,14 @@ class MafiaRoom:
             return True
         return False
     
-    def _print_player_jobs(self):
-        self._print('마피아: {}'.format(self._jobs_textline[0]))
-        self._print('경찰: {}  의사: {}'.format(self._jobs_textline[1], self._jobs_textline[2]))
-        self._print('시민: {}'.format(self._jobs_textline[3]))
+    def _print_player_jobs(self, dm_players=None):
+        self._print('마피아: {}'.format(self._jobs_textline[0]), dm_players)
+        self._print('경찰: {}  의사: {}'.format(self._jobs_textline[1], self._jobs_textline[2]), dm_players)
+        self._print('시민: {}'.format(self._jobs_textline[3]), dm_players)
     
     def _end_game(self):
-        mafia_rooms.remove(self)    # delete this MafiaRoom
         map(self._scheduler.cancel, self._scheduler.queue)
+        del mafia_rooms[str(self.room.id)]    # delete this MafiaRoom
         
     def _make_day(self):
         self.status = 'day'
@@ -336,7 +381,7 @@ class MafiaRoom:
                 self._print('밤중에 아무 일도 일어나지 않았습니다.')
             else:
                 self._print('{}(이)가 사망한 채로 발견되었습니다.'.format(self._corpse.user.username))
-        if self._win_condition():
+        if self._win_condition() or self._daycount >= 10:
             self._end_game()
         else:
             self._print('3분간 자유롭게 토론해주시기 바랍니다.')
@@ -344,17 +389,21 @@ class MafiaRoom:
             self._scheduler.run(False)
     
     def _make_vote_30(self):
+        if self.status != 'day':
+            return
         self._print('투표 시작까지 30초 남았습니다.')
         self._scheduler.enter(25, 1, self._make_vote_5)
         self._scheduler.run(False)
         
     def _make_vote_5(self):
+        if self.status != 'day':
+            return
         self._print('투표 시작까지 5초 남았습니다.')
         self._scheduler.enter(5, 1, self._make_vote)
         self._scheduler.run(False)
     
     def _make_vote(self):
-        if self.status == 'vote': # if in early vote
+        if self.status != 'day': # if in early vote
             return
         self.status = 'vote'
         self._reset_votecount()
@@ -371,8 +420,11 @@ class MafiaRoom:
     def _vote_end(self):
         self._print('{}일차 투표가 끝났습니다.'.format(self._daycount))
         self._check_vote_kill()
-        self._scheduler.enter(3, 1, self._make_night)
-        self._scheduler.run(False)
+        if self._win_condition():
+            self._end_game()
+        else:
+            self._scheduler.enter(3, 1, self._make_night)
+            self._scheduler.run(False)
     
     def _make_night(self):
         self.status = 'night'

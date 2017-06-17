@@ -11,7 +11,9 @@ describe('multichat reducer', () => {
             multichatRoomIDList: [],
             multichatRoomID: null,
             multichatList: [],
-            multichatEnterList: []
+            multichatEnterList: [],
+            multichatRoomList: [],
+            multichatCountList: []
         })
     })
 
@@ -33,7 +35,9 @@ describe('multichat reducer', () => {
             multichatRoomIDList: [],
             multichatRoomID: null,
             multichatList: [],
-            multichatEnterList: []
+            multichatEnterList: [],
+            multichatRoomList: [],
+            multichatCountList: []
         })
     })
 
@@ -46,7 +50,9 @@ describe('multichat reducer', () => {
             multichatRoomIDList: [],
             multichatRoomID: null,
             multichatList: [],
-            multichatEnterList: []
+            multichatEnterList: [],
+            multichatRoomList: [],
+            multichatCountList: []
         })
     })
 

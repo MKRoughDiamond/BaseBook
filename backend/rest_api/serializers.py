@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from core.models import BaseUser, Friend, Feed, Reply, Picture, ChatRoom, Chat, HashTag, MultiChatRoom
+from core.models import BaseUser, Friend, Feed, Reply, Picture, ChatRoom, Chat, HashTag, MultiChatRoom, BaseUser
 from django.db import models
 
 
@@ -96,6 +96,7 @@ class ChatSerializer(serializers.BaseSerializer):
         return {
             'chat': chatlist
         }
+
         
 class MultiChatRoomSerializer(serializers.ModelSerializer):
     users = serializers.StringRelatedField(many=True)
@@ -113,4 +114,10 @@ class FriendListSerializer(serializers.BaseSerializer):
             'friend': friendlist
         }
 
-
+class BaseUserSerializer(serializers.BaseSerializer):
+    def to_representation(self, obj):
+        return {
+            'id': obj.user.id,
+            'username': obj.user.username,
+            'nickname': obj.nickname
+        }

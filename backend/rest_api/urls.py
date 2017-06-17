@@ -29,5 +29,7 @@ urlpatterns = [
     url(r'^mafia/(?P<pk>[0-9]+)/start/$', views.MafiaGame.as_view(), {'func': start_game}),
     url(r'^mafia/(?P<pk>[0-9]+)/earlyvote/$', views.MafiaGame.as_view(), {'func': make_vote}),
     url(r'^mafia/(?P<pk>[0-9]+)/end/$', views.MafiaGame.as_view(), {'func': end_game}),
-    url(r'^mafia/(?P<pk>[0-9]+)/target/(?P<username>\w+)/$', views.MafiaGameAbility.as_view())
+    url(r'^mafia/(?P<pk>[0-9]+)/target/(?P<username>\w+)/$', views.MafiaGameAbility.as_view()),
+    url(r'^users/password/$', views.Password.as_view()),
+    url(r'^users/profile/$', views.Profile.as_view())
 ]

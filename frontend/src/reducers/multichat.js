@@ -1,7 +1,7 @@
 import {
   TOMULTICHAT, START_MULTICHAT, GET_MULTICHAT_ROOM_ID,
   SET_MULTICHATROOM_LIST,// SET_MULTICHATROOM,
-  SET_MULTICHAT_LIST, SET_MULTICHAT, TOFEED, LOGOUT
+  SET_MULTICHAT_LIST, SET_MULTICHAT, TOFEED, TOPROFILE, LOGOUT, SET_MAFIA_STATUS
 } from '../actions';
 
 const initState = {
@@ -13,6 +13,8 @@ const initState = {
   multichatList: [],
   multichatEnterList: [],
   multichatCountList: [],
+  mafiaBGM: 'none',
+  mafiaTheme: 'none',
 };
 /*
 const multichatRoomInitState = {
@@ -27,6 +29,8 @@ const multichat = (state = initState, action) => {
     return Object.assign({}, state, { multichatOn : true , multichatRoomID : null});
   case TOFEED:
     return initState;
+  case TOPROFILE:
+    return initState;
   case LOGOUT:
     return initState;
   case START_MULTICHAT:
@@ -38,6 +42,12 @@ const multichat = (state = initState, action) => {
       multichatRoomIDList: action.list,
       multichatEnterList: action.enterList,
       multichatCountList: action.countList
+    });
+  }
+  case SET_MAFIA_STATUS: {
+    return Object.assign({}, state, {
+      mafiaBGM: action.BGM,
+      mafiaTheme: action.theme
     });
   }
 /*
