@@ -8,14 +8,14 @@ import {
   GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND, GET_HASHFEED_LIST,
   GET_MULTICHATROOM_LIST, CREATE_MULTICHAT, START_MULTICHAT,
   GET_MULTICHAT_LIST, GET_MULTICHAT, POST_MULTICHAT, SET_MULTICHAT_LIST,
-  GET_USER_LIST, GET_PROFILE, CHANGE_PROFILE,
+  GET_USER_LIST, CHANGE_PROFILE,
   setPW, setNick, loginSuccess, loginPageError, getFeedList, setFeedList, setFeed,
   getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
   getMultiChatRoomList, setMultiChatRoomList,// getMultiChatRoomID,
   getMultiChatList, setMultiChatList, setMultiChat, getMultiChat,
-  setUserList, getTimelineList, getProfile, //changeProfile,
+  setUserList, getTimelineList, //changeProfile,
 } from './actions';
 
 const url = 'http://localhost:8000';
@@ -729,24 +729,10 @@ export function* fetchProfile() {
     window.location.href = '/notfound/';
     return;
   }
-  let res;
-  try {
-    res = yield response.json();
-  }
-  catch(e) {
-    window.location.href = '/notfound/';
-    return;
-  }
-  yield put(setNick(res.nickname));
-  yield put(getProfile());
 }
 
 export function* postProfile(newNick, newPW, retypePW) {
-  console.log('newNick: ',newNick);
-  console.log('newPW: ',newPW);
-  console.log('retypePW: ',retypePW);
   const state = yield select();
-  console.log('1');
   const responseChangeNick = yield call(fetch, url + '/users/profile/', {
     method: 'POST',
     headers: {
@@ -757,9 +743,7 @@ export function* postProfile(newNick, newPW, retypePW) {
       nickname: newNick
     })
   });
-  console.log('2');
-  if(newPW !== null && newPW.length > 4 && newPW === retypePW){
-    console.log('3');
+  if(newPW !== null && newPW.length >= 4 && newPW === retypePW){
     const responseChangePW = yield call(fetch, url + '/users/password/', {
       method: 'POST',
       headers: {
@@ -770,23 +754,19 @@ export function* postProfile(newNick, newPW, retypePW) {
         password: newPW
       })
     });
-    console.log('4');
     if(responseChangePW.ok === false){
       //errorbox?
     }else{
-      console.log('5');
-      put(setPW(newPW));
-      //const hash = new Buffer(`${state.server.ID}:${state.server.PW}`).toString('base64');
-      //yield put(loginSuccess(hash));
+      yield put(setPW(newPW));
+      const hash = new Buffer(`${state.server.ID}:${state.server.PW}`).toString('base64');
+      yield put(loginSuccess(hash));
     }
   }
   if (responseChangeNick.ok === false) {
     //errorbox 띄워주면 좋겠음
   }else{
-    console.log('6');
-    put(setNick(newNick));
+    yield put(setNick(newNick));
   }
-  console.log('7');
 }
 
 
@@ -1065,14 +1045,6 @@ export function* watchPostFriend() {
   }
 }
 
-export function* watchGetProfile() {
-  const t = true;
-  while(t){
-    yield take(GET_PROFILE);
-    yield call(fetchProfile);
-  }
-}
-
 export function* watchChangeProfile() {
   const t = true;
   while(t) {
@@ -1120,6 +1092,5 @@ export function* rootSaga() {
   yield fork(watchPostMultiChat);
   yield fork(createMultiChatReciever);
 
-  yield fork(watchGetProfile);
   yield fork(watchChangeProfile);
 }

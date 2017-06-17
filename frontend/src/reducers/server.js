@@ -60,6 +60,7 @@ const server = (state = serverInitialState, action) => {
       onTimeline: false,
       onHashFeed: false,
       onProfile : true,
+      newNick : state.Nick,
     });
   case TOMAIN:
     return Object.assign({}, state,

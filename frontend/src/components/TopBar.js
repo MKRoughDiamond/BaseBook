@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { toFeed, toTimeline, userQuery, getUserList, toProfile, getProfile, logout, startSound } from '../actions';
+import { toFeed, toTimeline, userQuery, getUserList, toProfile, logout, startSound } from '../actions';
 
 class TopBar extends React.Component {
   constructor(props) {
@@ -38,7 +38,6 @@ class TopBar extends React.Component {
   }
   handleToProfile() {
 //    this.props.startSound('logout');
-    this.props.getProfile();
     this.props.toProfile();
   }
 
@@ -93,7 +92,6 @@ let mapDispatchToProps = (dispatch) => {
     userQuery: (keyword) => dispatch(userQuery(keyword)),
     getUserList: () => dispatch(getUserList()),
     logout: () => dispatch(logout()),
-    getProfile: () => dispatch(getProfile()),
     toProfile: () => dispatch(toProfile()),
     startSound: (url) => dispatch(startSound(url))
   };

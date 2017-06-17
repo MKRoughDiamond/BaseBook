@@ -42,7 +42,6 @@ export const SET_CHAT = 'SET_CHAT';
 export const POST_CHAT = 'POST_CHAT';
 export const TOFEED = 'TOFEED';
 
-export const GET_PROFILE = 'GET_PROFILE';
 export const CHANGE_PROFILE = 'CHANGE_PROFILE';
 
 export const TOTIMELINE = 'TOTIMELINE';
@@ -200,13 +199,6 @@ export function getFeed(id) {
   return {
     type: GET_FEED,
     id: id
-  };
-}
-
-export function getProfile() {
-  return {
-    type: GET_PROFILE,
-    //id: id
   };
 }
 

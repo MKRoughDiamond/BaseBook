@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {toFeed, getProfile, newNick, newPW, retypePW, confirmPW, changeProfile} from '../../actions';
+import {toFeed, newNick, newPW, retypePW, confirmPW, changeProfile} from '../../actions';
 import TopBar from '../TopBar';
 
 class ProfileMain extends React.Component {
@@ -17,14 +17,11 @@ class ProfileMain extends React.Component {
     this.handleChangeProfile = this.handleChangeProfile.bind(this);
   }
   componentDidMount() {
-    this.props.getProfile();
-    this.props.getProfile();
-    this.props.getProfile();
-    this.props.getProfile();
+    this.props.onUpdateNick();
   }
 
   handleToFeed() {
-    //this.props.toFeed();
+    this.props.toFeed();
   }
 
   handleUpdateNick(e) {
@@ -46,25 +43,36 @@ class ProfileMain extends React.Component {
   }
   handleChangeProfile() {
     //order : newNick, newPW, retypePW
-    if(this.props.confirmPW === this.props.PW){
-      this.props.changeProfile(
+    console.log(this.props.newNick);
+    if(this.props.newNick !== undefined && this.props.newNick !== null)
+    {
+      if(this.props.confirmPW === this.props.PW && this.props.confirmPW !==null){
+        this.props.changeProfile(
         this.props.newNick,
         this.props.newPW,
         this.props.retypePW
-      );
-      this.props.getProfile();
+        );
+        this.handleToFeed();
+      }
+    }else{
+      if(this.props.confirmPW === this.props.PW && this.props.confirmPW !==null){
+        this.props.changeProfile(
+          this.props.nickname,
+          this.props.newPW,
+          this.props.retypePW
+        );
+        this.handleToFeed();
+      }
     }
   }
 
   render() {
-    let pagenameStr = this.props.username + '\'s Profile';
-    pagenameStr += '  password: ' + this.props.PW;
     return (
       <div id="main-wrapper">
         <TopBar/>
         <div id="main-content">
           <div id="Pagename">
-            {pagenameStr}
+            { this.props.username + '\'s Profile'}
           </div>
           <div className="line">
             <div id="nickname">Nickname: </div>
@@ -107,7 +115,6 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     toFeed: () => dispatch(toFeed()),
-    getProfile: () => dispatch(getProfile()),
 
     onUpdateNick: (value) => dispatch(newNick(value)),
     onUpdatePW: (value) => dispatch(newPW(value)),
