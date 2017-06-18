@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import Select
 import sys
 ################################################################
 #(sleep factor)
-S = 0.5
+S = 1
 #(number of users)
 N = 2
 #(number of feed per scope) * (number of scope)
@@ -62,10 +62,11 @@ def click(driver, name):
         end_test('Cannot click %s' % name, e)
     sleep(S)
 
-def signup_test(driver, uname, upwd, duplication, master):
+def signup_test(driver, uname, unick, upwd, duplication, master):
     try:
         click(driver, 'SignUp')
         send(driver, 'input-username', uname)
+        send(driver, 'input-nickname', unick)
         send(driver, 'input-password', upwd)
         send(driver, 'input-retypepassword', upwd)
         sleep(0.5 * S)
@@ -145,23 +146,23 @@ def reply_test(driver, contents):
     except Exception as e:
         end_test('\nPOST Reply test failed', e)
 
-def start_chat_test(driver, other_username):
+def start_chat_test(driver, other_nickname):
     try:
         click(driver, 'chat-button')
         sleep(S)
-        send(driver, 'username-textbox', other_username)
+        send(driver, 'username-textbox', other_nickname)
         click(driver, 'chatting-start-button')
     except Exception as e:
-        end_test('\nSTART Chat with {0} test failed'.format(other_username), e)
-    print('START Chat with {0} test success'.format(other_username))
+        end_test('\nSTART Chat with {0} test failed'.format(other_nickname), e)
+    print('START Chat with {0} test success'.format(other_nickname))
 
-def chat_test(driver, contents, other_username):
+def chat_test(driver, contents, other_nickname):
     try:
         send(driver, 'new-chat-text', contents)
         click(driver, 'new-chat-post')
     except Exception as e:
-        end_test('\nPOST CHAT with {0} test failed'.format(other_username), e)
-    print('POST CHAT message {0} to {1} test success'.format(contents, other_username))
+        end_test('\nPOST CHAT with {0} test failed'.format(other_nickname), e)
+    print('POST CHAT message {0} to {1} test success'.format(contents, other_nickname))
 
 '''
 Select dropdown = new Select(driver.findElement(By.id("designation")));
@@ -188,15 +189,18 @@ for i in range(0, N):
     print('drivers[{0}] open successful'.format(i))
 
 ################################################################
+sleep(S)
 print('\nSignUp test:')
 
 for i in range(0, N):
     uname = 'user{0}'.format(i)
+    unick = 'nick{0}'.format(i)
     upwd = 'user{0}'.format(i)
-#    signup_test(drivers[i], uname, upwd, False, True)
-    signup_test(drivers[i], uname, upwd, True, True)
+#    signup_test(drivers[i], uname, unick, upwd, False, True)
+    signup_test(drivers[i], uname, unick, upwd, True, True)
 
 ################################################################
+sleep(S)
 print('\nSignIn test:')
 
 for i in range(0, N):
@@ -205,6 +209,7 @@ for i in range(0, N):
     signin_test(drivers[i], uname, upwd)
 
 ################################################################
+sleep(S)
 print('\nPOST Feed test:')
 
 for i in range(0, N):
@@ -214,6 +219,7 @@ for i in range(0, N):
         feed_test(drivers[i], contents, int(j/2))
 
 ################################################################
+sleep(S)
 print('\nPOST like/dislike test:')
 
 for i in range(0, N):
@@ -222,6 +228,7 @@ for i in range(0, N):
         like_dislike_feed_test(drivers[i], i % 2)
 
 ################################################################
+sleep(S)
 print('\nPOST Reply test:')
 
 for i in range(0, N):
@@ -230,22 +237,24 @@ for i in range(0, N):
     reply_test(drivers[i], contents)
 
 ################################################################
+sleep(S)
 print('\nTO and START Chat test:')
 
 for i in range(0, N):
     i2 = (i + 1) % N
-    other_username = 'user{0}'.format(i2)
-    start_chat_test(drivers[i], other_username)
+    other_nickname = 'nick{0}'.format(i2)
+    start_chat_test(drivers[i], other_nickname)
 
 
 ################################################################
+sleep(S)
 print('\nPOST Chat test:')
 
 for j in range(0, C):
     for i in range(0, N):
         i2 = (i + 1) % N
-        other_username = 'user{0}'.format(i2)
-        chat_test(drivers[i], 'Hey user{0} {1}{1}!'.format(i2, j), other_username)
+        other_nickname = 'nick{0}'.format(i2)
+        chat_test(drivers[i], 'Hey nick{0} {1}{1}!'.format(i2, j), other_nickname)
     pass
 
 print('one-side chat test')
@@ -253,10 +262,11 @@ print('one-side chat test')
 i = 0
 for j in range(0, C * 5):
     i2 = (i + 1) % N
-    other_username = 'user{0}'.format(j)
-    chat_test(drivers[i], 'Hey user{0} {1}{1}!(one side)'.format(i2, j), other_username)
+    other_nickname = 'nick{0}'.format(j)
+    chat_test(drivers[i], 'Hey nick{0} {1}{1}!(one side)'.format(i2, j), other_nickname)
 
 ################################################################
+sleep(S)
 print('\nTo Feed / Chat / Timeline / HashFeed test:')
 
 click(drivers[0], 'main-title-name')
@@ -268,22 +278,23 @@ hash.click()
 sleep(2 * S)
 print('To HashFeed Page success')
 
-send(drivers[0], 'find-people-search', 'user')
+send(drivers[0], 'find-people-search', 'nick')
 sleep(S)
-click(drivers[0], 'totimelineuser1')
+click(drivers[0], 'totimelinenick1')
 sleep(2 * S)
 print('To user\'s Timeline Page success')
 
 feed_writer = drivers[0].find_element_by_xpath("//div[@class='feed-writer']")
 feed_writer.click()
 sleep(2 * S)
-print('To user\'s Timeline Page success')
+print('To user1\'s Timeline Page success')
 
 click(drivers[0], 'main-title-name')
 sleep(2 * S)
 print('To Main Page success')
 
-click(drivers[0], 'logout')
+for i in range(0, N):
+    click(drivers[i], 'logout')
 sleep(2 * S)
 print('logout success')
 
@@ -291,7 +302,7 @@ print('logout success')
 #print('\nTo Feed / Chat / Timeline / HashFeed test:')
 
 ################################################################
-sleep(4 * S)
+sleep(3 * S)
 for i in range(0, N):
     drivers[i].quit()
 print('FrontEnd Test terminated')
