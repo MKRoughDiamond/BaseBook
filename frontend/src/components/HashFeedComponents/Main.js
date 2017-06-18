@@ -29,7 +29,7 @@ class HashFeedMain extends React.Component {
     return (
       <div id="main-wrapper">
         <TopBar/>
-        <div id="main-content">
+        <div id="main-content" className={'main-content-color'} style={{backgroundColor:this.props.theme}}>
           <div id="Pagename">
             {'HashTag search: ' + this.props.tagname}
             <button id="chat-button" onClick={this.handleToChat}>Chat</button>
@@ -49,6 +49,8 @@ let mapStateToProps = (state) => {
   return {
     feedIdList: state.feed.orderedFeedIdList,
     tagname: state.server.tagname,
+    theme: state.server.theme,
+    isDefaultTheme: state.server.isDefaultTheme
 //    username: state.server.ID
   };
 };

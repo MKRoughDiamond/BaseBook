@@ -20,7 +20,7 @@ class BeforeMultiChatMain extends React.Component {
     return (
       <div id="main-wrapper">
         <TopBar/>
-        <div id="main-content">
+        <div id="main-content" className={'main-content-color'} style={{backgroundColor:this.props.theme}}>
           <div id="chatting-title">
             <div id="multichat-list-title"> Multi-Chatting Room List </div>
             <div id="multichat-create-button-wrapper">
@@ -44,6 +44,8 @@ let mapStateToProps = (state) => {
   return {
     username: state.server.ID,
     multichatRoomIDList: state.multichat.multichatRoomIDList,
+    theme: state.server.theme,
+    isDefaultTheme: state.server.isDefaultTheme
   };
 };
 

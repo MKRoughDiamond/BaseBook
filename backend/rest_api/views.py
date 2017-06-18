@@ -78,7 +78,7 @@ class user_signup(APIView):
         except IntegrityError:
             return Response({'detail':'User already exists!'}, status=400)
         user.save()
-        baseuser = BaseUser(user=user, nickname=nickname);
+        baseuser = BaseUser(user=user, nickname=nickname, theme='');
         baseuser.save()
         return Response('',status=200)
     
@@ -523,6 +523,10 @@ class Profile(APIView):
         if nickname is '':
             return Response({'detail':'Please put nickname.'}, status=400)
         baseuser.nickname = nickname
+        theme = request.data.get('theme', None)
+        if theme is None:
+            return Response({'detail' : 'Error.'}, status=400)
+        baseuser.theme = theme
         baseuser.save()
         return Response('', status=200)
     def get(self, request):
