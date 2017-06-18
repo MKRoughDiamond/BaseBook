@@ -4,6 +4,7 @@ import feed from './feed';
 import chat from './chat';
 import userSearch from './userSearch';
 import multichat from './multichat';
+import image from './image';
 
 const extra = (state = { value : 'WIP' }, action) => {
   switch(action.type) {
@@ -18,7 +19,8 @@ const reducers = combineReducers({
   chat,
   userSearch,
   multichat,
-  extra
+  extra,
+  image
 });
 
 export default reducers;
