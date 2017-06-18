@@ -1,11 +1,14 @@
 export const SETID = 'SETID';
 export const SETNICK = 'SETNICK';
 export const SETPW = 'SETPW';
+export const SETTHEME = 'SETTHEME';
 export const NEWID = 'NEWID';
 export const NEWNICK = 'NEWNICK';
 export const NEWPW = 'NEWPW';
 export const RETYPEPW = 'RETYPEPW';
 export const CONFIRMPW = 'CONFIRMPW';
+export const NEWTHEME = 'NEWTHEME';
+export const DEFAULTTHEME = 'DEFAULTTHEME';
 export const TOMAIN = 'TOMAIN';
 export const TOSIGNUP = 'TOSIGNUP';
 export const LOGIN ='LOGIN';
@@ -105,6 +108,13 @@ export function setPW(value) {
   };
 }
 
+export function setTheme(value) {
+  return {
+    type : SETTHEME,
+    theme : value
+  };
+}
+
 export function newID(value) {
   return {
     type : NEWID,
@@ -138,6 +148,20 @@ export function confirmPW(value) {
   return {
     type : CONFIRMPW,
     confirmPW : value
+  };
+}
+
+export function getnewTheme(color) {
+  return {
+    type : NEWTHEME,
+    color : color
+  };
+}
+
+export function defaultTheme(check) {
+  return {
+    type : DEFAULTTHEME,
+    check : check
   };
 }
 
@@ -206,12 +230,13 @@ export function getFeed(id) {
   };
 }
 
-export function changeProfile(newNick, newPW, retypePW) {
+export function changeProfile(newNick, newPW, retypePW, newTheme) {
   return {
     type: CHANGE_PROFILE,
     newNick: newNick,
     newPW: newPW,
     retypePW: retypePW,
+    newTheme: newTheme
   };
 }
 

@@ -34,7 +34,7 @@ class TimelineMain extends React.Component {
     return (
       <div id="main-wrapper">
         <TopBar/>
-        <div id="main-content">
+        <div id="main-content" className={'main-content-color'} style={{backgroundColor:this.props.theme}}>
           <div id="Pagename">
             {this.props.timelineUser + '\'s Timeline'}
             <button id="chat-button" onClick={this.handleToChat}>Chat</button>
@@ -58,7 +58,9 @@ let mapStateToProps = (state) => {
   return {
     feedIdList: state.feed.orderedFeedIdList,
     timelineUser: state.server.timelineUser,
-    username: state.server.ID
+    username: state.server.ID,
+    theme: state.server.theme,
+    isDefaultTheme: state.server.isDefaultTheme
   };
 };
 
