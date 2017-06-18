@@ -6,9 +6,9 @@ from selenium.webdriver.support.ui import Select
 import sys
 ################################################################
 #(sleep factor)
-S = 1
+S = 0.75
 #(number of users)
-N = 2
+N = 3
 #(number of feed per scope) * (number of scope)
 F = 1*3
 #(number of reply per feed)
@@ -214,9 +214,9 @@ print('\nPOST Feed test:')
 
 for i in range(0, N):
     for j in range(0, F):
-        print('{0} Feed {1}'.format(scopes[int(j / 2)], (j % 2) + 1), end=' ')
+        print('{0} Feed {1}'.format(scopes[int(j % 3)], (j % 3) + 1), end=' ')
         contents = 'Frontend POST user{0}-{1} feed: #hash{0} 종강하고싶다{1}{1} #hash_{0} # ##'.format(i, j + 1)
-        feed_test(drivers[i], contents, int(j/2))
+        feed_test(drivers[i], contents, int(j % 3))
 
 ################################################################
 sleep(S)
@@ -240,8 +240,8 @@ for i in range(0, N):
 sleep(S)
 print('\nTO and START Chat test:')
 
-for i in range(0, N):
-    i2 = (i + 1) % N
+for i in range(0, 2):
+    i2 = (i + 1) % 2
     other_nickname = 'nick{0}'.format(i2)
     start_chat_test(drivers[i], other_nickname)
 
@@ -250,26 +250,57 @@ for i in range(0, N):
 sleep(S)
 print('\nPOST Chat test:')
 
+
 for j in range(0, C):
-    for i in range(0, N):
-        i2 = (i + 1) % N
+    for i in range(0, 2):
+        i2 = (i + 1) % 2
         other_nickname = 'nick{0}'.format(i2)
         chat_test(drivers[i], 'Hey nick{0} {1}{1}!'.format(i2, j), other_nickname)
-    pass
 
 print('one-side chat test')
 
 i = 0
-for j in range(0, C * 5):
-    i2 = (i + 1) % N
-    other_nickname = 'nick{0}'.format(j)
+for j in range(0, 5 * C):
+    i2 = (i + 1) % 2
+    other_nickname = 'nick{0}'.format(i2)
     chat_test(drivers[i], 'Hey nick{0} {1}{1}!(one side)'.format(i2, j), other_nickname)
+
+################################################################
+sleep(S)
+print('\nPOST MultiChat test:')
+
+for i in range(0, N):
+    click(drivers[i], 'main-title-name')
+sleep(2 * S)
+print('To Main Page success')
+
+for i in range(0, N):
+    click(drivers[i], 'multichat-button')
+sleep(S)
+print('To Multichat Page success')
+
+click(drivers[0], 'multichat-create-button')
+
+for i in range(0, N):
+    multichatroom = drivers[i].find_element_by_xpath("//div[@class='multichat-room']")
+    multichatroom.click()
+
+print('Enter multichat room success')
+
+for j in range(0, 5 * C):
+    for i in range(0, N):
+        i2 = (i + 1) % N
+        other_nickname = 'nick{0}'.format(i2)
+        chat_test(drivers[i], 'Hey nick{0} {1}{1}!'.format(i2, j), other_nickname)
+
+print('POST multichat success')
 
 ################################################################
 sleep(S)
 print('\nTo Feed / Chat / Timeline / HashFeed test:')
 
-click(drivers[0], 'main-title-name')
+for i in range(0, N):
+    click(drivers[i], 'main-title-name')
 sleep(2 * S)
 print('To Main Page success')
 
@@ -280,14 +311,25 @@ print('To HashFeed Page success')
 
 send(drivers[0], 'find-people-search', 'nick')
 sleep(S)
-click(drivers[0], 'totimelinenick1')
+click(drivers[0], 'totimelinenick2')
 sleep(2 * S)
-print('To user\'s Timeline Page success')
+print('To user2\'s Timeline Page success')
+
+
+print('Reply user1\'s Timeline', end=' ')
+contents = 'Frontend - contents of POST user1 reply: ㄹㅇ 언제 끝날까'
+reply_test(drivers[0], contents)
+sleep(S)
+print('POST Reply to user1\'s Timeline')
 
 feed_writer = drivers[0].find_element_by_xpath("//div[@class='feed-writer']")
 feed_writer.click()
 sleep(2 * S)
 print('To user1\'s Timeline Page success')
+
+click(drivers[0],'friend-button')
+sleep(S)
+print('Add user1 to Friend List success')
 
 click(drivers[0], 'main-title-name')
 sleep(2 * S)
