@@ -16,11 +16,11 @@ import {
   getMultiChatRoomList, setMultiChatRoomList,// getMultiChatRoomID,
   getMultiChatList, setMultiChatList, setMultiChat, getMultiChat,
   setUserList, GET_USER_LIST, getTimelineList,
-  startSound, endSound
+  startSound, endSound, getUserList
 } from './actions';
 
-const url = 'http://localhost:8000';
-//const url = 'http://13.124.80.116:8001';
+//const url = 'http://localhost:8000';
+const url = 'http://13.124.80.116:8001';
 
 export function* postSignUp() {
   const state = yield select();
@@ -444,7 +444,7 @@ export function* fetchMultiChatRoomList() {
   for(let i in res){
     list.push(res[i].id);
     countList.push(res[i].users.length);
-    if (res[i].users.indexOf(state.server.ID) !== -1) {
+    if (res[i].users.indexOf(state.server.Nick) !== -1) {
       enterList.push(res[i].id);
     }
   }
@@ -728,7 +728,7 @@ export function* fetchUserList() {
   }
   let userList = [];
   res.map((obj) => {
-    userList.push(obj.username);
+    userList.push(obj.nickname);
   });
   yield put(setUserList(userList));
 }
@@ -787,6 +787,7 @@ export function* postProfile(newNick, newPW, retypePW) {
       //errorbox?
     }else{
       yield put(setPW(newPW));
+      const state = yield select();
       const hash = new Buffer(`${state.server.ID}:${state.server.PW}`).toString('base64');
       yield put(loginSuccess(hash));
     }
@@ -795,6 +796,7 @@ export function* postProfile(newNick, newPW, retypePW) {
     //errorbox 띄워주면 좋겠음
   }else{
     yield put(setNick(newNick));
+    yield put(getUserList());
   }
 }
 
@@ -1062,8 +1064,12 @@ export function* watchMafiaTarget() {
 
 // calls the function only once
 export function* watchGetUserList() {
-  yield take(GET_USER_LIST);
-  yield call(fetchUserList);
+  const t = true;
+  while(t) {
+    yield take(GET_USER_LIST);
+    console.log('getuserlist');
+    yield call(fetchUserList);
+  }
 }
 
 export function* watchDeleteFeed() {
