@@ -119,5 +119,6 @@ class BaseUserSerializer(serializers.BaseSerializer):
         return {
             'id': obj.user.id,
             'username': obj.user.username,
-            'nickname': obj.nickname
+            'nickname': obj.nickname,
+            'theme' : obj.theme
         }

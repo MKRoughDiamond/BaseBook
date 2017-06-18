@@ -9,7 +9,7 @@ import {
   GET_MULTICHATROOM_LIST, CREATE_MULTICHAT, START_MULTICHAT,
   GET_MULTICHAT_LIST, GET_MULTICHAT, POST_MULTICHAT, SET_MULTICHAT_LIST,
   MAFIA_GENERAL, MAFIA_TARGET, setMafiaStatus, CHANGE_PROFILE,
-  setNick, setPW,
+  setNick, setPW, setTheme,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
@@ -19,8 +19,8 @@ import {
   startSound, endSound
 } from './actions';
 
-//const url = 'http://localhost:8000';
-const url = 'http://13.124.80.116:8001';
+const url = 'http://localhost:8000';
+//const url = 'http://13.124.80.116:8001';
 
 export function* postSignUp() {
   const state = yield select();
@@ -76,6 +76,7 @@ export function* postLogin() {
       return;
     }
     yield put(setNick(res.nickname));
+    yield put(setTheme(res.theme));
   }
   else {
     let res = {};
@@ -760,16 +761,18 @@ export function* fetchProfile() {
   }
 }
 
-export function* postProfile(newNick, newPW, retypePW) {
+export function* postProfile(newNick, newPW, retypePW, newTheme) {
   const state = yield select();
-  const responseChangeNick = yield call(fetch, url + '/users/profile/', {
+  let changeTheme = (state.server.isDefaultTheme) ? '' : newTheme;
+  const responseChangeSettings = yield call(fetch, url + '/users/profile/', {
     method: 'POST',
     headers: {
       'Authorization': `Basic ${state.server.hash}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      nickname: newNick
+      nickname: newNick,
+      theme: changeTheme,
     })
   });
   if(newPW !== null && newPW.length >= 4 && newPW === retypePW){
@@ -791,10 +794,11 @@ export function* postProfile(newNick, newPW, retypePW) {
       yield put(loginSuccess(hash));
     }
   }
-  if (responseChangeNick.ok === false) {
+  if (responseChangeSettings.ok === false) {
     //errorbox 띄워주면 좋겠음
   }else{
     yield put(setNick(newNick));
+    yield put(setTheme(changeTheme));
   }
 }
 
@@ -1094,7 +1098,7 @@ export function* watchChangeProfile() {
   const t = true;
   while(t) {
     const action = yield take(CHANGE_PROFILE);
-    yield call(postProfile, action.newNick, action.newPW, action.retypePW);
+    yield call(postProfile, action.newNick, action.newPW, action.retypePW, action.newTheme);
   }
 }
 

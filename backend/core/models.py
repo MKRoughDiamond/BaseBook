@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 class BaseUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=20)#, related_name='baseuser_nickname')
+    theme = models.CharField(max_length=8)
 
 class Friend(models.Model):
     user = models.ForeignKey(User,related_name='user', on_delete=models.CASCADE)

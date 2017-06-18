@@ -112,7 +112,7 @@ body::-webkit-scrollbar {
 	color : white;
 	border-radius : 20px;
 	display : inline-block;
-	background-color : #678A50;
+	background-color : rgba(0,0,0,0.5);
 	padding : 5px;
 }
 
@@ -140,12 +140,14 @@ button:hover {
 }
 
 #main-title {
-	background-color : #88B04B;
 	font-size : 32pt;
 	color : white;
 	padding : 10px;
 	margin-top : 10px;
 	margin-bottom : 5px;
+    background : -webkit-linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2));
+    background : linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2));
+	background-color : #88B04B;
 }
 
 #main-title-name {
@@ -181,11 +183,14 @@ button:hover {
 }
 
 #main-content {
-	background-color: #B6EBA0;
 	color : black;
 	padding : 10px;
 	margin-top : 10px;
 	margin-bottom : 5px;
+}
+
+.main-content-color {
+	background-color: #B6EBA0;
 }
 
 #Pagename {
@@ -719,3 +724,13 @@ button:hover {
   border-radius: 5px;
 }
 
+#picker{
+  display: inline-block;
+  margin-top: 5px;
+}
+
+#picker-wrapper{
+  display: inline-block;
+  float: right;
+  width: 85%;
+}
