@@ -21,7 +21,7 @@ class FeedListSerializer(serializers.BaseSerializer):
         }
 
 class FeedSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
+    author = serializers.ReadOnlyField(source='author.nickname')
     hashtags = serializers.SerializerMethodField()
 
     def get_hashtags(self,obj):
@@ -48,7 +48,7 @@ class LikeSerializer(serializers.BaseSerializer):
     def to_representation(self,obj):
         likes = []
         for e in obj.like.all():
-            likes += [ e.username ]
+            likes += [ e.nickname ]
         return {
             'likes': likes
         }
@@ -57,7 +57,7 @@ class DislikeSerializer(serializers.BaseSerializer):
     def to_representation(self,obj):
         dislikes = []
         for e in obj.dislike.all():
-            dislikes += [ e.username ]
+            dislikes += [ e.nickname ]
         return {
             'dislikes': dislikes
         }
@@ -73,7 +73,7 @@ class ReplyListSerializer(serializers.BaseSerializer):
         }
 
 class ReplySerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
+    author = serializers.ReadOnlyField(source='author.nickname')
     class Meta:
         model = Reply
         fields = ('id', 'feed_id', 'contents', 'author',)
@@ -89,13 +89,14 @@ class ChatSerializer(serializers.BaseSerializer):
         chatlist = []
         for e in obj:
             chatlist += [ {
-                'username': e.user.username,
+                'username': e.baseuser.nickname,
                 'timestamp': e.timestamp,
                 'contents': e.contents
             }]
         return {
             'chat': chatlist
         }
+
         
 class MultiChatRoomSerializer(serializers.ModelSerializer):
     users = serializers.StringRelatedField(many=True)
@@ -108,7 +109,7 @@ class FriendListSerializer(serializers.BaseSerializer):
     def to_representation(self, obj):
         friendlist = []
         for e in obj:
-            friendlist += [ e.friend.username ]
+            friendlist += [ e.friend.nickname ]
         return {
             'friend': friendlist
         }

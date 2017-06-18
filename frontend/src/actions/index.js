@@ -82,6 +82,7 @@ export const POST_MULTICHAT = 'POST_MULTICHAT';
 
 export const MAFIA_GENERAL = 'MAFIA_GENERAL';
 export const MAFIA_TARGET = 'MAFIA_TARGET';
+export const SET_MAFIA_STATUS = 'SET_MAFIA_STATUS';
 
 export function setID(value) {
   return {
@@ -561,3 +562,10 @@ export function mafiaTarget(roomID, target) {
   };
 }
 
+export function setMafiaStatus(BGM, theme) {
+  return {
+    type: SET_MAFIA_STATUS,
+    BGM: BGM,
+    theme: theme
+  };
+}

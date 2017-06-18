@@ -28,7 +28,7 @@ class FeedMain extends React.Component {
         <TopBar/>
         <div id="main-content">
           <div id="Pagename">
-            {this.props.username + '\'s Page'}
+            {this.props.nickname + '\'s Page'}
             <button id="multichat-button" onClick={this.handleToMultiChat}>
               MultiChat
             </button>
@@ -51,7 +51,7 @@ class FeedMain extends React.Component {
 let mapStateToProps = (state) => {
   return {
     feedIdList: state.feed.orderedFeedIdList,
-    username: state.server.ID
+    nickname: state.server.Nick
   };
 };
 
