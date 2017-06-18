@@ -12,7 +12,7 @@ class IsCurrUser(permissions.BasePermission):
             return True
         elif obj.scope == 'Friends Only':
             return request.user == obj.author.user or \
-                request.user.id in list(Friend.objects.filter(user=obj.author.user).values_list('friend', flat=True))
+                request.user.id in list(Friend.objects.filter(baseuser__user=obj.author.user).values_list('friend', flat=True))
         else:
             return request.user == obj.author.user
             
