@@ -28,7 +28,7 @@ class FeedMain extends React.Component {
         <TopBar/>
         <div id="main-content" className={'main-content-color'} style={{backgroundColor:this.props.theme}}>
           <div id="Pagename">
-            {this.props.username + '\'s Page'}
+            {this.props.nickname + '\'s Page'}
             <button id="multichat-button" onClick={this.handleToMultiChat}>
               MultiChat
             </button>
@@ -51,9 +51,9 @@ class FeedMain extends React.Component {
 let mapStateToProps = (state) => {
   return {
     feedIdList: state.feed.orderedFeedIdList,
-    username: state.server.ID,
     theme: state.server.theme,
-    isDefaultTheme: state.server.isDefaultTheme
+    isDefaultTheme: state.server.isDefaultTheme,
+    nickname: state.server.Nick
   };
 };
 

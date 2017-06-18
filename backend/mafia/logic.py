@@ -2,7 +2,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 import random
 import sched
-from core.models import Chat
+from core.models import Chat, BaseUser
 
 # make system user
 def _create_system_user():
@@ -10,9 +10,14 @@ def _create_system_user():
     try:
         user = User.objects.create_user('system', 'system@mafia.com', pw)
     except Exception:
-        return User.objects.get(username='system')
+        user =  User.objects.get(username='system')
     user.save()
-    return User.objects.get(username='system')
+    try:
+        return BaseUser.objects.get(nickname='system')
+    except Exception:
+        baseuser =  BaseUser(user=user, nickname='system')
+        baseuser.save()
+        return BaseUser.objects.get(nickname='system')
 
 
 MIN_START_PLAYER = 5
@@ -54,7 +59,7 @@ class MafiaRoom:
             if player.user.id == user.id:
                 return
         self._players[str(user.id)] = Player(user)
-        self._print('{}(이)가 마피아 게임 시작을 요청했습니다. (현재 {}명)'.format(user.username, self.player_count()))
+        self._print('{}(이)가 마피아 게임 시작을 요청했습니다. (현재 {}명)'.format(user.nickname, self.player_count()))
     
     def survivor_count(self):
         return len(self._survivors)
@@ -141,31 +146,31 @@ class MafiaRoom:
             if not p_caster.ability_used:
                 p_caster.ability_used = True
                 p_target.vote_count += 1
-                self._print('{}에게 투표했습니다.'.format(p_target.user.username), [p_caster])
+                self._print('{}에게 투표했습니다.'.format(p_target.user.nickname), [p_caster])
         elif self.status == 'night':
             if not p_caster.ability_used:
                 p_caster.ability_used = True
                 if p_caster.job == 'mafia':
                     p_target.mafia_target += 1
                     if len(self._mafias) == 1:
-                        self._print('{}(을)를 암살 목표로 지정했습니다.'.format(p_target.user.username), [p_caster])
+                        self._print('{}(을)를 암살 목표로 지정했습니다.'.format(p_target.user.nickname), [p_caster])
                     else:
                         self._print('{}(이)가 {}(을)를 암살 목표로 지정했습니다.'
-                                    .format(p_caster.user.username, p_target.user.username), self._mafias)
+                                    .format(p_caster.user.nickname, p_target.user.nickname), self._mafias)
                 elif p_caster.job == 'police':
                     p_target.police_target += 1
                     if len(self._polices) == 1:
-                        self._print('{}(을)를 수사 목표로 지정했습니다.'.format(p_target.user.username), [p_caster])
+                        self._print('{}(을)를 수사 목표로 지정했습니다.'.format(p_target.user.nickname), [p_caster])
                     else:
                         self._print('{}(이)가 {}(을)를 수사 목표로 지정했습니다.'
-                                    .format(p_caster.user.username, p_target.user.username), self._polices)
+                                    .format(p_caster.user.nickname, p_target.user.nickname), self._polices)
                 elif p_caster.job == 'doctor':
                     p_target.doctor_target += 1
                     if len(self._doctors) == 1:
-                        self._print('{}(을)를 치유 목표로 지정했습니다.'.format(p_target.user.username), [p_caster])
+                        self._print('{}(을)를 치유 목표로 지정했습니다.'.format(p_target.user.nickname), [p_caster])
                     else:
                         self._print('{}(이)가 {}(을)를 치유 목표로 지정했습니다.'
-                                    .format(p_caster.user.username, p_target.user.username), self._doctors)
+                                    .format(p_caster.user.nickname, p_target.user.nickname), self._doctors)
     
     def quit_vote(self, user):
         player = self._player(user)
@@ -216,7 +221,7 @@ class MafiaRoom:
         return self._players.get(str(user.id))
     
     def _print(self, text, dm_players=None):
-        chat = Chat.objects.create(multiroom=self.room, user=self._system_user, contents=text)
+        chat = Chat.objects.create(multiroom=self.room, baseuser=self._system_user, contents=text)
         if dm_players is not None:
             for player in self._players.values():
                 if player not in dm_players:
@@ -264,10 +269,10 @@ class MafiaRoom:
         
         # mafia / police / doctor / civilian
         self._jobs_textline = []
-        self._jobs_textline.append(', '.join([u.user.username for u in self._mafias]))
-        self._jobs_textline.append(', '.join([u.user.username for u in self._polices]))
-        self._jobs_textline.append(', '.join([u.user.username for u in self._doctors]))
-        self._jobs_textline.append(', '.join([u.user.username for u in self._civilians]))
+        self._jobs_textline.append(', '.join([u.user.nickname for u in self._mafias]))
+        self._jobs_textline.append(', '.join([u.user.nickname for u in self._polices]))
+        self._jobs_textline.append(', '.join([u.user.nickname for u in self._doctors]))
+        self._jobs_textline.append(', '.join([u.user.nickname for u in self._civilians]))
         
     def _reset_votecount(self):
         for player in self._players.values():
@@ -304,7 +309,7 @@ class MafiaRoom:
         for player in vote_list:
             if player.vote_count == 0:
                 break
-            self._print('{}: {}표'.format(player.user.username, player.vote_count))
+            self._print('{}: {}표'.format(player.user.nickname, player.vote_count))
             total_vote_count += player.vote_count
         self._print('기권: {}표'.format(self.survivor_count() - total_vote_count))
         
@@ -316,7 +321,7 @@ class MafiaRoom:
             return
         death_player = vote_list[0]
         self._print('{}표를 얻은 {}(이)가 처형되었습니다.'
-                    .format(death_player.vote_count, death_player.user.username))
+                    .format(death_player.vote_count, death_player.user.nickname))
         self._kill_player(death_player)
     
     def _ability_result(self):
@@ -340,10 +345,10 @@ class MafiaRoom:
         if police_target is not None:
             if police_target in self._mafias:
                 self._print('{}(은)는 마피아가 맞습니다.'
-                            .format(police_target.user.username), self._polices)
+                            .format(police_target.user.nickname), self._polices)
             else:
                 self._print('{}(은)는 마피아가 아닙니다.'
-                            .format(police_target.user.username), self._polices)
+                            .format(police_target.user.nickname), self._polices)
         
         if mafia_target is None or mafia_target == doctor_target:
             self._corpse = None
@@ -380,7 +385,7 @@ class MafiaRoom:
             if self._corpse is None:
                 self._print('밤중에 아무 일도 일어나지 않았습니다.')
             else:
-                self._print('{}(이)가 사망한 채로 발견되었습니다.'.format(self._corpse.user.username))
+                self._print('{}(이)가 사망한 채로 발견되었습니다.'.format(self._corpse.user.nickname))
         if self._win_condition() or self._daycount >= 10:
             self._end_game()
         else:
