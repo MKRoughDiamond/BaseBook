@@ -594,18 +594,19 @@ button:hover {
   font-size: 14pt;
  	display: inline-block;
 	font-weight: bold;
-	width: 10%;
+	width: 15%;
 }
 
 .chat-timestamp{
   font-size: 14pt;
   display: inline-block;
-  width: 20%;
+  width: 10%;
 }
 
 .chat-content{
   font-size: 14pt;
   display: inline-block;
+  width: 75%;
 }
 
 .chat-wrapper-system{
