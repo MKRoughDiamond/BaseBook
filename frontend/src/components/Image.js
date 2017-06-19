@@ -62,6 +62,9 @@ class ContactForm extends React.Component {
         <div>
          <p>{this.props.imageName}</p>
           <img src={this.props.imageUrl} />
+          <div id="newFeed-text-wrapper">
+            <textarea id="newFeed-text" placeholder="Description of this image.."/>
+          </div>
           <div className="line">
             <button id="upload-image" className="changeButtons" onClick={this.handleSaveImage}>Upload</button>
             <button id="delete-image" className="changeButtons" onClick={this.handleDeleteImage}>Delete</button>
