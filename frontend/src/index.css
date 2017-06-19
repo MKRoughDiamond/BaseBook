@@ -85,9 +85,9 @@ body::-webkit-scrollbar {
 }
 
 #password-check {
-	position: fixed;
-	display: inline-block;
-	margin-left: 5px;
+  position: fixed;
+  display: inline-block;
+  margin-left: 5px;
 }
 
 #SignIn {
@@ -130,8 +130,8 @@ button {
 }
 
 button:hover {
-	text-decoration : underline;
-	cursor : pointer;
+  text-decoration : underline;
+  cursor : pointer;
 }
 
 #main-wrapper {
@@ -155,7 +155,7 @@ button:hover {
 }
 
 #main-title-name:hover {
-	cursor : pointer;
+  cursor : pointer;
 }
 
 #logout {
@@ -166,8 +166,8 @@ button:hover {
 }
 
 #logout:hover {
-	text-decoration : underline;
-	cursor : pointer;
+  text-decoration : underline;
+  cursor : pointer;
 }
 
 #profile {
@@ -282,8 +282,8 @@ button:hover {
 }
 
 .feed-writer:hover{
-	text-decoration : underline;
-	cursor : pointer;
+  text-decoration : underline;
+  cursor : pointer;
 }
 
 .feed-like {
@@ -340,40 +340,40 @@ button:hover {
 }
 
 #friend-button {
-	margin-top : 5px;
-	display : inline-block;
-	float : right;
-	margin-right: 20px;
-	padding: 0;
-	width : 10%;
-	height : 20px;
-	border : none;
-	border-radius : 10px;
-	font-size : 15px;
-	font-weight : bold;
-	resize: none;
-	background-color : rgba(255,255,255,0.8);
+    margin-top : 5px;
+    display : inline-block;
+    float : right;
+    margin-right: 20px;
+    padding: 0;
+    width : 10%;
+    height : 20px;
+    border : none;
+    border-radius : 10px;
+    font-size : 15px;
+    font-weight : bold;
+    resize: none;
+    background-color : rgba(255,255,255,0.8);
 }
 
 #chat-button {
 	margin : 5px 5px 5px 5px;
-	display : inline-block;
-	float : right;
-	padding: 0;
-	width : 10%;
-	height : 20px;
-	border : none;
-	border-radius : 10px;
-	font-size : 15px;
-	font-weight : bold;
-	resize: none;
-	background-color : rgba(255,255,255,0.8);
+    display : inline-block;
+    float : right;
+    padding: 0;
+    width : 10%;
+    height : 20px;
+    border : none;
+    border-radius : 10px;
+    font-size : 15px;
+    font-weight : bold;
+    resize: none;
+    background-color : rgba(255,255,255,0.8);
 }
 
 #multichat-button{
 	margin : 5px 5px 5px 5px;
 	display : inline-block;
-	float : right;
+  float : right;
 	padding : 0;
 	width : 15%;
 	height : 20px;
@@ -395,30 +395,30 @@ button:hover {
 }
 
 .multichat-room:hover {
-	cursor: pointer;
-	background-color: rgba(255,255,255,0.3);
+  cursor: pointer;
+  background-color: rgba(255,255,255,0.3);
 }
 
 .multichat-room-enter {
-	display: inline-block;
-	float : right;
-	margin-right: 5px;
-	font-size: 20px;
+  display: inline-block;
+  float : right;
+  margin-right: 5px;
+  font-size: 20px;
 }
 
 .multichat-room-id{
 	width: 10%;
-	display: inline-block;
+  display: inline-block;
 	font-size: 20px;
 	vertical-align: middle;
 	text-align: left;
-	margin-left: 20px;
+  margin-left: 20px;
 	border-radius: 10px;
 }
 
 .multichat-room-count{
-	width: 70%;
-	display: inline-block;
+ 	width: 70%;
+  display: inline-block;
 	font-size: 20px;
 	vertical-align: middle;
 	text-align: center;
@@ -426,7 +426,7 @@ button:hover {
 }
 
 #multichat-list-title {
-	display : inline-block;
+  display : inline-block;
 }
 
 #reply-wrapper {
@@ -518,12 +518,12 @@ button:hover {
 }
 
 #multichat-title {
-	width: 100%;
+  width: 100%;
 	font-size : 20px;
-	display: inline-block;
-	padding-bottom : 10px;
-	border-bottom : 1px solid black;
-	margin-bottom : 10px;
+  display: inline-block;
+  padding-bottom : 10px;
+  border-bottom : 1px solid black;
+  margin-bottom : 10px;
 }
 
 #username-title{
@@ -571,12 +571,12 @@ button:hover {
 }
 
 #chatting-content{
-	position: sticky;
+    position: sticky;
 	width: 100%;
 	height: 500px;
 	background-color: rgba(255,255,255,0.8);
 	overflow: scroll;
-	font-weight: normal;
+  font-weight: normal;
 }
 
 .my-chat{
@@ -608,26 +608,26 @@ button:hover {
 }
 
 .chat-wrapper{
-	color: black;
+  color: black;
 }
 
 .chat-writer{
-	display: inline-block;
+ 	display: inline-block;
 	font-weight: bold;
 	width: 10%;
 }
 
 .chat-timestamp{
-	display: inline-block;
-	width: 20%;
+  display: inline-block;
+  width: 20%;
 }
 
 .chat-content{
-	display: inline-block;
+  display: inline-block;
 }
 
 .chat-wrapper-system{
-	color: maroon;
+  color: maroon;
 }
 
 #new-chat{
@@ -668,69 +668,69 @@ button:hover {
 	left: 25%;
 	top: 30%;
 	width: 50%;
-	height: 40%;
+  height: 40%;
 	z-index: 2;
 	background-color: #88B04B;
 }
 
 #login-error-msg {
-	font-size: 24px;
-	font-weight: bold;
-	color: #87200d;
-	margin-top: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #87200d;
+  margin-top: 10px;
 }
 
 #login-error-confirm {
-	font-size: 24px;
-	background-color: white;
-	width: 80%;
-	border-radius: 10px;
-	margin: 10px 0 10px;
+  font-size: 24px;
+  background-color: white;
+  width: 80%;
+  border-radius: 10px;
+  margin: 10px 0 10px;
 }
 
 #find-people{
-	font-size: 18px;
+  font-size: 18px;
 }
 
 #find-people-title{
-	display: inline-block;
-	margin-right: 10px;
+  display: inline-block;
+  margin-right: 10px;
 }
 
 #find-people-search{
-	display: inline-block;
-	font-size: 18px;
-	width: 20%;
+  display: inline-block;
+  font-size: 18px;
+  width: 20%;
 }
 
 #find-people-result-wrapper{
-	margin-top: 5px;
+  margin-top: 5px;
 }
 
 .find-people-entry{
-	display: inline-block;
+  display: inline-block;
 }
 
 .find-people-totimeline{
-	padding-top: 3px;
-	padding-bottom: 3px;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-right: 5px;
-	font-size: 14px;
-	color: white;
-	font-weight: bold;
-	background-color: #4B8740;
-	border-radius: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 5px;
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+  background-color: #4B8740;
+  border-radius: 5px;
 }
 
 #picker{
-	display: inline-block;
-	margin-top: 5px;
+  display: inline-block;
+  margin-top: 5px;
 }
 
 #picker-wrapper{
-	display: inline-block;
-	float: right;
-	width: 85%;
+  display: inline-block;
+  float: right;
+  width: 85%;
 }
