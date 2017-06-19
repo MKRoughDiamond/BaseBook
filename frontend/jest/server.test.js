@@ -20,7 +20,15 @@ describe('server reducer', () => {
       soundStart: false,
       soundUrl: null,
       onHashFeed: false,
-      tagname: ''
+      tagname: '',
+      Nick: '',
+      confirmPW: '',
+      isDefaultTheme: true,
+      newNick: '',
+      newTheme: '',
+      onProfile: false,
+      theme: '',
+      newFeedType: ''
     })
   })
 
@@ -86,7 +94,8 @@ describe('server reducer', () => {
       })
     ).toEqual({
       onTimeline: false,
-      onHashFeed: false
+      onHashFeed: false,
+      onProfile: false
     })
   })
 
@@ -100,7 +109,10 @@ describe('server reducer', () => {
       ID : '',
       PW : '',
       onTimeline : false,
-      onHashFeed : false
+      onHashFeed : false,
+      confirmPW: '',
+      Nick: '',
+      onProfile: false
     })
   })
 
@@ -115,7 +127,10 @@ describe('server reducer', () => {
       newPW : '',
       retypePW : '',
       onTimeline: false,
-      onHashFeed: false
+      onHashFeed: false,
+      confirmPW: '',
+      newNick: '',
+      onProfile: false
     })
   })
 
@@ -128,7 +143,8 @@ describe('server reducer', () => {
     ).toEqual({
       onTimeline: true,
       timelineUser : 'asdf',
-      onHashFeed: false
+      onHashFeed: false,
+      onProfile: false
     })
   })
 
@@ -141,7 +157,8 @@ describe('server reducer', () => {
     ).toEqual({
       onTimeline : false,
       onHashFeed : true,
-      tagname : 'asdf'
+      tagname : 'asdf',
+      onProfile: false
     })
   })
 
@@ -155,7 +172,8 @@ describe('server reducer', () => {
       loggedIn : true,
       hash : 'asdf',
       onTimeline : false,
-      onHashFeed : false
+      onHashFeed : false,
+      onProfile: false
     })
   })
 
@@ -180,7 +198,15 @@ describe('server reducer', () => {
       soundStart: false,
       soundUrl: null,
       onHashFeed: false,
-      tagname: ''
+      tagname: '',
+      Nick: '',
+      confirmPW: '',
+      isDefaultTheme: true,
+      newNick: '',
+      newTheme: '',
+      onProfile: false,
+      theme: '',
+      newFeedType: ''
     })
   })
 
@@ -204,7 +230,15 @@ describe('server reducer', () => {
       soundStart: false,
       soundUrl: null,
       onHashFeed: false,
-      tagname : ''
+      tagname : '',
+      Nick: '',
+      confirmPW: '',
+      isDefaultTheme: true,
+      newNick: '',
+      newTheme: '',
+      onProfile: false,
+      theme: '',
+      newFeedType: ''
     })
   })
 })
