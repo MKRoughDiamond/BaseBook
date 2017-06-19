@@ -113,9 +113,13 @@ def feed_test(driver, contents, scope_index, feed_type):
     try:
         dropdown = Select(find_by_id(driver, 'newFeed-scope'))
         dropdown.select_by_index(scope_index)
+
+        dropdown = Select(find_by_id(driver, 'newFeed-feedtype'))
         if feed_type is 'Text':
-            dropdown = Select(find_by_id(driver, 'newFeed-type'))
-        dropdown = Select(find_by_id)
+            dropdown.select_by_index(0)
+        elif feed_type is 'Dropdown':
+            dropdown.select_by_index(1)
+
         send(driver, 'newFeed-text', contents)
         click(driver, 'newFeed-post')
     except Exception as e:
@@ -138,7 +142,7 @@ def reply_test(driver, contents):
         #newReplys = driver.find_elements_by_xpath("//div[@id=newReply]/")
         textareas = driver.find_elements_by_xpath("//textarea[@id='newReply-text']")
         buttons = driver.find_elements_by_xpath("//button[@class='newReply-post']")
-        for i in range(0, 3):
+        for i in range(0, 2):
             textarea = textareas[i]
             send_keys(textarea, contents)
             button = buttons[i]
@@ -219,12 +223,12 @@ for i in range(0, N):
     for j in range(0, F):
         print('{0} Feed {1}'.format(scopes[int(j % 3)], (j % 3) + 1), end=' ')
         contents = 'Frontend POST user{0}-{1} feed: #hash{0} 종강하고싶다{1}{1} #hash_{0} # ##'.format(i, j + 1)
-        feed_test(drivers[i], contents, int(j % 3))
+        feed_test(drivers[i], contents, int(j % 3), 'Text')
 
 for i in range(0, N):
     print('Markdown post by nick{0}'.format(i))
-    contents = '# I\'m waiting for jonggang...'
-
+    contents = '# Waiting for jonggang...'
+    feed_test(drivers[i], contents, 0, 'Dropdown')
 
 ################################################################
 sleep(S)
@@ -324,7 +328,7 @@ sleep(2 * S)
 print('To user2\'s Timeline Page success')
 
 
-print('Reply user1\'s Timeline', end=' ')
+print('Reply to user2\'s Timeline', end=' ')
 contents = 'Frontend - contents of POST user1 reply: ㄹㅇ 언제 끝날까'
 reply_test(drivers[0], contents)
 sleep(S)
