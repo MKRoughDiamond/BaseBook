@@ -25,14 +25,7 @@ class Post extends React.Component {
   }
 
   render() {
-    //let type = document.getElementById('newFeed-feedtype');
     let type = this.props.newFeedType;
-    console.log('feedtype: ',type);
-    /*if(type === null)
-      type = 'Text';
-    else
-      type = feedtype.value;*/
-    let message='You selected '+this.props.newFeedType;
     if(type === 'ImagePost'){
       return (
         <div id="newFeed-wrapper">
@@ -52,7 +45,6 @@ class Post extends React.Component {
             </select>
           </div>
           <ContactForm/>
-          <p>{message}</p>
         </div>
       );
     }
@@ -82,8 +74,6 @@ class Post extends React.Component {
               POST
             </button>
           </div>
-
-          <p>{message}</p>
         </div>
       );
     }
