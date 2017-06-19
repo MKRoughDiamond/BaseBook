@@ -17,9 +17,7 @@ class Entry extends React.Component {
     hour = Number(hour);
     hour += 9;
     hour %= 24;
-
     timestamp = String(hour) + timestamp.substring(2);
-
    
     return (
       <div className={(chat.username === 'system')?
@@ -31,7 +29,7 @@ class Entry extends React.Component {
         <div className="chat-content" style={{color:(chat.username!=='system')?((this.props.mafiaTheme==='night')?'white':'black'):''}}>
           {chat.contents}
         </div>
-        <div className="chat-timestamp" style={{color:(chat.username!=='system')?((this.props.mafiaTheme==='night')?'white':'black'):''}}>
+        <div className="chat-timestamp" style={{color:(this.props.mafiaTheme==='night')?'white':'black'}}>
           {chat.timestamp}
         </div>
       </div>
