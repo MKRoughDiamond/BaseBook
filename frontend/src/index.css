@@ -732,14 +732,3 @@ button:hover {
   background-color: #4B8740;
   border-radius: 5px;
 }
-
-#picker{
-	display: inline-block;
-	margin-top: 5px;
-}
-
-#picker-wrapper{
-	display: inline-block;
-	float: right;
-	width: 85%;
-}
