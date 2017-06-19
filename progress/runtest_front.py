@@ -109,10 +109,13 @@ def signin_test(driver, uname, upwd):
         end_test('\nSignIn test failed', e)
     print(uname + ' SignIn success')
 
-def feed_test(driver, contents, scope_index):
+def feed_test(driver, contents, scope_index, feed_type):
     try:
         dropdown = Select(find_by_id(driver, 'newFeed-scope'))
         dropdown.select_by_index(scope_index)
+        if feed_type is 'Text':
+            dropdown = Select(find_by_id(driver, 'newFeed-type'))
+        dropdown = Select(find_by_id)
         send(driver, 'newFeed-text', contents)
         click(driver, 'newFeed-post')
     except Exception as e:
@@ -217,6 +220,11 @@ for i in range(0, N):
         print('{0} Feed {1}'.format(scopes[int(j % 3)], (j % 3) + 1), end=' ')
         contents = 'Frontend POST user{0}-{1} feed: #hash{0} 종강하고싶다{1}{1} #hash_{0} # ##'.format(i, j + 1)
         feed_test(drivers[i], contents, int(j % 3))
+
+for i in range(0, N):
+    print('Markdown post by nick{0}'.format(i))
+    contents = '# I\'m waiting for jonggang...'
+
 
 ################################################################
 sleep(S)

@@ -1,4 +1,5 @@
-import { GET_IMAGE_URL, TOFEED, TOCHAT, LOGOUT, TOPROFILE, TOMULTICHAT, TOTIMELINE, TOHASHFEED, TOMAIN, TOSIGNUP,/* DELETE_IMAGE*/ } from '../actions';
+import { GET_IMAGE_URL, TOFEED, TOCHAT, LOGOUT, TOPROFILE, TOMULTICHAT,
+  TOTIMELINE, TOHASHFEED, TOMAIN, TOSIGNUP, DELETE_IMAGE } from '../actions';
 
 const initialState = {
   name: null,
@@ -30,8 +31,8 @@ const image = (state = initialState, action) => {
       name: action.name, 
       url: action.url
     });
-  /*case DELETE_IMAGE:
-    return initialState;*/
+  case DELETE_IMAGE:
+    return initialState;
   default:
     return state;
   }
