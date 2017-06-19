@@ -33,17 +33,17 @@ class Post extends React.Component {
     else
       type = feedtype.value;*/
     let message='You selected '+this.props.newFeedType;
-    if(type === 'Image Post'){
+    if(type === 'ImagePost'){
       return (
         <div id="newFeed-wrapper">
           <div id="newFeed-title">
             <div id="newFeed-name">
               New Feed
             </div>
-            <select name="feedtype" id="newFeed-feedtype" value={this.props.newFeedType} onChange={this.handleChangeNewFeedType}>
+            <select name="feedtype" id="newFeed-feedtype" onChange={this.handleChangeNewFeedType}>
               <option value="Text">Text</option>
               <option value="Markdown">Markdown</option>
-              <option value="ImagePost">Image Post</option>
+              <option value="ImagePost">ImagePost</option>
             </select>
             <select name="scope" id="newFeed-scope">
               <option value="Public">Public</option>
