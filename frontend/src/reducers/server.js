@@ -1,4 +1,4 @@
-import { SETID, SETNICK, SETPW, NEWID, NEWNICK, NEWPW, RETYPEPW, CONFIRMPW,
+import { SETID, SETNICK, SETPW, NEWID, NEWNICK, NEWPW, RETYPEPW, CONFIRMPW, NEWTHEME, SETTHEME, DEFAULTTHEME,
   TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED, LOGOUT,
   TOHASHFEED, TOPROFILE, START_SOUND, END_SOUND
 } from '../actions';
@@ -13,6 +13,9 @@ const serverInitialState = {
   newPW: '',
   retypePW: '',
   confirmPW: '',
+  theme: '',
+  newTheme: '',
+  isDefaultTheme: true,
   isLogin: true,
   loggedIn: false,
   errorMsg: null,
@@ -30,18 +33,14 @@ const server = (state = serverInitialState, action) => {
   case SETID:
     return Object.assign({}, state, { ID : action.ID });
   case SETNICK:
-    console.log('SETNICK');
-    console.log('action.Nick: ', action.Nick);
     return Object.assign({}, state, { Nick : action.Nick });
   case SETPW:
-    console.log('SETPW');
-    return Object.assign({}, state, {
-      PW : action.PW
-    });
+    return Object.assign({}, state, { PW : action.PW });
+  case SETTHEME:
+    return Object.assign({}, state, { theme : action.theme, newTheme : action.theme });
   case NEWID:
     return Object.assign({}, state, { newID : action.newID });
   case NEWNICK:
-    console.log('NEWNICK');
     return Object.assign({}, state, { newNick : action.newNick });
   case NEWPW:
     return Object.assign({}, state, { newPW : action.newPW });
@@ -49,6 +48,10 @@ const server = (state = serverInitialState, action) => {
     return Object.assign({}, state, { retypePW : action.retypePW });
   case CONFIRMPW:
     return Object.assign({}, state, { confirmPW : action.confirmPW });
+  case NEWTHEME:
+    return Object.assign({}, state, { newTheme : action.color });
+  case DEFAULTTHEME:
+    return Object.assign({}, state, { isDefaultTheme : action.check });
   case TOFEED:
     return Object.assign({}, state, {
       onTimeline: false,

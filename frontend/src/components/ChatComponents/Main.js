@@ -39,7 +39,7 @@ class ChatMain extends React.Component {
     return (
       <div id="main-wrapper">
         <TopBar/>
-        <div id="main-content">
+        <div id="main-content" className={'main-content-color'} style={{backgroundColor:this.props.theme}}>
           <div id="chatting-title">
             <div id="username-title">
               Nickname :
@@ -77,7 +77,9 @@ class ChatMain extends React.Component {
 let mapStateToProps = (state) => {
   return {
     chatRoomID: state.chat.chatRoomID,
-    chatList: state.chat.chatList
+    chatList: state.chat.chatList,
+    theme: state.server.theme,
+    isDefaultTheme: state.server.isDefaultTheme
   };
 };
 

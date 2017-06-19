@@ -70,7 +70,7 @@ class MultiChatMain extends React.Component {
     return (
       <div id="main-wrapper">
         <TopBar/>
-        <div id="main-content" onClick={this.handleMouseUp}>
+        <div id="main-content" className="main-content-color" style={{backgroundColor:this.props.theme}} onClick={this.handleMouseUp}>
           <div id="multichat-title">
             <div id="multichat-room-user-list">
               { 'Chatting Room '+this.props.multichatRoomID }
@@ -101,6 +101,7 @@ let mapStateToProps = (state) => {
   return {
     multichatRoomID: state.multichat.multichatRoomID,
     multichatList: state.multichat.multichatList,
+    theme: state.server.theme
   };
 };
 
