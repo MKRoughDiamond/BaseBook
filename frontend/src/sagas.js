@@ -20,7 +20,7 @@ import {
 } from './actions';
 
 //const url = 'http://localhost:8000';
-const url = 'http://13.124.80.116:8001';
+const url = 'http://13.124.80.116:8000';
 const CLOUDINARY_UPLOAD_PRESET = 'tiausllp';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dm6eofafp/image/upload';
 
@@ -831,6 +831,7 @@ export function* uploadImage(imagename, file) {
 
 export function* postImage(scope) {
   const state = yield select();
+  const textarea = document.getElementById('newFeed-text');
   const response = yield call(fetch, url + '/feed/', {
     method: 'POST',
     headers: {
@@ -838,7 +839,7 @@ export function* postImage(scope) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      contents: '!['+state.image.name+']('+state.image.url+')',
+      contents: '!['+state.image.name+']('+state.image.url+')\n```text'+textarea.value+'```',
       scope: scope,
       feedtype: 'Markdown',
     })

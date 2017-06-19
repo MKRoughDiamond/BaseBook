@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import Select
 import sys
 ################################################################
 #(sleep factor)
-S = 0.75
+S = 2
 #(number of users)
 N = 3
 #(number of feed per scope) * (number of scope)
@@ -113,9 +113,13 @@ def feed_test(driver, contents, scope_index, feed_type):
     try:
         dropdown = Select(find_by_id(driver, 'newFeed-scope'))
         dropdown.select_by_index(scope_index)
+
+        dropdown = Select(find_by_id(driver, 'newFeed-feedtype'))
         if feed_type is 'Text':
-            dropdown = Select(find_by_id(driver, 'newFeed-type'))
-        dropdown = Select(find_by_id)
+            dropdown.select_by_index(0)
+        elif feed_type is 'Dropdown':
+            dropdown.select_by_index(1)
+
         send(driver, 'newFeed-text', contents)
         click(driver, 'newFeed-post')
     except Exception as e:
@@ -138,7 +142,7 @@ def reply_test(driver, contents):
         #newReplys = driver.find_elements_by_xpath("//div[@id=newReply]/")
         textareas = driver.find_elements_by_xpath("//textarea[@id='newReply-text']")
         buttons = driver.find_elements_by_xpath("//button[@class='newReply-post']")
-        for i in range(0, 3):
+        for i in range(0, 2):
             textarea = textareas[i]
             send_keys(textarea, contents)
             button = buttons[i]
@@ -181,7 +185,7 @@ print('################################################################')
 test_url = 'http://localhost:3000'
 
 if len(sys.argv) == 1:
-    S *= 3
+    S *= 2
     test_url = 'http://13.124.80.116:9000'
 
 
@@ -219,12 +223,12 @@ for i in range(0, N):
     for j in range(0, F):
         print('{0} Feed {1}'.format(scopes[int(j % 3)], (j % 3) + 1), end=' ')
         contents = 'Frontend POST user{0}-{1} feed: #hash{0} 종강하고싶다{1}{1} #hash_{0} # ##'.format(i, j + 1)
-        feed_test(drivers[i], contents, int(j % 3))
+        feed_test(drivers[i], contents, int(j % 3), 'Text')
 
 for i in range(0, N):
     print('Markdown post by nick{0}'.format(i))
-    contents = '# I\'m waiting for jonggang...'
-
+    contents = '# Waiting for jonggang...'
+    feed_test(drivers[i], contents, 0, 'Dropdown')
 
 ################################################################
 sleep(S)
@@ -305,7 +309,7 @@ print('POST multichat success')
 
 ################################################################
 sleep(S)
-print('\nTo Feed / Chat / Timeline / HashFeed test:')
+print('\nTo Feed / Chat / Timeline / HashFeed / Profile test:')
 
 for i in range(0, N):
     click(drivers[i], 'main-title-name')
@@ -324,7 +328,7 @@ sleep(2 * S)
 print('To user2\'s Timeline Page success')
 
 
-print('Reply user1\'s Timeline', end=' ')
+print('Reply to user2\'s Timeline', end=' ')
 contents = 'Frontend - contents of POST user1 reply: ㄹㅇ 언제 끝날까'
 reply_test(drivers[0], contents)
 sleep(S)
@@ -342,6 +346,47 @@ print('Add user1 to Friend List success')
 click(drivers[0], 'main-title-name')
 sleep(2 * S)
 print('To Main Page success')
+
+for i in range(0, 2):
+    click(drivers[0], 'profile')
+    print('To Profile Page success')
+
+    send(drivers[0], 'input-nickname', 'Change{0}'.format(i))
+    sleep(0.5 * S)
+    passwords = drivers[0].find_elements_by_xpath("//input[@id='input-password']")
+    sleep(0.5 * S)
+    print('nickname send success')
+
+    if i is 0:
+        newPW = 'user0user0'
+        currPW = 'user0'
+    elif i is 1:
+        newPW = 'user0'
+        currPW = 'user0user0'
+
+    send_keys(passwords[0], newPW)
+    sleep(0.5 * S)
+    send(drivers[0], 'input-retypepassword', newPW)
+    sleep(0.5 * S)
+    send_keys(passwords[1], currPW)
+    sleep(0.5 * S)
+    print('password send success')
+
+    circle = drivers[0].find_element_by_xpath("//div[@title='#f44336']")
+    circle.click()
+    sleep(0.5 * S)
+
+    default_theme = drivers[0].find_element_by_xpath("//input[@type='checkbox']")
+    default_theme.click()
+    print('change theme success')
+
+    sleep(0.5 * S)
+
+    confirm = drivers[0].find_element_by_xpath("//button[@id='change-password']")
+    confirm.click()
+
+    print('Change Profile success {0}'.format(i + 1))
+    sleep(S)
 
 for i in range(0, N):
     click(drivers[i], 'logout')

@@ -13,14 +13,14 @@ class Entry extends React.Component {
       <div className={(chat.username === 'system')?
         'chat-wrapper-system' : 'chat-wrapper'}
       >
-        <div className="chat-writer">
+        <div className="chat-writer" style={{color:(chat.username!=='system')?((this.props.mafiaTheme==='night')?'white':'black'):''}}>
           {chat.username}
         </div>
-        <div className="chat-timestamp">
-          {chat.timestamp}
-        </div>
-        <div className="chat-content">
+        <div className="chat-content" style={{color:(this.props.mafiaTheme==='night')?'white':'black'}}>
           {chat.contents}
+        </div>
+        <div className="chat-timestamp" style={{color:(this.props.mafiaTheme==='night')?'white':'black'}}>
+          {chat.timestamp}
         </div>
       </div>
     );
@@ -29,7 +29,8 @@ class Entry extends React.Component {
 
 let mapStateToProps = (state) => {
   return {
-    multichatList: state.multichat.multichatList
+    multichatList: state.multichat.multichatList,
+    mafiaTheme: state.multichat.mafiaTheme
   };
 };
 

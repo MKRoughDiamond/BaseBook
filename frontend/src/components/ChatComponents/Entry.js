@@ -13,11 +13,11 @@ class Entry extends React.Component {
         <div className="chat-writer">
           {chat.username}
         </div>
-        <div className="chat-timestamp">
-          {chat.timestamp}
-        </div>
         <div className="chat-content">
           {chat.contents}
+        </div>
+        <div className="chat-timestamp">
+          {chat.timestamp}
         </div>
       </div>
     );

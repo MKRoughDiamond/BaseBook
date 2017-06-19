@@ -422,7 +422,8 @@ class MultiChatDetail(APIView):
             return Response('', status=404)
         chat = Chat(multiroom=room, baseuser=BaseUser.objects.get(user=request.user), contents=request.data.get('contents', ''))
         chat = user_chat_team(room, request.user, chat)
-        chat.save()
+        if chat is not None:
+            chat.save()
         return Response('')
     
     def options(self, request, pk):

@@ -32,7 +32,7 @@ def unexpected_exception(message, url, e):
 def signup_post_test(url, unickname, uname, upwd):
     sleep(0.05)
     try:
-        data = {'id':uname,'password':upwd}
+        data = {'id':uname,'password':upwd, 'nickname': uname}
         headers = {'Content-Type': 'application/json'}
         res = requests.post(url, data=json.dumps(data), headers=headers)
         if res.status_code != 200:
@@ -385,7 +385,7 @@ def change_nickname_test(url, nickname, uname, upwd):
     sleep(0.05)
     try:
         headers = {'Content-Type': 'application/json'}
-        data = {'nickname': nickname}
+        data = {'nickname': nickname, 'theme': ''}
         res = requests.post(url, data=json.dumps(data), headers=headers, auth=(uname,upwd))
         if res.status_code != 200:
             wrong_status_code('change nickname', url, res.status_code)

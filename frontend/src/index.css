@@ -511,7 +511,7 @@ button:hover {
 }
 
 #chatting-title {
-	font-size : 20px;
+	font-size : 20pt;
 	padding-bottom : 10px;
 	border-bottom : 1px solid black;
 	margin-bottom : 10px;
@@ -519,7 +519,7 @@ button:hover {
 
 #multichat-title {
   width: 100%;
-	font-size : 20px;
+	font-size : 20pt;
   display: inline-block;
   padding-bottom : 10px;
   border-bottom : 1px solid black;
@@ -571,7 +571,7 @@ button:hover {
 }
 
 #chatting-content{
-    position: sticky;
+  position: sticky;
 	width: 100%;
 	height: 500px;
 	background-color: rgba(255,255,255,0.8);
@@ -579,32 +579,11 @@ button:hover {
   font-weight: normal;
 }
 
-.my-chat{
-	color: #0073cf;
-}
-
-.my-name{
-	display: inline-block;
-	font-weight: bold;
-	width: 20%;
-}
-
-.my-chat-content{
-	display: inline-block;
-}
-
-.partner-chat{
-	color: black;
-}
-
-.partner-name{
-	display: inline-block;
-	font-weight: bold;
-	width: 20%;
-}
-
-.partner-chat-content{
-	display: inline-block;
+.chatting-content-mafia{
+  background-image: url("../public/mafia.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .chat-wrapper{
@@ -612,18 +591,22 @@ button:hover {
 }
 
 .chat-writer{
+  font-size: 14pt;
  	display: inline-block;
 	font-weight: bold;
-	width: 10%;
+	width: 15%;
 }
 
 .chat-timestamp{
+  font-size: 14pt;
   display: inline-block;
-  width: 20%;
+  width: 10%;
 }
 
 .chat-content{
+  font-size: 14pt;
   display: inline-block;
+  width: 75%;
 }
 
 .chat-wrapper-system{
