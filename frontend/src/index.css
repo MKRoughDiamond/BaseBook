@@ -511,7 +511,7 @@ button:hover {
 }
 
 #chatting-title {
-	font-size : 24pt;
+	font-size : 20pt;
 	padding-bottom : 10px;
 	border-bottom : 1px solid black;
 	margin-bottom : 10px;
@@ -519,7 +519,7 @@ button:hover {
 
 #multichat-title {
   width: 100%;
-	font-size : 24pt;
+	font-size : 20pt;
   display: inline-block;
   padding-bottom : 10px;
   border-bottom : 1px solid black;
@@ -591,20 +591,20 @@ button:hover {
 }
 
 .chat-writer{
-  font-size: 18pt;
+  font-size: 14pt;
  	display: inline-block;
 	font-weight: bold;
 	width: 10%;
 }
 
 .chat-timestamp{
-  font-size: 18pt;
+  font-size: 14pt;
   display: inline-block;
   width: 20%;
 }
 
 .chat-content{
-  font-size: 18pt;
+  font-size: 14pt;
   display: inline-block;
 }
 
