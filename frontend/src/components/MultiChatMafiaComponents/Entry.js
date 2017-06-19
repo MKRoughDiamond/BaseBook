@@ -13,7 +13,7 @@ class Entry extends React.Component {
       <div className={(chat.username === 'system')?
         'chat-wrapper-system' : 'chat-wrapper'}
       >
-        <div className="chat-writer" style={{color:(this.props.mafiaTheme==='night')?'white':'black'}}>
+        <div className="chat-writer" style={{color:(chat.username!=='system')?((this.props.mafiaTheme==='night')?'white':'black'):''}}>
           {chat.username}
         </div>
         <div className="chat-timestamp" style={{color:(this.props.mafiaTheme==='night')?'white':'black'}}>
