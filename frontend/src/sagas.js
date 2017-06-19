@@ -8,7 +8,7 @@ import {
   GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND, GET_HASHFEED_LIST,
   GET_MULTICHATROOM_LIST, CREATE_MULTICHAT, START_MULTICHAT,
   GET_MULTICHAT_LIST, GET_MULTICHAT, POST_MULTICHAT, SET_MULTICHAT_LIST,
-  MAFIA_GENERAL, MAFIA_TARGET, setMafiaStatus, CHANGE_PROFILE,
+  MAFIA_GENERAL, MAFIA_TARGET, setMafiaStatus, CHANGE_PROFILE, UPLOAD_IMAGE, SAVE_IMAGE,
   setNick, setPW, setTheme,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
@@ -16,11 +16,13 @@ import {
   getMultiChatRoomList, setMultiChatRoomList,// getMultiChatRoomID,
   getMultiChatList, setMultiChatList, setMultiChat, getMultiChat,
   setUserList, GET_USER_LIST, getTimelineList,
-  startSound, endSound, getUserList
+  startSound, endSound, getUserList, getImageUrl, deleteImage
 } from './actions';
 
 //const url = 'http://localhost:8000';
 const url = 'http://13.124.80.116:8001';
+const CLOUDINARY_UPLOAD_PRESET = 'tiausllp';
+const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dm6eofafp/image/upload';
 
 export function* postSignUp() {
   const state = yield select();
@@ -804,6 +806,50 @@ export function* postProfile(newNick, newPW, retypePW, newTheme) {
   }
 }
 
+export function* uploadImage(imagename, file) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  const response = yield call(fetch, CLOUDINARY_UPLOAD_URL, {
+    method: 'POST',
+    body: formData
+  });
+  if(response.ok === false) {
+    //error
+    return;
+  }
+  let res;
+  try {
+    res = yield response.json();
+  }
+  catch(e) {
+    //error
+    return;
+  }
+  yield put(getImageUrl(imagename, res.secure_url));
+}
+
+export function* postImage(scope) {
+  const state = yield select();
+  const response = yield call(fetch, url + '/feed/', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      contents: '!['+state.image.name+']('+state.image.url+')',
+      scope: scope,
+      feedtype: 'Markdown',
+    })
+  });
+  if(response.ok === false) {
+    window.location.href = '/notfound/';
+    return;
+  }
+  yield put(getFeedList()); // refresh news feed
+  yield put(deleteImage());
+}
 
 export function* watchSignUp() {
   const t = true;
@@ -1108,6 +1154,22 @@ export function* watchChangeProfile() {
   }
 }
 
+export function* watchUploadImage() {
+  const t = true;
+  while(t) {
+    const action = yield take(UPLOAD_IMAGE);
+    yield call(uploadImage, action.name, action.file);
+  }
+}
+
+export function* watchSaveImage() {
+  const t = true;
+  while(t) {
+    const action = yield take(SAVE_IMAGE);
+    yield call(postImage, action.scope);
+  }
+}
+
 export function* rootSaga() {
   yield fork(watchSignUp);
   yield fork(watchLogin);
@@ -1150,4 +1212,7 @@ export function* rootSaga() {
   yield fork(watchMafiaGeneral);
   yield fork(watchMafiaTarget);
   yield fork(watchChangeProfile);
+
+  yield fork(watchUploadImage);
+  yield fork(watchSaveImage);
 }

@@ -4,7 +4,6 @@
     "comma-dangle": 0,
     "indent": ["error", 2],
     "quotes": [2, "single"],
-    "camelcase": "error",
     "eqeqeq": ["error", "always"],
     "no-param-reassign": ["error", { "props": false }],
     "import/named": 2,
