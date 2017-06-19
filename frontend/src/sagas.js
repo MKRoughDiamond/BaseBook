@@ -19,8 +19,8 @@ import {
   startSound, endSound, getUserList, getImageUrl, deleteImage
 } from './actions';
 
-const url = 'http://localhost:8000';
-//const url = 'http://13.124.80.116:8001';
+//const url = 'http://localhost:8000';
+const url = 'http://13.124.80.116:8001';
 const CLOUDINARY_UPLOAD_PRESET = 'tiausllp';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dm6eofafp/image/upload';
 
