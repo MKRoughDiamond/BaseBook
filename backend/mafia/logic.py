@@ -55,6 +55,7 @@ class MafiaRoom:
         self._corpse = None
         self._mute_time = timezone.now()
         self._processing = False
+        self._host = None
     
     def register(self, user):
         for player in self._players.values():
@@ -62,6 +63,8 @@ class MafiaRoom:
                 return
         self._players[str(user.id)] = Player(user)
         self._print('{}(이)가 마피아 게임 시작을 요청했습니다. (현재 {}명)'.format(user.nickname, self.player_count()))
+        if self._host is None:
+            self._host = user
     
     def survivor_count(self):
         return len(self._survivors)
@@ -215,12 +218,9 @@ class MafiaRoom:
                         chat.invisible.add(other.user)
         return chat
         
-    def tick(self):
-        if self._processing:
-            return
-        self._processing = True
-        self._scheduler.run(False)
-        self._processing = False
+    def tick(self, user):
+        if user == self._host:
+            self._scheduler.run(False)
     
     def _survivor(self, user):
         player = self._players.get(str(user.id))
