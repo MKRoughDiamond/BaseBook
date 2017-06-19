@@ -8,6 +8,18 @@ class Entry extends React.Component {
     const chat = this.props.multichatList[this.props.index];
     if(chat.contents === null)
       return <div/>;
+
+    let timestamp = chat.timestamp;
+    console.log('timestamp: ',timestamp);
+    console.log(typeof(timestamp));
+    let hour = timestamp.substring(0,2);
+    console.log('hour: ', hour);
+    hour = Number(hour);
+    hour += 9;
+    hour %= 24;
+
+    timestamp = String(hour) + timestamp.substring(2);
+
    
     return (
       <div className={(chat.username === 'system')?
