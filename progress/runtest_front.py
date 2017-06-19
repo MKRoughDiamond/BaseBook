@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import Select
 import sys
 ################################################################
 #(sleep factor)
-S = 0.75
+S = 2
 #(number of users)
 N = 3
 #(number of feed per scope) * (number of scope)
@@ -185,7 +185,7 @@ print('################################################################')
 test_url = 'http://localhost:3000'
 
 if len(sys.argv) == 1:
-    S *= 3
+    S *= 2
     test_url = 'http://13.124.80.116:9000'
 
 
@@ -309,7 +309,7 @@ print('POST multichat success')
 
 ################################################################
 sleep(S)
-print('\nTo Feed / Chat / Timeline / HashFeed test:')
+print('\nTo Feed / Chat / Timeline / HashFeed / Profile test:')
 
 for i in range(0, N):
     click(drivers[i], 'main-title-name')
@@ -346,6 +346,47 @@ print('Add user1 to Friend List success')
 click(drivers[0], 'main-title-name')
 sleep(2 * S)
 print('To Main Page success')
+
+for i in range(0, 2):
+    click(drivers[0], 'profile')
+    print('To Profile Page success')
+
+    send(drivers[0], 'input-nickname', 'Change{0}'.format(i))
+    sleep(0.5 * S)
+    passwords = drivers[0].find_elements_by_xpath("//input[@id='input-password']")
+    sleep(0.5 * S)
+    print('nickname send success')
+
+    if i is 0:
+        newPW = 'user0user0'
+        currPW = 'user0'
+    elif i is 1:
+        newPW = 'user0'
+        currPW = 'user0user0'
+
+    send_keys(passwords[0], newPW)
+    sleep(0.5 * S)
+    send(drivers[0], 'input-retypepassword', newPW)
+    sleep(0.5 * S)
+    send_keys(passwords[1], currPW)
+    sleep(0.5 * S)
+    print('password send success')
+
+    circle = drivers[0].find_element_by_xpath("//div[@title='#f44336']")
+    circle.click()
+    sleep(0.5 * S)
+
+    default_theme = drivers[0].find_element_by_xpath("//input[@type='checkbox']")
+    default_theme.click()
+    print('change theme success')
+
+    sleep(0.5 * S)
+
+    confirm = drivers[0].find_element_by_xpath("//button[@id='change-password']")
+    confirm.click()
+
+    print('Change Profile success {0}'.format(i + 1))
+    sleep(S)
 
 for i in range(0, N):
     click(drivers[i], 'logout')
