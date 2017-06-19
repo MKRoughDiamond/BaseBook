@@ -9,6 +9,6 @@ pipelines:
   default:
     - step:
         script: # Modify the commands below to build your repository.
-          - cd frontend && npm install --save-dev 
+          - cd frontend && npm install --save-dev
           - npm test
           - npm test -- --coverage
