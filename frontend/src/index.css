@@ -719,27 +719,3 @@ button:hover {
 .find-people-entry{
   display: inline-block;
 }
-
-.find-people-totimeline{
-	padding-top: 3px;
-	padding-bottom: 3px;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-right: 5px;
-	font-size: 14px;
-	color: white;
-	font-weight: bold;
-	background-color: #4B8740;
-	border-radius: 5px;
-}
-
-#picker{
-	display: inline-block;
-	margin-top: 5px;
-}
-
-#picker-wrapper{
-	display: inline-block;
-	float: right;
-	width: 85%;
-}
