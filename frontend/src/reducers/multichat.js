@@ -1,5 +1,5 @@
 import {
-  TOMULTICHAT, START_MULTICHAT, GET_MULTICHAT_ROOM_ID,
+  TOMULTICHAT, START_MULTICHAT, GET_MULTICHAT_ROOM_ID, SET_NICK_LIST,
   SET_MULTICHATROOM_LIST,// SET_MULTICHATROOM,
   SET_MULTICHAT_LIST, SET_MULTICHAT, TOFEED, TOPROFILE, LOGOUT, SET_MAFIA_STATUS
 } from '../actions';
@@ -7,6 +7,7 @@ import {
 const initState = {
   desiredMultiChatCount: 0,
   multichatOn: false,
+  nickList: '',
   multichatRoomIDList: [],
   multichatRoomList: [],
   multichatRoomID: null,
@@ -16,13 +17,7 @@ const initState = {
   mafiaBGM: 'none',
   mafiaTheme: 'none',
 };
-/*
-const multichatRoomInitState = {
-  roomID: null,
-  users: [],
-  isMafiaRoom: false,
-};
-*/
+
 const multichat = (state = initState, action) => {
   switch(action.type) {
   case TOMULTICHAT:
@@ -35,6 +30,8 @@ const multichat = (state = initState, action) => {
     return initState;
   case START_MULTICHAT:
     return Object.assign({}, state, { multichatRoomID : action.multichatRoomID });
+  case SET_NICK_LIST:
+    return Object.assign({}, state, { nickList : action.list });
   case GET_MULTICHAT_ROOM_ID:
     return Object.assign({}, state, { multichatRoomID : action.multichatRoomID });
   case SET_MULTICHATROOM_LIST: {

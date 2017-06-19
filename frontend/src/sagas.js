@@ -8,8 +8,8 @@ import {
   GET_TIMELINE_LIST, DELETE_FEED, DELETE_REPLY, POST_FRIEND, GET_HASHFEED_LIST,
   GET_MULTICHATROOM_LIST, CREATE_MULTICHAT, START_MULTICHAT,
   GET_MULTICHAT_LIST, GET_MULTICHAT, POST_MULTICHAT, SET_MULTICHAT_LIST,
-  MAFIA_GENERAL, MAFIA_TARGET, setMafiaStatus, CHANGE_PROFILE, UPLOAD_IMAGE, SAVE_IMAGE,
-  setNick, setPW, setTheme,
+  MAFIA_GENERAL, MAFIA_TARGET, CHANGE_PROFILE, UPLOAD_IMAGE, SAVE_IMAGE,
+  setNick, setPW, setTheme, setNickList, setMafiaStatus,
   loginSuccess, loginPageError, getFeedList, setFeedList, setFeed, getReplyList, setReplyList, setReply,
   getLikes, getDislikes, setLikes, setDislikes,
   getChatRoomID, getChatList, setChatList, setChat, getChat,
@@ -19,8 +19,8 @@ import {
   startSound, endSound, getUserList, getImageUrl, deleteImage
 } from './actions';
 
-//const url = 'http://localhost:8000';
-const url = 'http://13.124.80.116:8000';
+const url = 'http://localhost:8000';
+//const url = 'http://13.124.80.116:8000';
 const CLOUDINARY_UPLOAD_PRESET = 'tiausllp';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dm6eofafp/image/upload';
 
@@ -222,7 +222,7 @@ export function* deleteFeed(id) {
     window.location.href = '/notfound/';
     return;
   }
-  
+
   if (state.server.onTimeline)
     yield put(getTimelineList());
   else
@@ -509,8 +509,8 @@ export function* startMultiChat(multichatRoomID) {
 }
 
 export function* fetchMultiChatList(multichatRoomID) {
-  console.log('fetchMultiChatList Saga start');
-  console.log('multichatRoomID: ', multichatRoomID);
+  //console.log('fetchMultiChatList Saga start');
+  //console.log('multichatRoomID: ', multichatRoomID);
   const state = yield select();
   const response = yield call(fetch, url + '/multichat/' + multichatRoomID + '/all/', {
     method: 'GET',
@@ -518,7 +518,6 @@ export function* fetchMultiChatList(multichatRoomID) {
       'Authorization': `Basic ${state.server.hash}`
     }
   });
-  console.log('response.ok : ', response.ok);
   if(response.ok === false) {
     //window.location.href = '/notfound/';
     return;
@@ -531,12 +530,12 @@ export function* fetchMultiChatList(multichatRoomID) {
     //window.location.href = '/notfound/';
     return;
   }
-  console.log('fetchMultiChatList Saga res: ',res);
   yield put(setMultiChatList(res.chat));
 }
 
 export function* fetchMultiChat(multichatRoomID) {
   const state = yield select();
+
   const response = yield call(fetch, url + '/multichat/' + multichatRoomID + '/', {
     method: 'GET',
     headers: {
@@ -562,6 +561,44 @@ export function* fetchMultiChat(multichatRoomID) {
       yield put(startSound(res.bgm));
   }
   yield put(setMafiaStatus(res.bgm, res.theme));
+
+
+  //////////////////////////////////////////////////////////////////////
+  //fetch nicknameList of multichatRoom
+
+  const response2 = yield call(fetch, url + '/multichat/', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Basic ${state.server.hash}`
+    }
+  });
+  if(response2.ok === false) {
+    //window.location.href = '/notfound/';
+    return;
+  }
+  let res2;
+  try {
+    res2 = yield response2.json();
+  }
+  catch(e) {
+    //window.location.href = '/notfound/';
+    return;
+  }
+  let index = 0;
+  for(let i in res2){
+    if(res2[i].id === multichatRoomID)
+      break;
+    else
+      index++;
+  }
+  let nickList = '';
+
+  for(let i in res2[index].users){
+    if(nickList !== '')
+      nickList += ', ';
+    nickList += res2[index].users[i];
+  }
+  yield put(setNickList(nickList));
 }
 
 export function* postMultiChat(multichatRoomID, contents) {
@@ -1092,8 +1129,9 @@ export function* createMultiChatReciever() {
   while(t) {
     yield delay(1000);
     const state = yield select();
-    if (state.multichat.multichatOn === true && state.multichat.multichatRoomID !== null)
+    if (state.multichat.multichatOn === true && state.multichat.multichatRoomID !== null){
       yield put(getMultiChat(state.multichat.multichatRoomID));
+    }
   }
 }
 

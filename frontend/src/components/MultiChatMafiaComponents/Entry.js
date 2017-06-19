@@ -29,7 +29,7 @@ class Entry extends React.Component {
           {chat.contents}
         </div>
         <div className="chat-timestamp" style={{color:(this.props.mafiaTheme==='night')?'white':'black'}}>
-          {chat.timestamp}
+          {timestamp}
         </div>
       </div>
     );
