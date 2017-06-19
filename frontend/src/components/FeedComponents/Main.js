@@ -4,7 +4,7 @@ import {getFeedList, toChat, toMultiChat} from '../../actions';
 import Entry from './Entry';
 import Post from './Post';
 //import ImagePost from './ImagePost';
-import ImageUpload from './ImageUpload';
+//import ImageUpload from './ImageUpload';
 import TopBar from '../TopBar';
 
 class FeedMain extends React.Component {
@@ -38,7 +38,6 @@ class FeedMain extends React.Component {
               Chat
             </button>
           </div>
-          <ImageUpload/>
           <Post/>
           <div id="feed-entries">
             {this.props.feedIdList.map( (id) => {
