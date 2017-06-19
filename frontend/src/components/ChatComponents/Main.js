@@ -42,7 +42,7 @@ class ChatMain extends React.Component {
         <div id="main-content" className={'main-content-color'} style={{backgroundColor:this.props.theme}}>
           <div id="chatting-title">
             <div id="username-title">
-              Username :
+              Nickname :
             </div>
             <div id="username-textbox-wrapper">
               <input type="input" id="username-textbox" />
