@@ -84,7 +84,7 @@ class Entry extends React.Component {
           {(feed.feedtype==='Text')? (words.map( (word) => {
             if(word[0] === '\n') {
               return (
-                <br/>
+                <br key={word}/>
               );
             }else if(1 < word.length && word.length <= 30 && word[0] === '#' && word[1] !== '#') {
               return (
@@ -97,7 +97,7 @@ class Entry extends React.Component {
               );
             }else {
               return (
-                <span>
+                <span key={word}>
                   {word + ' '}
                 </span>
               );
