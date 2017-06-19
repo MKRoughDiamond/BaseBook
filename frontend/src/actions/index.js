@@ -92,9 +92,7 @@ export const SAVE_IMAGE = 'SAVE_IMAGE';
 export const GET_IMAGE_URL = 'GET_IMAGE_URL';
 export const DELETE_IMAGE = 'DELETE_IMAGE';
 
-export const NEWFEEDTEXT = 'NEWFEEDTEXT';
 export const NEWFEEDTYPE = 'NEWFEEDTYPE';
-export const NEWFEEDSCOPE = 'NEWFEEDSCOPE';
 
 export function setID(value) {
   return {
@@ -633,24 +631,9 @@ export function deleteImage() {
   };
 }
 
-
 export function newFeedType(value) {
   return {
     type : NEWFEEDTYPE,
     newFeedType : value
-  };
-}
-
-export function newFeedScope(value) {
-  return {
-    type : NEWFEEDSCOPE,
-    newFeedScope : value
-  };
-}
-
-export function newFeedText(value) {
-  return {
-    type : NEWFEEDTEXT,
-    newFeedText : value
   };
 }
