@@ -533,8 +533,10 @@ class Profile(APIView):
         if nickname is '':
             return Response({'detail':'Please put nickname.'}, status=400)
         try:
-            BaseUser.objects.get(nickname=nickname)
-            return Response({'detail': 'duplicate nickname!'}, status=400)
+            baseuser = BaseUser.objects.get(nickname=nickname)
+            if baseuser.user != request.user:
+                return Response({'detail': 'duplicate nickname!'}, status=400)
+            BaseUser.objects.get(nickname='!!!')
         except ObjectDoesNotExist:
             nickname_regex = re.compile(r'^[a-zA-Z]\w+$')
             if nickname_regex.match(nickname) is None:
