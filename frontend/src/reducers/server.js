@@ -26,8 +26,6 @@ const serverInitialState = {
   onProfile: false,
   soundUrl : null,
   soundStart : false,
-  newFeedText : '',
-  newFeedScope : '',
   newFeedType : '',
 };
 
@@ -51,13 +49,8 @@ const server = (state = serverInitialState, action) => {
     return Object.assign({}, state, { retypePW : action.retypePW });
   case CONFIRMPW:
     return Object.assign({}, state, { confirmPW : action.confirmPW });
-  case NEWFEEDTEXT:
-    return Object.assign({}, state, { newFeedText : action.newFeedText });
   case NEWFEEDTYPE:
-    console.log('action.newFeedType: ',action.newFeedType);
     return Object.assign({}, state, { newFeedType : action.newFeedType });
-  case NEWFEEDSCOPE:
-    return Object.assign({}, state, { newFeedScope : action.newFeedScope });
   case NEWTHEME:
     return Object.assign({}, state, { newTheme : action.color });
   case DEFAULTTHEME:

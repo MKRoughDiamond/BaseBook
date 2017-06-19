@@ -1,9 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {postFeed, startSound, newFeedType} from '../../actions';
-//import PostContent from './PostContent';
 import ContactForm from '../Image';
-//import ImagePost from './ImagePost';
 
 class Post extends React.Component {
   constructor(props) {
@@ -12,7 +10,6 @@ class Post extends React.Component {
     this.handleUpdateNewFeedType = this.handleUpdateNewFeedType.bind(this);
   }
   handleUpdateNewFeedType(e) {
-    console.log('asdfasdfadsf');
     this.props.onUpdateNewFeedType(e.target.value);
   }
   handlePostFeed() {
@@ -36,7 +33,7 @@ class Post extends React.Component {
             <select name="feedtype" id="newFeed-feedtype" onChange={this.handleUpdateNewFeedType}>
               <option value="Text">Text</option>
               <option value="Markdown">Markdown</option>
-              <option value="ImagePost">ImagePost</option>
+              <option value="ImagePost">Image Post</option>
             </select>
             <select name="scope" id="newFeed-scope">
               <option value="Public">Public</option>
@@ -82,9 +79,7 @@ class Post extends React.Component {
 
 let mapStateToProps = (state) => {
   return {
-    newFeedText: state.server.newFeedText,
     newFeedType: state.server.newFeedType,
-    newFeedScope: state.server.newFeedScope,
   };
 };
 
