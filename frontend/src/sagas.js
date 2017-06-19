@@ -798,7 +798,8 @@ export function* postProfile(newNick, newPW, retypePW, newTheme) {
     }
   }
   if (responseChangeSettings.ok === false) {
-    //errorbox 띄워주면 좋겠음
+    let res = yield responseChangeSettings.json();
+    alert(res.detail);
   }else{
     yield put(setNick(newNick));
     yield put(setTheme(changeTheme));
@@ -814,10 +815,6 @@ export function* uploadImage(imagename, file) {
     method: 'POST',
     body: formData
   });
-  if(response.ok === false) {
-    //error
-    return;
-  }
   let res;
   try {
     res = yield response.json();
@@ -826,11 +823,15 @@ export function* uploadImage(imagename, file) {
     //error
     return;
   }
+  if (response.ok === false) {
+    alert(res.detail);
+  }
   yield put(getImageUrl(imagename, res.secure_url));
 }
 
 export function* postImage(scope) {
   const state = yield select();
+  const textarea = document.getElementById('newFeed-text');
   const response = yield call(fetch, url + '/feed/', {
     method: 'POST',
     headers: {
@@ -838,7 +839,7 @@ export function* postImage(scope) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      contents: '!['+state.image.name+']('+state.image.url+')',
+      contents: '!['+state.image.name+']('+state.image.url+')\n```text'+textarea.value+'```',
       scope: scope,
       feedtype: 'Markdown',
     })

@@ -13,7 +13,9 @@ describe('multichat reducer', () => {
             multichatList: [],
             multichatEnterList: [],
             multichatRoomList: [],
-            multichatCountList: []
+            multichatCountList: [],
+            mafiaBGM: 'none',
+            mafiaTheme: 'none'
         })
     })
 
@@ -37,7 +39,9 @@ describe('multichat reducer', () => {
             multichatList: [],
             multichatEnterList: [],
             multichatRoomList: [],
-            multichatCountList: []
+            multichatCountList: [],
+            mafiaBGM: 'none',
+            mafiaTheme: 'none'
         })
     })
 
@@ -52,7 +56,9 @@ describe('multichat reducer', () => {
             multichatList: [],
             multichatEnterList: [],
             multichatRoomList: [],
-            multichatCountList: []
+            multichatCountList: [],
+            mafiaBGM: 'none',
+            mafiaTheme: 'none'
         })
     })
 

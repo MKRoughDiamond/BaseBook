@@ -53,6 +53,8 @@ class MafiaRoom:
         self._ghosts = []
         self._daycount = 0
         self._corpse = None
+        self._mute_time = timezone.now()
+        self._processing = False
     
     def register(self, user):
         for player in self._players.values():
@@ -85,6 +87,8 @@ class MafiaRoom:
         if self.player_count() < MIN_START_PLAYER:
             return
         self._print('마피아 게임을 시작합니다.')
+        self._print('/earlyvote: 조기투표에 찬성합니다.')
+        self._print('/<nickname>: 상대에게 투표/능력을 사용합니다.')
         self._assign_job()
         self.status = 'night'
         self._print('15초간 같은 팀끼리 대화할 수 있습니다.')
@@ -183,6 +187,9 @@ class MafiaRoom:
             self._make_ghost(player)
     
     def set_chat_team(self, user, chat):
+        timediff = timezone.now() - self._mute_time
+        if timediff.total_seconds() <= 0:
+            return None
         player = self._player(user)
         if player in self._ghosts:
             chat.save()
@@ -198,18 +205,22 @@ class MafiaRoom:
             chat.save()
             for team in teams:
                 if player in team:
-                    for other in self._players.values():
-                        if other not in team and other not in self._ghosts:
+                    for other in self._survivors:
+                        if other not in team:
                             chat.invisible.add(other.user)
                     break
             if player in self._civilians:
-                for other in self._players.values():
-                    if other != player and other not in self._ghosts:
+                for other in self._survivors:
+                    if other != player:
                         chat.invisible.add(other.user)
         return chat
         
     def tick(self):
+        if self._processing:
+            return
+        self._processing = True
         self._scheduler.run(False)
+        self._processing = False
     
     def _survivor(self, user):
         player = self._players.get(str(user.id))
@@ -423,6 +434,7 @@ class MafiaRoom:
         self._scheduler.run(False)
 
     def _vote_end(self):
+        self._mute_time = timezone.now() + timezone.timedelta(0, 2)
         self._print('{}일차 투표가 끝났습니다.'.format(self._daycount))
         self._check_vote_kill()
         if self._win_condition():
@@ -448,6 +460,7 @@ class MafiaRoom:
         self._scheduler.run(False)
     
     def _night_end(self):
+        self._mute_time = timezone.now() + timezone.timedelta(0, 2)
         self._ability_result()
         self._scheduler.enter(3, 1, self._make_day)
         self._scheduler.run(False)

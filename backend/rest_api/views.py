@@ -74,13 +74,17 @@ class user_signup(APIView):
             return Response({'detail':'Password should be longer than 4 digits.'}, status=400)
         
         try:
-            user = User.objects.create_user(username, username+'@email.com', password)
-        except IntegrityError:
-            return Response({'detail':'User already exists!'}, status=400)
-        user.save()
-        baseuser = BaseUser(user=user, nickname=nickname, theme='');
-        baseuser.save()
-        return Response('',status=200)
+            baseuser = BaseUser.objects.get(nickname=nickname)
+            return Response({'detail': 'duplicate nickname!'}, status=400)
+        except ObjectDoesNotExist:
+            try:
+                user = User.objects.create_user(username, username+'@email.com', password)
+            except IntegrityError:
+                return Response({'detail':'User already exists!'}, status=400)
+            user.save()
+            baseuser = BaseUser(user=user, nickname=nickname, theme='');
+            baseuser.save()
+            return Response('',status=200)
     
     def options(self, request):
         return options_cors()
@@ -418,7 +422,8 @@ class MultiChatDetail(APIView):
             return Response('', status=404)
         chat = Chat(multiroom=room, baseuser=BaseUser.objects.get(user=request.user), contents=request.data.get('contents', ''))
         chat = user_chat_team(room, request.user, chat)
-        chat.save()
+        if chat is not None:
+            chat.save()
         return Response('')
     
     def options(self, request, pk):
@@ -522,13 +527,17 @@ class Profile(APIView):
         nickname = request.data.get('nickname', None)
         if nickname is '':
             return Response({'detail':'Please put nickname.'}, status=400)
-        baseuser.nickname = nickname
-        theme = request.data.get('theme', None)
-        if theme is None:
-            return Response({'detail' : 'Error.'}, status=400)
-        baseuser.theme = theme
-        baseuser.save()
-        return Response('', status=200)
+        try:
+            BaseUser.objects.get(nickname=nickname) is not None
+            return Response({'detail': 'duplicate nickname!'}, status=400)
+        except ObjectDoesNotExist:
+            baseuser.nickname = nickname
+            theme = request.data.get('theme', None)
+            if theme is None:
+                return Response({'detail' : 'Error.'}, status=400)
+            baseuser.theme = theme
+            baseuser.save()
+            return Response('', status=200)
     def get(self, request):
         try:
             baseuser = BaseUser.objects.get(user=request.user)
