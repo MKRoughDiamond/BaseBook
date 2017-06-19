@@ -18,7 +18,6 @@ class Entry extends React.Component {
     hour += 9;
     hour %= 24;
     timestamp = String(hour) + timestamp.substring(2);
-   
     return (
       <div className={(chat.username === 'system')?
         'chat-wrapper-system' : 'chat-wrapper'}
