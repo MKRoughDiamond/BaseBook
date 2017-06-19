@@ -49,17 +49,16 @@ class ContactForm extends React.Component {
   render() {
     return (
     <div>
-      <div className='FileUpload'>
-        <Dropzone
-          multiple={false}
-          accept='image/*'
-          onDrop={this.handleImageDrop}>
-          <p> Drop an image </p>
-        </Dropzone>
-      </div>
-
       <div>
-        {this.props.imageUrl === null ? null :
+        {this.props.imageUrl === null ?
+        <div clasName="FileUpload">
+          <Dropzone
+            multiple={false}
+            accept='image/*'
+            onDrop={this.handleImageDrop}>
+            <p> Drop an image </p>
+          </Dropzone>
+        </div>  :
         <div>
          <p>{this.props.imageName}</p>
           <img src={this.props.imageUrl} />
