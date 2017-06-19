@@ -399,6 +399,10 @@ button:hover {
   background-color: rgba(255,255,255,0.3);
 }
 
+#multichat-room-nickname-list {
+	font-size: 15px;
+}
+
 .multichat-room-enter {
   display: inline-block;
   float : right;

@@ -70,6 +70,7 @@ export const POST_FRIEND = 'POST_FRIEND';
 export const TOMULTICHAT = 'TOMULTICHAT';
 export const CREATE_MULTICHAT = 'CREATE_MULTICHAT';
 export const START_MULTICHAT = 'START_MULTICHAT';
+export const SET_NICK_LIST = 'SET_NICK_LIST';
 
 export const GET_MULTICHATROOM_LIST = 'GET_MULTICHATROOM_LIST';
 export const SET_MULTICHATROOM_LIST = 'SET_MULTICHATROOM_LIST';
@@ -509,6 +510,13 @@ export function startMultiChat(multichatRoomID) {
   return {
     type: START_MULTICHAT,
     multichatRoomID: multichatRoomID
+  };
+}
+
+export function setNickList(list) {
+  return {
+    type: SET_NICK_LIST,
+    list: list
   };
 }
 
