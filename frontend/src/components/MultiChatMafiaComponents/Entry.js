@@ -8,7 +8,7 @@ class Entry extends React.Component {
     const chat = this.props.multichatList[this.props.index];
     if(chat.contents === null)
       return <div/>;
-
+   
     return (
       <div className={(chat.username === 'system')?
         'chat-wrapper-system' : 'chat-wrapper'}
@@ -19,7 +19,7 @@ class Entry extends React.Component {
         <div className="chat-content" style={{color:(chat.username!=='system')?((this.props.mafiaTheme==='night')?'white':'black'):''}}>
           {chat.contents}
         </div>
-        <div className="chat-timestamp" style={{color:(this.props.mafiaTheme==='night')?'white':'black'}}>
+        <div className="chat-timestamp" style={{color:(chat.username!=='system')?((this.props.mafiaTheme==='night')?'white':'black'):''}}>
           {chat.timestamp}
         </div>
       </div>
