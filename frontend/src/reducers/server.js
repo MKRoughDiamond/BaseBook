@@ -1,6 +1,6 @@
 import { SETID, SETNICK, SETPW, NEWID, NEWNICK, NEWPW, RETYPEPW, CONFIRMPW, NEWTHEME, SETTHEME, DEFAULTTHEME,
   TOMAIN, TOSIGNUP, LOGIN_SUCCESS, LOGIN_PAGE_ERROR, TOTIMELINE, TOFEED, LOGOUT,
-  TOHASHFEED, TOPROFILE, START_SOUND, END_SOUND
+  TOHASHFEED, TOPROFILE, START_SOUND, END_SOUND, NEWFEEDTYPE,
 } from '../actions';
 
 const serverInitialState = {
@@ -25,7 +25,8 @@ const serverInitialState = {
   tagname: '',
   onProfile: false,
   soundUrl : null,
-  soundStart : false
+  soundStart : false,
+  newFeedType : '',
 };
 
 const server = (state = serverInitialState, action) => {
@@ -48,6 +49,8 @@ const server = (state = serverInitialState, action) => {
     return Object.assign({}, state, { retypePW : action.retypePW });
   case CONFIRMPW:
     return Object.assign({}, state, { confirmPW : action.confirmPW });
+  case NEWFEEDTYPE:
+    return Object.assign({}, state, { newFeedType : action.newFeedType });
   case NEWTHEME:
     return Object.assign({}, state, { newTheme : action.color });
   case DEFAULTTHEME:

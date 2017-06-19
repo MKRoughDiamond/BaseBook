@@ -87,6 +87,13 @@ export const MAFIA_GENERAL = 'MAFIA_GENERAL';
 export const MAFIA_TARGET = 'MAFIA_TARGET';
 export const SET_MAFIA_STATUS = 'SET_MAFIA_STATUS';
 
+export const UPLOAD_IMAGE = 'UPLOAD_IMAGE';
+export const SAVE_IMAGE = 'SAVE_IMAGE';
+export const GET_IMAGE_URL = 'GET_IMAGE_URL';
+export const DELETE_IMAGE = 'DELETE_IMAGE';
+
+export const NEWFEEDTYPE = 'NEWFEEDTYPE';
+
 export function setID(value) {
   return {
     type : SETID,
@@ -592,5 +599,41 @@ export function setMafiaStatus(BGM, theme) {
     type: SET_MAFIA_STATUS,
     BGM: BGM,
     theme: theme
+  };
+}
+
+export function uploadImage(name, file) {
+  return {
+    type: UPLOAD_IMAGE,
+    file: file,
+    name: name
+  };
+}
+
+export function saveImage(scope) {
+  return {
+    type: SAVE_IMAGE,
+    scope: scope
+  };
+}
+
+export function getImageUrl(name, url) {
+  return {
+    type: GET_IMAGE_URL,
+    url: url,
+    name: name
+  };
+}
+
+export function deleteImage() {
+  return {
+    type: DELETE_IMAGE
+  };
+}
+
+export function newFeedType(value) {
+  return {
+    type : NEWFEEDTYPE,
+    newFeedType : value
   };
 }
