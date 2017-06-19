@@ -70,9 +70,6 @@ class Entry extends React.Component {
           <button className="feed-delete" id={'feed'+this.props.feedID+'-delete'} onClick={this.handleDeleteFeed}>
             delete
           </button>
-          <button className="feed-modify" id={'feed'+this.props.feedID+'-modify'}>
-            modify
-          </button>
           <button className="feed-dislike" id={'feed'+this.props.feedID+'-dislike'} onClick={this.handlePostDislikes}>
             {'Dislike ' + feed.dislike}
           </button>
