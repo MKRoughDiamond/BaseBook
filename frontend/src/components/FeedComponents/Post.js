@@ -40,7 +40,7 @@ class Post extends React.Component {
             <div id="newFeed-name">
               New Feed
             </div>
-            <select name="feedtype" id="newFeed-feedtype" onChange={this.handleChangeNewFeedType}>
+            <select name="feedtype" id="newFeed-feedtype" onChange={this.handleUpdateNewFeedType}>
               <option value="Text">Text</option>
               <option value="Markdown">Markdown</option>
               <option value="ImagePost">ImagePost</option>
@@ -63,7 +63,7 @@ class Post extends React.Component {
             <div id="newFeed-name">
               New Feed
             </div>
-            <select name="feedtype" id="newFeed-feedtype" onChange={this.props.handleUpdateNewFeedType}>
+            <select name="feedtype" id="newFeed-feedtype" onChange={this.handleUpdateNewFeedType}>
               <option value="Text">Text</option>
               <option value="Markdown">Markdown</option>
               <option value="ImagePost">Image Post</option>
