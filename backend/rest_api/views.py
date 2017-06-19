@@ -77,6 +77,11 @@ class user_signup(APIView):
             baseuser = BaseUser.objects.get(nickname=nickname)
             return Response({'detail': 'duplicate nickname!'}, status=400)
         except ObjectDoesNotExist:
+            nickname_regex = re.compile(r'^[a-zA-Z]\w+$')
+            if nickname_regex.match(nickname) is None:
+                return Response({'detail':'Nickname should consist of alphabets and numbers.'}, status=400)
+            if len(username) > 15 or len(nickname) > 10:
+                return Response({'detail': 'Username or nickname too long!'}, status=400)
             try:
                 user = User.objects.create_user(username, username+'@email.com', password)
             except IntegrityError:
@@ -528,9 +533,14 @@ class Profile(APIView):
         if nickname is '':
             return Response({'detail':'Please put nickname.'}, status=400)
         try:
-            BaseUser.objects.get(nickname=nickname) is not None
+            BaseUser.objects.get(nickname=nickname)
             return Response({'detail': 'duplicate nickname!'}, status=400)
         except ObjectDoesNotExist:
+            nickname_regex = re.compile(r'^[a-zA-Z]\w+$')
+            if nickname_regex.match(nickname) is None:
+                return Response({'detail':'Nickname should consist of alphabets and numbers.'}, status=400)
+            if len(nickname) > 10:
+                return Response({'detail': 'Nickname too long!'}, status=400)
             baseuser.nickname = nickname
             theme = request.data.get('theme', None)
             if theme is None:
