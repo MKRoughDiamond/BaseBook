@@ -876,7 +876,7 @@ export function* postImage(scope) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      contents: '!['+state.image.name+']('+state.image.url+')\n```text'+textarea.value+'```',
+      contents: '!['+state.image.name+']('+state.image.url+')\n```text\n'+textarea.value+'\n```',
       scope: scope,
       feedtype: 'Markdown',
     })
