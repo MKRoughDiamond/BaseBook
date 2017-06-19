@@ -20,7 +20,7 @@ import {
 } from './actions';
 
 //const url = 'http://localhost:8000';
-const url = 'http://13.124.80.116:8001';
+const url = 'http://13.124.80.116:8000';
 const CLOUDINARY_UPLOAD_PRESET = 'tiausllp';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dm6eofafp/image/upload';
 
@@ -798,7 +798,8 @@ export function* postProfile(newNick, newPW, retypePW, newTheme) {
     }
   }
   if (responseChangeSettings.ok === false) {
-    //errorbox 띄워주면 좋겠음
+    let res = yield responseChangeSettings.json();
+    alert(res.detail);
   }else{
     yield put(setNick(newNick));
     yield put(setTheme(changeTheme));
@@ -814,10 +815,6 @@ export function* uploadImage(imagename, file) {
     method: 'POST',
     body: formData
   });
-  if(response.ok === false) {
-    //error
-    return;
-  }
   let res;
   try {
     res = yield response.json();
@@ -825,6 +822,9 @@ export function* uploadImage(imagename, file) {
   catch(e) {
     //error
     return;
+  }
+  if (response.ok === false) {
+    alert(res.detail);
   }
   yield put(getImageUrl(imagename, res.secure_url));
 }

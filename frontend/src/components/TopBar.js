@@ -43,7 +43,7 @@ class TopBar extends React.Component {
 
   render() {
     return (
-      <div id="main-title" className={'main-title-color'} style={{backgroundColor:this.props.theme}}>
+      <div id="main-title" className={'main-title-color'} style={{backgroundColor:(this.props.mafiaTheme==='night')? '#202020' : this.props.theme}}>
         <div id="main-title-name" onClick={this.handleToFeed}>
           BaseBook
         </div>
@@ -83,7 +83,8 @@ let mapStateToProps = (state) => {
     queriedUser: state.userSearch.queriedUser,
     userList: state.userSearch.userList,
     theme: state.server.theme,
-    isDefaultTheme: state.server.isDefaultTheme
+    isDefaultTheme: state.server.isDefaultTheme,
+    mafiaTheme: state.multichat.mafiaTheme,
   };
 };
 
